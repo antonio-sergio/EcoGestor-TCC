@@ -11,7 +11,6 @@ import Login from "../pages/Login";
 
 export default function RoutesApp() {
     const { user } = useContext(AuthContext);
-    console.log('user', user);
 
     return (
         <Routes>
