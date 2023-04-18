@@ -1,26 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext  from "../auth/AuthContext";
+import { useContext, useEffect } from "react";
+import AuthContext from "../auth/AuthContext";
 
 const ProtectedRoute = ({ children, accessBy }) => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
 
-    if (accessBy === "any") {
-        return children;
-    }
-
-    if (accessBy === "authenticated") {
-        if (user) {
-            return children;
+    useEffect(() => {
+        if (accessBy === "authenticated" && !user) {
+            navigate("/login");
+        } else if (accessBy === "admin" && (!user || user.role !== "admin")) {
+            navigate("/login");
         }
-    }
+    }, [accessBy, navigate, user]);
 
-    if (accessBy === "admin" && user?.role === "admin") {
-        return children;
-    }
-
-    return navigate("/");
+    return children;
 };
 
 export default ProtectedRoute;
