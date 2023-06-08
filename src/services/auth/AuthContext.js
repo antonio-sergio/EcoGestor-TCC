@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
         }
         console.log('user', user);
     }
-  }, [expiresAt, navigate]);
+  }, [expiresAt, navigate, user]);
 
   const login = async (payload) => {
     localStorage.removeItem("token");
@@ -64,7 +64,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider  value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
