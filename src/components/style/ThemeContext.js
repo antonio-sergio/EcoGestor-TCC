@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { lightTheme, darkTheme } from './themes';
-import ThemeToggleButton from './ThemeToggleButton';
 
 const ThemeContext = createContext();
 
@@ -20,12 +19,11 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Define a cor de fundo do documento com base no tema atual
-    document.body.style.backgroundColor = theme.palette.primary.main;
+    document.body.style.backgroundColor = theme.palette.background.main;
   }, [theme]);
 
   return (
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <ThemeToggleButton />
         {children}
       </ThemeContext.Provider>
   );

@@ -1,4 +1,5 @@
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthContextProvider } from './services/auth/AuthContext';
 import { ThemeProvider } from './components/style/ThemeContext';
 

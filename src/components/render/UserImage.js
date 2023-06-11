@@ -1,27 +1,58 @@
 import React from 'react';
 import userProfile from '../../assets/images/user/user-profile.jpg'
-import { Grid, styled } from '@mui/material';
+import { Grid, styled, Card, Avatar } from '@mui/material';
+import AuthContext from '../../services/auth/AuthContext';
+import { useContext } from 'react';
+import ThemeContext from '../style/ThemeContext';
 
-const ImgProfile = styled('img')({
-  width: '150px',
-  height: '150px',
-  objectFit: 'cover',
+const StyledGrid = styled(Card)(({ theme }) => ({
+  padding: '10px',
+  display: 'flex',
+  flexDirection: 'row',  
+  alignItems: 'center', 
+  backgroundColor: theme.palette.mode.main,
+  marginTop: 4
+}));
+
+const UserInfos = styled(Grid)({
+  width: '160px',
+  height: '50px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'start',
+  marginLeft: 10,
+  padding: 3
+
+
 });
 
-const StyledGrid = styled(Grid)({
-  backgroundColor: 'black',
-  padding: '10px',
+const Infos = styled('span')({
+  fontSize: 16,
+  color: 'white'
 });
 
 const UserImage = ({ imageUrl }) => {
+  const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
+
+  function formatName() {
+    const words = String(user?.name).split(' ');
+    const firstWord = words[0];
+    const lastWord = words[words.length - 1];
+    const fullName = firstWord + " " + lastWord; 
+    return fullName.toUpperCase();
+  }
+
   return (
-    <StyledGrid>
-      <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-        <ImgProfile src={imageUrl ? imageUrl : userProfile} alt="User" />
-      </Grid>
+    <StyledGrid theme={theme}>
+      <Avatar src={imageUrl ? imageUrl : userProfile} alt="User" sx={{ width: 56, height: 56 }} />
+      <UserInfos >
+        <Infos>{formatName()}</Infos>
+        <Infos>{user.role}</Infos>
+      </UserInfos>
     </StyledGrid>
   );
 };
-
 
 export default UserImage;
