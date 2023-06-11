@@ -5,7 +5,12 @@ class UserService {
         return axios.get(`${process.env.REACT_APP_API_URL}/user/image/${id_user}`)
     }
     create(user){
-        return axios.post(`${process.env.REACT_APP_API_URL}/user`, user)
+        const formData = new FormData();
+  
+        for (const campo in user) {
+          formData.append(campo, user[campo]); // adiciona os campos do objeto user ao FormData
+        }
+        return axios.post(`${process.env.REACT_APP_API_URL}/user`, formData)
     }
 }
 

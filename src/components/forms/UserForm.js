@@ -29,6 +29,7 @@ const UserForm = () => {
         address_id: ''
     });
     const [added, setAdded] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
 
 
     const handleChange = (e) => {
@@ -127,7 +128,8 @@ const UserForm = () => {
             console.log('response addres', response)
             if (response.status === 201) {
                 user.address_id = Number(response?.data?.id_address);
-                console.log('user apos addres', user)
+                console.log('selectedImage', selectedImage)
+                user.image = selectedImage;
                 userService.create(user).then(response => {
                     if (response.status === 201) {
                         toast.success('Usuário adicionado com sucesso!');
@@ -363,8 +365,7 @@ const UserForm = () => {
                             label="Img"
                             name="image"
                             type='file'
-                            onChange={handleChange}
-                            value={user.image}
+                            onChange={(e) => setSelectedImage(e.target.files[0])}
                             fullWidth
                         />
                     </Grid>
