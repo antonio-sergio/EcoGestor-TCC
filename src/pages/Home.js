@@ -14,7 +14,7 @@ import ThemeToggleButton from "../components/style/ThemeToggleButton";
 import Footer from "../components/render/Footer";
 import Purchases from "./Purchases";
 import BI from "./BI";
-import Products from "./Products";
+import Lists from "./Lists";
 import Register from "./Register";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
@@ -108,8 +108,8 @@ const Home = () => {
       return <Purchases />;
     } else if (selectedComponent === 'profile') {
       return <Profile />;
-    } if (selectedComponent === 'products') {
-      return <Products />;
+    } if (selectedComponent === 'lists') {
+      return <Lists />;
     } else if (selectedComponent === 'register') {
       return <Register />;
     } else {
@@ -153,11 +153,11 @@ const Home = () => {
             {expanded === true && <StyledListItemText primary="Compras" />}
           </StyledListItem>
 
-          <StyledListItem button onClick={() => handleComponentClick('products')}>
+          <StyledListItem button onClick={() => handleComponentClick('lists')}>
             <StyledListItemIcon>
               <FormatListBulleted />
             </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Produtos" />}
+            {expanded === true && <StyledListItemText primary="Listas" />}
           </StyledListItem>
 
           <StyledListItem button onClick={() => handleComponentClick('register')}>

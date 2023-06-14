@@ -5,7 +5,6 @@ import MaskedInput from 'react-text-mask';
 import zipCodeService from '../../services/external/zip-code-service';
 import userService from '../../services/user/user-service';
 import addressService from '../../services/address/address-service';
-
 import { ToastContainer, toast } from 'react-toastify';
 
 const UserForm = () => {
@@ -206,7 +205,7 @@ const UserForm = () => {
 
 
     return (
-        <div style={{ maxHeight: 'calc(100vh - 450px)', overflow: 'auto' }}>
+        <div style={{ maxHeight: 'calc(100vh - 350px)', overflow: 'auto' }}>
             <ToastContainer />
             {added === false ? <form onSubmit={handleSubmit}>
                 <Grid container sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
@@ -293,7 +292,7 @@ const UserForm = () => {
 
                     <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                         <TextField
-                            label="Rua"
+                            label="Logradouro"
                             type='text'
                             name="street"
                             value={user.street}
