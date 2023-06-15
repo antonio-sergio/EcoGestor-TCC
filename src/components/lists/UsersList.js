@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
-
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import userService from '../../services/user/user-service';
 import addressService from '../../services/address/address-service';
-
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalUser, setOpenModalUser] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
-
+  const [editMode, setEditMode] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     userService.getAllUsers().then(response => {
@@ -19,7 +22,7 @@ const UsersList = () => {
         setUsers(response.data.users);
       }
     })
-  }, []);
+  }, [openModalUser]);
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -31,27 +34,78 @@ const UsersList = () => {
     {
       field: 'address_id',
       headerName: 'Endereço',
-      width: 200,
+      width: 75,
+      align: 'center',
       renderCell: (params) => (
         <Button
           variant="outlined"
           size="small"
           onClick={() => handleShowAddress(params.value)}
         >
-          Ver Endereço
+          <PersonPinCircleIcon sx={{ color: 'green' }} />
         </Button>
       )
     },
-
+    {
+      field: 'edit',
+      headerName: 'Editar',
+      width: 70,
+      align: 'center',
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => handleEditUser(params.row)}
+        >
+          <EditNoteIcon sx={{ color: 'green' }} />
+        </Button>
+      )
+    }
   ];
 
   const handleShowAddress = (addressId) => {
     addressService.getOneAddress(addressId).then(response => {
       if (response.status === 200) {
         setSelectedAddress(response.data);
-        console.log('datdos response addres', response.data)
         setOpenModal(true);
       }
+    });
+  };
+
+  const handleEditAddress = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setOpenModalUser(!openModalUser);
+  };
+
+  const handleSaveAddress = () => {
+    addressService.updateAddress(selectedAddress).then(response => {
+      console.log('response update', response)
+      if (response.status === 200) {
+        toast.success('Endereço atualizado com sucesso!');
+        setEditMode(!editMode);
+
+      }
+    }).catch(error => {
+      console.log(error);
+      toast.error('Não foi possível atualizar o endereço.')
+    })
+  };
+
+  const handleSaveUser = () => {
+    console.log('seletc uiser ', selectedUser)
+    userService.updateUser(selectedUser).then(response => {
+      if (response.status === 200) {
+        toast.success('Usuário atualizado com sucesso!');
+        setOpenModalUser(false);
+
+      }
+    }).catch(error => {
+      console.log(error);
+      toast.error('Não foi possível atualizar o usuário.')
     });
   };
 
@@ -59,8 +113,8 @@ const UsersList = () => {
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
+      <ToastContainer />
       <DataGrid
-
         localeText={localizedTextsMap}
         rows={users}
         columns={columns}
@@ -71,27 +125,142 @@ const UsersList = () => {
             labelRowsPerPage: "Linhas por página",
           }
         }}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? 'primary' : 'odd'
-        }
       />
-      <Dialog open={openModal} onClose={() => setOpenModal(false)} >
-        <DialogTitle fontWeight={800} textAlign="center" sx={{backgroundColor: 'green', color: 'white'}}>Dados do Endereço</DialogTitle>
-        <DialogContent sx={{marginTop: 3}}>
-          {/* Renderize os dados do endereço dentro deste componente */}
-          {selectedAddress && (
+      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+        <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+          {editMode ? 'Editar Endereço' : 'Dados do Endereço'}
+        </DialogTitle>
+        <DialogContent sx={{ marginTop: 3 }}>
+          {editMode ? (
             <>
-              <Typography variant="body1"><strong>Logradouro:</strong> {selectedAddress.street}</Typography>
-              <Typography variant="body1"><strong>Número:</strong> {selectedAddress.number}</Typography>
-              <Typography variant="body1"><strong>Bairro:</strong> {selectedAddress.neighborhood}</Typography>
-              <Typography variant="body1"><strong>Cidade:</strong> {selectedAddress.city}</Typography>
-              <Typography variant="body1"><strong>Estado:</strong> {selectedAddress.state}</Typography>
-              <Typography variant="body1"><strong>CEP:</strong> {selectedAddress.zip_code}</Typography>
+              <TextField
+                label="Logradouro"
+                defaultValue={selectedAddress?.street || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, street: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Número"
+                value={selectedAddress?.number || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, number: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Bairro"
+                value={selectedAddress?.neighborhood || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, neighborhood: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Cidade"
+                value={selectedAddress?.city || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, city: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Estado"
+                value={selectedAddress?.state || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, state: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="CEP"
+                value={selectedAddress?.zip_code || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, zip_code: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Complemento"
+                value={selectedAddress?.complement || ''}
+                onChange={(e) => setSelectedAddress({ ...selectedAddress, complement: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
             </>
+          ) : (
+            selectedAddress && (
+              <>
+                <Typography variant="body1"><strong>Logradouro:</strong> {selectedAddress.street}</Typography>
+                <Typography variant="body1"><strong>Número:</strong> {selectedAddress.number}</Typography>
+                <Typography variant="body1"><strong>Bairro:</strong> {selectedAddress.neighborhood}</Typography>
+                <Typography variant="body1"><strong>Cidade:</strong> {selectedAddress.city}</Typography>
+                <Typography variant="body1"><strong>Estado:</strong> {selectedAddress.state}</Typography>
+                <Typography variant="body1"><strong>CEP:</strong> {selectedAddress.zip_code}</Typography>
+                {selectedAddress?.complement && <Typography variant="body1"><strong>Complemento:</strong> {selectedAddress.complement}</Typography>}
+              </>
+            )
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenModal(false)}>Fechar</Button>
+          {!editMode ? (
+            <>
+              <Button onClick={handleEditAddress}>Editar</Button>
+              <Button onClick={() => setOpenModal(false)}>Fechar</Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={handleSaveAddress}>Salvar</Button>
+              <Button onClick={handleEditAddress}>Cancelar</Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openModalUser} onClose={() => setOpenModalUser(false)}>
+        <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+          Editar Usuário
+        </DialogTitle>
+        <DialogContent sx={{ marginTop: 3 }}>
+          <>
+            <TextField
+              label="Nome"
+              defaultValue={selectedUser?.name || ''}
+              onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Email"
+              value={selectedUser?.email || ''}
+              onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Contato"
+              value={selectedUser?.phone || ''}
+              onChange={(e) => setSelectedUser({ ...selectedUser, phone: e.target.value })}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Acesso"
+              value={selectedUser?.role || ''}
+              onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Função"
+              value={selectedUser?.type || ''}
+              onChange={(e) => setSelectedUser({ ...selectedUser, type: e.target.value })}
+              fullWidth
+              margin="normal"
+            />
+          </>
+
+        </DialogContent>
+        <DialogActions>
+
+          <>
+            <Button onClick={handleSaveUser}>Salvar</Button>
+            <Button onClick={handleEditUser}>Cancelar</Button>
+          </>
         </DialogActions>
       </Dialog>
     </div>

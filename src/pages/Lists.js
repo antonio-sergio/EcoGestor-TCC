@@ -2,6 +2,7 @@ import { Grid, Button, Tabs, Tab, Card, Typography, Box } from '@mui/material';
 import { useContext, useState } from 'react';
 import ThemeContext from '../components/style/ThemeContext';
 import UsersList from '../components/lists/UsersList'
+import ProductsList from '../components/lists/ProductList';
 
 const Lists = () => {
     const { theme } = useContext(ThemeContext);
@@ -35,16 +36,12 @@ const Lists = () => {
                         color: 'green'
                     }
                 }} />
-                 <Tab label="Endereços" sx={{
-                    '&.Mui-selected': {
-                        color: 'green'
-                    }
-                }} />
+                
             </Tabs>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ p: 3 }}>
                     {value === 0 && <UsersList />}
-                    {value === 1 && <div>Teste 1</div>}
+                    {value === 1 && <div><ProductsList /></div>}
                 </Box>
             </Box>
         </Grid >

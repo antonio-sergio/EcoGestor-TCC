@@ -10,6 +10,9 @@ class AddressService {
     getOneAddress(id){
         return axios.get(`${process.env.REACT_APP_API_URL}/address/${id}`)
     }
+    updateAddress(address){
+        return axios.put(`${process.env.REACT_APP_API_URL}/address/${address.id_address}`, address)
+    }
 }
 
 const addressService = new AddressService();

@@ -18,7 +18,9 @@ class UserService {
     }
     getAllUsers() {
         return axios.get(`${process.env.REACT_APP_API_URL}/user`)
-
+    }
+    updateUser(user){
+        return axios.put(`${process.env.REACT_APP_API_URL}/user/${user.id}`, user)
     }
 }
 

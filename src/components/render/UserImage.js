@@ -10,7 +10,7 @@ const StyledGrid = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',  
   alignItems: 'center', 
-  backgroundColor: theme.palette.mode.main,
+  backgroundColor: theme.palette.primary.main,
   marginTop: 4
 }));
 
