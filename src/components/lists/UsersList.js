@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import userService from '../../services/user/user-service';
 import addressService from '../../services/address/address-service';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -29,8 +30,33 @@ const UsersList = () => {
     { field: 'name', headerName: 'Nome', width: 200, editable: true },
     { field: 'email', headerName: 'Email', width: 300, editable: true },
     { field: 'phone', headerName: 'Contato', width: 150, editable: true },
-    { field: 'role', headerName: 'Acesso', width: 100 },
-    { field: 'type', headerName: 'Função', width: 100 },
+    {
+      field: 'role',
+      headerName: 'Acesso',
+      width: 130,
+      renderCell: (params) => {
+        const { value } = params;
+        if (value === 'admin') {
+          return "Administrador";
+        } else {
+          return "Usuário";
+        }
+      },
+    },
+    {
+      field: 'type',
+      headerName:
+        'Função',
+      width: 100,
+      renderCell: (params) => {
+        const { value } = params;
+        if (value === 'seller') {
+          return "Vendedor";
+        } else {
+          return "Comprador";
+        }
+      },
+    },
     {
       field: 'address_id',
       headerName: 'Endereço',
@@ -238,20 +264,30 @@ const UsersList = () => {
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="Acesso"
-              value={selectedUser?.role || ''}
-              onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Função"
-              value={selectedUser?.type || ''}
-              onChange={(e) => setSelectedUser({ ...selectedUser, type: e.target.value })}
-              fullWidth
-              margin="normal"
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="acesso-label">Acesso</InputLabel>
+              <Select
+                labelId="acesso-label"
+                value={selectedUser?.role || ''}
+                onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
+              >
+                <MenuItem value="user">Usuário</MenuItem>
+                <MenuItem value="admin">Administrador</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="type-label" sx={{ paddingBottom: 5 }}>Função</InputLabel>
+              <Select
+                labelId="type-label"
+                value={selectedUser?.type || ''}
+                onChange={(e) => setSelectedUser({ ...selectedUser, type: e.target.value })}
+              >
+                <MenuItem value="seller">Vendedor</MenuItem>
+                <MenuItem value="customer">Comprador</MenuItem>
+              </Select>
+            </FormControl>
+
           </>
 
         </DialogContent>

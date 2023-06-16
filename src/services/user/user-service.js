@@ -22,6 +22,9 @@ class UserService {
     updateUser(user){
         return axios.put(`${process.env.REACT_APP_API_URL}/user/${user.id}`, user)
     }
+    getCustomers(){
+        return axios.get(`${process.env.REACT_APP_API_URL}/user/type/customer`)
+    }
 }
 
 const userService = new UserService();
