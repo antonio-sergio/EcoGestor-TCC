@@ -4,6 +4,7 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, 
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import productService from '../../services/product/product-service';
+import inventoryService from '../../services/inventory/inventory-service';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
 const ProductsList = () => {
@@ -45,25 +46,32 @@ const ProductsList = () => {
     ];
 
     const handleEditProduct = (product) => {
+        product.amount =  product?.inventory?.amount;
+        
         setSelectedProduct(product);
         setOpenModalProduct(!openModalProduct);
     };
 
-   
-    
+
+
     const handleSaveProduct = () => {
-        console.log('seletc uiser ', selectedProduct)
+        
         productService.updateProduct(selectedProduct).then(response => {
-          if (response.status === 200) {
-            toast.success('Produto atualizado com sucesso!');
-            setOpenModalProduct(false);
-          }
+            if (response.status === 200) {
+                inventoryService.updateInventory(selectedProduct?.inventory?.id_inventory, selectedProduct?.amount).then(response => {
+                    if(response.status === 200){
+                        toast.success('Produto atualizado com sucesso!');
+                        setOpenModalProduct(false);
+
+                    }
+                }).catch(error => console.log(error));
+            }
         }).catch(error => {
-          console.log(error);
-          toast.error('Não foi possível atualizar o produto.')
+            console.log(error);
+            toast.error('Não foi possível atualizar o produto.')
         });
-      };
-    
+    };
+
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
@@ -102,13 +110,23 @@ const ProductsList = () => {
                         />
                         <TextField
                             label="Preço Compra"
+                            type='number'
                             value={selectedProduct?.purchase_price || ''}
                             onChange={(e) => setSelectedProduct({ ...selectedProduct, purchase_price: e.target.value })}
                             fullWidth
                             margin="normal"
                         />
-                        
-                       
+
+                        <TextField
+                            label="Estoque"
+                            type='number'
+                            defaultValue={selectedProduct?.amount || 0}
+                            onChange={(e) => setSelectedProduct({ ...selectedProduct, amount: e.target.value })}
+                            fullWidth
+                            margin="normal"
+                        />
+
+
                     </>
 
                 </DialogContent>

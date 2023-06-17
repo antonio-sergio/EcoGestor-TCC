@@ -25,6 +25,9 @@ class UserService {
     getCustomers(){
         return axios.get(`${process.env.REACT_APP_API_URL}/user/type/customer`)
     }
+    getSellers(){
+        return axios.get(`${process.env.REACT_APP_API_URL}/user/type/seller`)
+    }
 }
 
 const userService = new UserService();

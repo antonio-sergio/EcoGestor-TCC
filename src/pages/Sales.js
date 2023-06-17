@@ -12,8 +12,8 @@ const Sales = () => {
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
     const { theme } = useContext(ThemeContext);
-    const [sale, setSale] = useState(null);
-    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    const [sale, setSale] = useState(false);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(0);
     const [amount, setAmount] = useState(0);
     const [items, setItems] = useState([]);
@@ -37,13 +37,16 @@ const Sales = () => {
                 }
             })
             .catch(error => console.log(error));
-    }, [items]);
+    }, [items, sale]);
 
     const calculateSubtotal = (item) => {
         return item.amount * item.sale_price;
     };
 
     const handleAddItem = () => {
+       if(selectedProduct === 0 || amount < 1){ 
+            toast.warning('Por favor selecione o produto e insira a quantidade!')
+       }else{
         const selectedProductInventory = selectedProduct?.inventory?.amount;
 
         if (amount < 1 || amount > selectedProductInventory) {
@@ -67,7 +70,7 @@ const Sales = () => {
             const newItem = {
                 product_id: selectedProduct.id_product,
                 amount: parseInt(amount),
-                name: selectedProduct.type,
+                product_name: selectedProduct.type,
                 sale_price: selectedProduct.sale_price,
                 subtotal: calculateSubtotal({
                     amount: parseInt(amount),
@@ -79,6 +82,7 @@ const Sales = () => {
 
         setSelectedProduct(0);
         setAmount(0);
+       }
     };
 
     const handleRemoveItem = (index) => {
@@ -106,22 +110,30 @@ const Sales = () => {
     const currentDate = new Date().toLocaleDateString(undefined, currentDateOptions);
 
     const createSale = () => {
-        const sale = {
-            customer_id: selectedCustomer.id_user,
-            seller_id: user.id,
-            saleItems: items
-        }
-        console.log('sale', sale)
-        saleService.create(sale).then(response => {
-            if(response.status === 201){
-                toast.success('Venda efetuada com sucesso!')
+        if (selectedCustomer === null) {
+            toast.warning('Por favor selecione o cliente!')
+        } else {
+            const sale = {
+                customer_id: selectedCustomer.id_user,
+                seller_id: user.id,
+                saleItems: items
             }
-        }).catch(error => {
-            toast.error(`Não foi possível efetuar a venda. ${error.response.data.message}`)
-        })
-        setItems([]);
-        setSelectedProduct(0);
-        setSelectedCustomer(null);
+            saleService.create(sale).then(response => {
+                if (response.status === 201) {
+                    toast.success('Venda efetuada com sucesso!');
+                    if (!sale) {
+                        setSale(false);
+                    } else {
+                        setSale(true);
+                    }
+                }
+            }).catch(error => {
+                toast.error(`Não foi possível efetuar a venda. ${error.response.data.message}`)
+            })
+            setItems([]);
+            setSelectedProduct(0);
+            setSelectedCustomer(null);
+        }
     }
 
     return (
@@ -193,7 +205,7 @@ const Sales = () => {
                 {items.map((item, index) => (
                     <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
                         <Typography>
-                            Produto: {item.name}
+                            Produto: {item.product_name}
                         </Typography>
                         <Typography>
                             Código: {item.product_id}

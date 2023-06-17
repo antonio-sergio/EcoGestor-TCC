@@ -3,6 +3,8 @@ import { useContext, useState } from 'react';
 import ThemeContext from '../components/style/ThemeContext';
 import UsersList from '../components/lists/UsersList'
 import ProductsList from '../components/lists/ProductList';
+import PurchasesList from '../components/lists/PurchasesList';
+import SalesList from '../components/lists/SalesList';
 
 const Lists = () => {
     const { theme } = useContext(ThemeContext);
@@ -26,6 +28,16 @@ const Lists = () => {
             <Tabs value={value} onChange={handleChange} TabIndicatorProps={{
                 style: { backgroundColor: 'green' }
             }}>
+                <Tab label="Vendas" sx={{
+                    '&.Mui-selected': {
+                        color: 'green'
+                    }
+                }} />
+                <Tab label="Compras" sx={{
+                    '&.Mui-selected': {
+                        color: 'green'
+                    }
+                }} />
                 <Tab label="Usuários" sx={{
                     '&.Mui-selected': {
                         color: 'green'
@@ -36,12 +48,14 @@ const Lists = () => {
                         color: 'green'
                     }
                 }} />
-                
+
             </Tabs>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ p: 3 }}>
-                    {value === 0 && <UsersList />}
-                    {value === 1 && <div><ProductsList /></div>}
+                    {value === 0 && <SalesList />}
+                    {value === 1 && <PurchasesList />}
+                    {value === 2 && <UsersList />}
+                    {value === 3 && <div><ProductsList /></div>}
                 </Box>
             </Box>
         </Grid >
