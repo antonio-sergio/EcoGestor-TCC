@@ -39,7 +39,6 @@ export const AuthContextProvider = ({ children }) => {
       payload
     );
 
-    console.log('respose login', apiResponse);
     if (apiResponse.status === 200) {
       localStorage.setItem(
         "token",
@@ -49,7 +48,11 @@ export const AuthContextProvider = ({ children }) => {
       localStorage.setItem("expiresAt", x.exp);
       setExpiresAt(Number(x.exp));
       setUser(x);
-      navigate("/");
+      if(x?.role === 'admin'){
+        navigate("/");
+      }else{
+        navigate("/Home");
+      }
     } else {
       console.log("else resonse api");
       return null;

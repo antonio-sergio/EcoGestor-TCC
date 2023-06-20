@@ -75,12 +75,15 @@ const ProductsList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
+            <Typography>
+                Produtos
+            </Typography>
             <DataGrid
+                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
                 localeText={localizedTextsMap}
                 rows={products}
                 columns={columns}
                 pageSize={5}
-                autoHeight
                 componentsProps={{
                     pagination: {
                         labelRowsPerPage: "Linhas por página",

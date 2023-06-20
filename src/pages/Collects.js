@@ -5,7 +5,11 @@ import UsersList from '../components/lists/UsersList'
 import ProductsList from '../components/lists/ProductList';
 import PurchasesList from '../components/lists/PurchasesList';
 import SalesList from '../components/lists/SalesList';
-import CollectList from '../components/lists/CollectList';
+import PendingRequestsList from '../components/lists/PendingRequestsList';
+import WaitingApprovalList from '../components/lists/WaitingApprovalList';
+import DisapprovedList from '../components/lists/DisapprovedList';
+import CanceledList from '../components/lists/CanceledList';
+import CompletedList from '../components/lists/CompletedList';
 
 const Lists = () => {
     const { theme } = useContext(ThemeContext);
@@ -23,46 +27,48 @@ const Lists = () => {
         <Grid container p={2} spacing={2} justifyContent="center"> {/* Centraliza os Grids horizontalmente */}
             <Grid item xs={12} p={3}>
                 <Typography variant="h5" component="h2">
-                    Tela de Listas
+                    Solicitações
                 </Typography>
             </Grid>
             <Tabs value={value} onChange={handleChange} TabIndicatorProps={{
                 style: { backgroundColor: 'green' }
             }}>
-                <Tab label="Vendas" sx={{
+                
+                <Tab label="Aguardando Aprovação" sx={{
+                    '&.Mui-selected': {
+                        color: 'blue'
+                    }
+                }} />
+                <Tab label="Aprovadas" sx={{
+                    '&.Mui-selected': {
+                        color: 'DarkTurquoise'
+                    }
+                }} />
+                <Tab label="Recusadas" sx={{
+                    '&.Mui-selected': {
+                        color: 'orange'
+                    }
+                }} />
+                <Tab label="Canceladas" sx={{
+                    '&.Mui-selected': {
+                        color: 'red'
+                    }
+                }} />
+                <Tab label="Realizadas" sx={{
                     '&.Mui-selected': {
                         color: 'green'
                     }
                 }} />
-                <Tab label="Compras" sx={{
-                    '&.Mui-selected': {
-                        color: 'green'
-                    }
-                }} />
-                <Tab label="Solicitações de Coleta" sx={{
-                    '&.Mui-selected': {
-                        color: 'green'
-                    }
-                }} />
-                <Tab label="Usuários" sx={{
-                    '&.Mui-selected': {
-                        color: 'green'
-                    }
-                }} />
-                <Tab label="Produtos" sx={{
-                    '&.Mui-selected': {
-                        color: 'green'
-                    }
-                }} />
+                
 
             </Tabs>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ p: 3 }}>
-                    {value === 0 && <SalesList />}
-                    {value === 1 && <PurchasesList />}
-                    {value === 2 && <CollectList />}
-                    {value === 3 && <UsersList />}
-                    {value === 4 && <div><ProductsList /></div>}
+                    {value === 0 && <WaitingApprovalList />}
+                    {value === 1 && <PendingRequestsList />}
+                    {value === 2 && <DisapprovedList />}
+                    {value === 3 && <CanceledList />}
+                    {value === 4 && <CompletedList />}
                 </Box>
             </Box>
         </Grid >

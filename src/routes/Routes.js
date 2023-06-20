@@ -6,12 +6,15 @@ import {
 import ProtectedRoute from "../services/auth/ProtectedRoute";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import CollectRequest from "../pages/HomeUser";
 
 export default function RoutesApp() {
     return (
         <Routes >
-            <Route path='/' element={<ProtectedRoute accessBy="authenticated"><Home /></ProtectedRoute>} />
+            {/* <Route path='/' element={<ProtectedRoute accessBy="authenticated"><Home /></ProtectedRoute>} /> */}
+            <Route path='/' element={<ProtectedRoute accessBy="admin"><Home /></ProtectedRoute>} />
             <Route path='/Login' element={<Login />} />
+            <Route path='/Home' element={<ProtectedRoute accessBy="authenticated"><CollectRequest /></ProtectedRoute>} />
         </Routes >
     )
 }

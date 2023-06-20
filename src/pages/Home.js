@@ -5,7 +5,7 @@ import UserImage from "../components/render/UserImage";
 import ThemeContext from "../components/style/ThemeContext";
 import { styled } from '@mui/material/styles';
 import { Container, Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia } from '@mui/material';
-import {AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
+import {PlaylistAddCheckCircle, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
 import NavBar from "../components/render/NavBar";
 import logo from "../assets/images/mark/logo2.png";
 import Profile from "./Profile";
@@ -16,6 +16,7 @@ import Purchases from "./Purchases";
 import BI from "./BI";
 import Lists from "./Lists";
 import Register from "./Register";
+import Collects from "./Collects";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
@@ -112,6 +113,8 @@ const Home = () => {
       return <Lists />;
     } else if (selectedComponent === 'register') {
       return <Register />;
+    } else if(selectedComponent === 'collects'){
+      return <Collects />
     } else {
       return <BI />;
     }
@@ -151,6 +154,13 @@ const Home = () => {
               <ShoppingCart />
             </StyledListItemIcon>
             {expanded === true && <StyledListItemText primary="Compras" />}
+          </StyledListItem>
+
+          <StyledListItem button onClick={() => handleComponentClick('collects')}>
+            <StyledListItemIcon>
+              <PlaylistAddCheckCircle />
+            </StyledListItemIcon>
+            {expanded === true && <StyledListItemText primary="Solicitações" />}
           </StyledListItem>
 
           <StyledListItem button onClick={() => handleComponentClick('lists')}>

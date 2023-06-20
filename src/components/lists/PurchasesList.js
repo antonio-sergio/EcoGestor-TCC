@@ -27,7 +27,7 @@ const PurchasesList = () => {
         { field: 'customer_id', headerName: 'Cliente', width: 200, editable: true, valueGetter: (params) => params.row.customer.name },
         { field: 'seller_id', headerName: 'Vendedor', width: 200, editable: true, valueGetter: (params) => params.row.seller.name },
         { field: 'total', headerName: 'Total', width: 150, editable: true },
-        { field: 'createdAT', headerName: 'Data', width: 100, editable: true, valueGetter: (params) => formatDate(params.row.createdAt)},
+        { field: 'createdAT', headerName: 'Data', width: 100, editable: true, valueGetter: (params) => formatDate(params.row.createdAt) },
         {
             field: 'edit',
             headerName: 'Detalhar',
@@ -66,12 +66,15 @@ const PurchasesList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
+            <Typography>
+                Compras
+            </Typography>
             <DataGrid
+                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
                 localeText={localizedTextsMap}
                 rows={purchases}
                 columns={columns}
                 pageSize={5}
-                autoHeight
                 componentsProps={{
                     pagination: {
                         labelRowsPerPage: "Linhas por página",
@@ -79,13 +82,13 @@ const PurchasesList = () => {
                 }}
                 getRowId={(row) => row.id_purchase}
             />
-            <Dialog  open={openModalPurchase} onClose={() => setOpenModalPurchase(false)}>
+            <Dialog open={openModalPurchase} onClose={() => setOpenModalPurchase(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Detalhes da Compra
                 </DialogTitle>
                 <DialogContent sx={{ marginTop: 3 }}>
                     <>
-                        <TableContainer component={Paper} sx={{marginBottom: "15px"}}>
+                        <TableContainer component={Paper} sx={{ marginBottom: "15px" }}>
                             <Table aria-label="Purchase Items Table">
                                 <TableHead>
                                     <TableRow>
