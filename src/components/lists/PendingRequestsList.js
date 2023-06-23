@@ -74,7 +74,7 @@ const PendingRequestsList = () => {
         if (!reasonCancel.current.value) {
             toast.warning('Por favor informe o motivo do cancelamento da coleta');
         } else {
-            collectService.cancel(selectedCollect.id, reasonCancel?.current?.value).then(response => {
+            collectService.refuse(selectedCollect.id, reasonCancel?.current?.value).then(response => {
                 if (response.status === 200) {
                     toast.success('Solicitação de coleta cancelada com sucesso!');
                     setOpenModalCancel(false);

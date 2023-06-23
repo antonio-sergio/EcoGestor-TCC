@@ -108,6 +108,8 @@ const Purchases = () => {
     const createPurchase = () => {
         if (selectedSeller === null) {
             toast.warning('Por favor selecione o vendedor!')
+        }else if (items.length === 0) {
+            toast.warning('Por favor adicione pelo menos 1 item antes de finalizar a compra!');
         } else {
             const purchase = {
                 customer_id: user.id,

@@ -8,7 +8,6 @@ import SalesList from '../components/lists/SalesList';
 import PendingRequestsList from '../components/lists/PendingRequestsList';
 import WaitingApprovalList from '../components/lists/WaitingApprovalList';
 import DisapprovedList from '../components/lists/DisapprovedList';
-import CanceledList from '../components/lists/CanceledList';
 import CompletedList from '../components/lists/CompletedList';
 
 const Lists = () => {
@@ -46,11 +45,6 @@ const Lists = () => {
                 }} />
                 <Tab label="Recusadas" sx={{
                     '&.Mui-selected': {
-                        color: 'orange'
-                    }
-                }} />
-                <Tab label="Canceladas" sx={{
-                    '&.Mui-selected': {
                         color: 'red'
                     }
                 }} />
@@ -67,8 +61,7 @@ const Lists = () => {
                     {value === 0 && <WaitingApprovalList />}
                     {value === 1 && <PendingRequestsList />}
                     {value === 2 && <DisapprovedList />}
-                    {value === 3 && <CanceledList />}
-                    {value === 4 && <CompletedList />}
+                    {value === 3 && <CompletedList />}
                 </Box>
             </Box>
         </Grid >

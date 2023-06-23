@@ -14,6 +14,9 @@ class PurchaseService {
     getPurchaseItems(id_purchase){
         return axios.get(`${process.env.REACT_APP_API_URL}/purchase-item/purchase/${id_purchase}`)
     }
+    getTotalPurchase(period){
+        return axios.get(`${process.env.REACT_APP_API_URL}/purchase/total?startDate=${period.startDate}&endDate=${period.endDate}`)
+    }
 }
 
 const purchaseService = new PurchaseService();

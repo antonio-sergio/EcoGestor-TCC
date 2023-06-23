@@ -15,12 +15,10 @@ const WaitingApprovalList = () => {
     const [selectedCollect, setSelectedCollect] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [openModalApproval, setOpenModalApproval] = useState(false);
-    const [openModalCancel, setOpenModalCancel] = useState(false);
     const [openModalRefuse, setOpenModalRefuse] = useState(false);
     const [address, setAddress] = useState(false);
     const [processed, setProcessed] = useState(false);
     const reason = useRef(null);
-    const reasonCancel = useRef(null);
 
     useEffect(() => {
         collectService.getCollectsByStatus('aguardando').then(response => {
@@ -49,10 +47,7 @@ const WaitingApprovalList = () => {
         setOpenModalRefuse(true);
     }
 
-    const handleCancel = (collect) => {
-        setSelectedCollect(collect);
-        setOpenModalCancel(true);
-    }
+  
 
     const handleProcessed = () => {
         if (processed === false) {
@@ -95,24 +90,7 @@ const WaitingApprovalList = () => {
         }
     };
 
-    const handleCancelCollect = () => {
 
-        if (!reasonCancel.current.value) {
-            toast.warning('Por favor informe o motivo do cancelamento da coleta');
-        } else {
-            collectService.cancel(selectedCollect.id, reasonCancel?.current?.value).then(response => {
-                if (response.status === 200) {
-                    toast.success('Solicitação de coleta cancelada com sucesso!');
-                    setOpenModalCancel(false);
-                    handleProcessed();
-
-                }
-            }).catch(error => {
-                console.log(error);
-                toast.error('Não foi possível cancelar a solicitação de coleta.')
-            })
-        }
-    };
 
 
     const columns = [
@@ -161,18 +139,7 @@ const WaitingApprovalList = () => {
                     size="small"
                     onClick={() => handleRefuse(params.row)}
                 >
-                    <ThumbDownIcon sx={{ color: 'gray' }} />
-                </Button>
-            )
-        },
-        {
-            field: 'cancel', headerName: 'Cancelar', width: 200, editable: true, renderCell: (params) => (
-                <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleCancel(params.row)}
-                >
-                    <CancelIcon sx={{ color: 'red' }} />
+                    <ThumbDownIcon sx={{ color: 'red' }} />
                 </Button>
             )
         },
@@ -266,27 +233,7 @@ const WaitingApprovalList = () => {
                 </DialogActions>
             </Dialog>
 
-            <Dialog open={openModalCancel} onClose={() => setOpenModalCancel(false)}>
-                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Cancelar Coleta
-                </DialogTitle>
-                <DialogContent sx={{ marginTop: 3 }}>
-                    <Typography>Informe o motivo do cancelamento para a solicitação de {selectedCollect?.user?.name}:</Typography>
-                    <TextField
-                        name="reasonCancel"
-                        inputRef={reasonCancel}
-                        required
-                        fullWidth
-                    ></TextField>
-                </DialogContent>
-
-                <DialogActions>
-                    <>
-                        <Button onClick={() => handleCancelCollect()} >Confirmar Cancelamento</Button>
-                        <Button onClick={() => setOpenModalCancel(false)}>Fechar</Button>
-                    </>
-                </DialogActions>
-            </Dialog>
+            
         </div>
 
     );

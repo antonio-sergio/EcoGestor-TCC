@@ -44,45 +44,45 @@ const Sales = () => {
     };
 
     const handleAddItem = () => {
-       if(selectedProduct === 0 || amount < 1){ 
+        if (selectedProduct === 0 || amount < 1) {
             toast.warning('Por favor selecione o produto e insira a quantidade!')
-       }else{
-        const selectedProductInventory = selectedProduct?.inventory?.amount;
+        } else {
+            const selectedProductInventory = selectedProduct?.inventory?.amount;
 
-        if (amount < 1 || amount > selectedProductInventory) {
-            return; // Não adiciona o item se a quantidade for menor que 1 ou maior que o estoque disponível
-        }
-
-        const existingItemIndex = items.findIndex(item => item.product_id === selectedProduct.id_product);
-
-        if (existingItemIndex !== -1) {
-            const updatedItems = [...items];
-            const updatedAmount = updatedItems[existingItemIndex].amount + parseInt(amount);
-
-            if (updatedAmount > selectedProductInventory) {
-                return; // Não atualiza o item se a quantidade total ultrapassar o estoque disponível
+            if (amount < 1 || amount > selectedProductInventory) {
+                return; // Não adiciona o item se a quantidade for menor que 1 ou maior que o estoque disponível
             }
 
-            updatedItems[existingItemIndex].amount = updatedAmount;
-            updatedItems[existingItemIndex].subtotal = calculateSubtotal(updatedItems[existingItemIndex]);
-            setItems(updatedItems);
-        } else {
-            const newItem = {
-                product_id: selectedProduct.id_product,
-                amount: parseInt(amount),
-                product_name: selectedProduct.type,
-                sale_price: selectedProduct.sale_price,
-                subtotal: calculateSubtotal({
-                    amount: parseInt(amount),
-                    sale_price: selectedProduct.sale_price
-                })
-            };
-            setItems([...items, newItem]);
-        }
+            const existingItemIndex = items.findIndex(item => item.product_id === selectedProduct.id_product);
 
-        setSelectedProduct(0);
-        setAmount(0);
-       }
+            if (existingItemIndex !== -1) {
+                const updatedItems = [...items];
+                const updatedAmount = updatedItems[existingItemIndex].amount + parseInt(amount);
+
+                if (updatedAmount > selectedProductInventory) {
+                    return; // Não atualiza o item se a quantidade total ultrapassar o estoque disponível
+                }
+
+                updatedItems[existingItemIndex].amount = updatedAmount;
+                updatedItems[existingItemIndex].subtotal = calculateSubtotal(updatedItems[existingItemIndex]);
+                setItems(updatedItems);
+            } else {
+                const newItem = {
+                    product_id: selectedProduct.id_product,
+                    amount: parseInt(amount),
+                    product_name: selectedProduct.type,
+                    sale_price: selectedProduct.sale_price,
+                    subtotal: calculateSubtotal({
+                        amount: parseInt(amount),
+                        sale_price: selectedProduct.sale_price
+                    })
+                };
+                setItems([...items, newItem]);
+            }
+
+            setSelectedProduct(0);
+            setAmount(0);
+        }
     };
 
     const handleRemoveItem = (index) => {
@@ -101,7 +101,6 @@ const Sales = () => {
         calculateTotal();
     }, [items]);
 
-    console.log('selected product', selectedProduct);
     const currentDateOptions = {
         year: 'numeric',
         month: 'long',
@@ -110,8 +109,11 @@ const Sales = () => {
     const currentDate = new Date().toLocaleDateString(undefined, currentDateOptions);
 
     const createSale = () => {
+        console.log('items', items)
         if (selectedCustomer === null) {
-            toast.warning('Por favor selecione o cliente!')
+            toast.warning('Por favor selecione o cliente!');
+        } else if (items.length === 0 ) {
+            toast.warning('Por favor adicione pelo menos 1 item antes de finalizar a venda!');
         } else {
             const sale = {
                 customer_id: selectedCustomer.id_user,

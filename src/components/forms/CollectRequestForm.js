@@ -146,7 +146,7 @@ const CollectForm = () => {
                     </option>
                     {scheduleList.map((time) => {
                         const isDisabled = collects.some(
-                            (collect) => collect.collect_time === time && collect.status !== 'cancelado'
+                            (collect) => collect.collect_time === time && collect.status !== 'recusada'
                             
                         );
                         return (

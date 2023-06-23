@@ -76,7 +76,7 @@ const CollectList = () => {
     }
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '80vh', width: '100%' }}>
             <ToastContainer />
             <Typography>
                 Solicitações de Coleta
