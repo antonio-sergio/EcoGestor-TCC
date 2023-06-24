@@ -10,7 +10,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AnnualTransactions from '../components/graphics/AnnualTransactions';
 
-const BIComponent = () => {
+const BIComponent = ({ handleComponentClick }) => {
     const [dateObject, setDateObject] = useState({
         startDate: moment().add(1, 'days').format('YYYY-MM-DD'),
         endDate: moment().add(1, 'days').format('YYYY-MM-DD')
@@ -21,8 +21,7 @@ const BIComponent = () => {
     const [collectsToday, setCollectsToday] = useState([]);
     const [collectsWaiting, setCollectsWaiting] = useState([]);
 
-    console.log('today', collectsToday)
-
+   
     useEffect(() => {
         saleService.getTotalSale(dateObject).then(response => {
             if (response.status === 200) {
@@ -62,7 +61,7 @@ const BIComponent = () => {
         <Container maxWidth="100%" sx={{ marginTop: 4 }}>
             <Grid container height={100} spacing={3}>
 
-                <Grid item xs={9} sm={4} md={3}>
+                <Grid item xs={9} sm={4} md={3} onClick={() => handleComponentClick('sales')}>
                     <Card sx={{ height: 100, display: 'flex', justifyContent: "center", alignItems: 'space-around', flexDirection: 'column', backgroundColor: '#00C853' }}>
                         <CardContent>
                             <Grid container spacing={2} alignItems="center" justifyContent="center">
@@ -78,7 +77,7 @@ const BIComponent = () => {
                     </Card>
                 </Grid>
 
-                <Grid item xs={9} sm={6} md={3}>
+                <Grid item xs={9} sm={6} md={3} onClick={() => handleComponentClick('purchases')}>
                     <Card sx={{ height: 100, display: 'flex', justifyContent: "center", alignItems: 'space-around', flexDirection: 'column', backgroundColor: '#FF1744' }}>
                         <CardContent>
                             <Grid container spacing={2} alignItems="center" justifyContent="center">
@@ -94,7 +93,7 @@ const BIComponent = () => {
                     </Card>
                 </Grid>
 
-                <Grid item xs={9} sm={6} md={3}>
+                <Grid item xs={9} sm={6} md={3} onClick={() => handleComponentClick('collects')}>
                     <Card sx={{ height: 100, display: 'flex', justifyContent: "center", alignItems: 'space-around', flexDirection: 'column', backgroundColor: '#CCCC00' }}>
                         <CardContent>
                             <Grid container spacing={2} alignItems="center" justifyContent="center">
@@ -109,24 +108,23 @@ const BIComponent = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-
-                <Grid item xs={9} sm={6} md={3}>
-                    <Card sx={{ height: 100, display: 'flex', justifyContent: "center", alignItems: 'space-around', flexDirection: 'column', backgroundColor: '#2196F3' }}>
-                        <CardContent>
-                            <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                <Grid item xs={12} md={4} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
-                                    <AccessTimeFilledIcon sx={{ color: 'white', fontSize: '60px' }} />
+                    <Grid item xs={9} sm={6} md={3} onClick={() => handleComponentClick('collects')}>
+                        <Card sx={{ height: 100, display: 'flex', justifyContent: "center", alignItems: 'space-around', flexDirection: 'column', backgroundColor: '#2196F3' }}>
+                            <CardContent>
+                                <Grid container spacing={2} alignItems="center" justifyContent="center">
+                                    <Grid item xs={12} md={4} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
+                                        <AccessTimeFilledIcon sx={{ color: 'white', fontSize: '60px' }} />
+                                    </Grid>
+                                    <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
+                                        <Typography color="white">Aguardando Aprovação</Typography>
+                                        <Typography fontSize={30} color="white">{collectsWaiting.length}</Typography>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
-                                    <Typography color="white">Aguardando Aprovação</Typography>
-                                    <Typography fontSize={30} color="white">{collectsWaiting.length}</Typography>
-                                </Grid>
-                            </Grid>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                            </CardContent>
+                        </Card>
+                    </Grid>
             </Grid>
-            <Box sx={{width: 600, height: 300, marginTop: 5}} >
+            <Box sx={{ width: 600, height: 300, marginTop: 5 }} >
                 <AnnualTransactions />
             </Box>
         </Container>

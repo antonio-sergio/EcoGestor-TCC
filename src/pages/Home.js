@@ -5,7 +5,7 @@ import UserImage from "../components/render/UserImage";
 import ThemeContext from "../components/style/ThemeContext";
 import { styled } from '@mui/material/styles';
 import { Container, Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia } from '@mui/material';
-import {PlaylistAddCheckCircle, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
+import { PlaylistAddCheckCircle, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
 import NavBar from "../components/render/NavBar";
 import logo from "../assets/images/mark/logo2.png";
 import Profile from "./Profile";
@@ -26,7 +26,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 const StyledNav = styled(Box)(({ theme, expanded }) => ({
-  width: expanded === 'true'  ? '220px' : '50px',
+  width: expanded === 'true' ? '220px' : '50px',
   transition: 'width 0.3s ease',
   color: 'white',
   background: theme.palette.primary.main,
@@ -84,8 +84,9 @@ const Home = () => {
   const { logout, user } = useContext(AuthContext);
   const [dataImage, setDataImage] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState('bi');
 
+  
   useEffect(() => {
     userService.getUserImage(user?.id).then(response => {
       if (response.status === 200) {
@@ -99,31 +100,32 @@ const Home = () => {
   };
 
   const handleComponentClick = (component) => {
+    console.log('chamado 2')
     setSelectedComponent(component);
   };
 
   const renderComponent = () => {
     if (selectedComponent === 'sales') {
-      return <Sales />;
+      return <Sales handleComponentClick={handleComponentClick} />;
     } else if (selectedComponent === 'purchases') {
-      return <Purchases />;
+      return <Purchases handleComponentClick={handleComponentClick}/>;
     } else if (selectedComponent === 'profile') {
       return <Profile />;
     } if (selectedComponent === 'lists') {
       return <Lists />;
     } else if (selectedComponent === 'register') {
       return <Register />;
-    } else if(selectedComponent === 'collects'){
-      return <Collects />
-    } else {
-      return <BI />;
+    } else if (selectedComponent === 'collects') {
+      return <Collects  handleComponentClick={handleComponentClick} />
+    } else if(selectedComponent === 'bi') {
+      return <BI handleComponentClick={handleComponentClick} />;
     }
   };
 
 
   return (
-    <StyledContainer sx={{minWidth: '100vw'}}>
-      <StyledNav theme={theme} expanded={ expanded.toString()}>
+    <StyledContainer sx={{ minWidth: '100vw' }}>
+      <StyledNav theme={theme} expanded={expanded.toString()}>
         <StyledList>
           {expanded === true && <Card>
             <CardMedia
