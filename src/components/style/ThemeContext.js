@@ -19,7 +19,7 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Define a cor de fundo do documento com base no tema atual
-    document.body.style.backgroundColor = theme.palette.background.main;
+    document.body.style.backgroundColor = theme?.palette?.background?.main;
   }, [theme]);
 
   return (

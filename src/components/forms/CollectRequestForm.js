@@ -5,7 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { TextField, Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
-import { format, startOfDay, addDays  } from 'date-fns';
+import { format, startOfDay, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import AuthContext from '../../services/auth/AuthContext';
 registerLocale('pt', pt)
@@ -120,71 +120,72 @@ const CollectForm = () => {
     return (
         <>
             <ToastContainer />
-            <Box>
-
-                <DatePicker
-                    selected={selectedDate}
-                    onChange={handleChangeDate}
-                    dateFormat="dd/MM/yyyy" // Define o formato de data local
-                    placeholderText="Selecione uma data"
-                    locale="pt"
-                />
-            </Box>
-            <form style={{ zIndex: 1, marginTop: "20px" }} onSubmit={handleSubmit}>
-                <TextField
-                    name="collect_time"
-                    value={selectedTime}
-                    onChange={handleChangeTime}
-                    required
-                    select
-                    SelectProps={{
-                        native: true,
-                    }}
-                >
-                    <option value="" disabled>
-                        Selecione um horário
-                    </option>
-                    {scheduleList.map((time) => {
-                        const isDisabled = collects.some(
-                            (collect) => collect.collect_time === time && collect.status !== 'recusada'
-                            
-                        );
-                        return (
-                            <option key={time} style={{ color: isDisabled ? 'gray' : 'green' }} value={time} disabled={isDisabled}>
-                                {time}
-                            </option>
-                        );
-                    })}
-                </TextField>
+            <Box mt={10}>
                 <Box>
-                    <Typography variant="body1"><strong>Logradouro:</strong> {address?.street}</Typography>
-                    <Typography variant="body1"><strong>Número:</strong> {address?.number}</Typography>
-                    <Typography variant="body1"><strong>Bairro:</strong> {address?.neighborhood}</Typography>
-                    <Typography variant="body1"><strong>Cidade:</strong> {address?.city}</Typography>
-                    <Typography variant="body1"><strong>Estado:</strong> {address?.state}</Typography>
-                    <Typography variant="body1"><strong>CEP:</strong> {address?.zip_code}</Typography>
-                    {address?.complement && <Typography variant="body1"><strong>Complemento:</strong> {address?.complement}</Typography>}
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={handleChangeDate}
+                        dateFormat="dd/MM/yyyy" // Define o formato de data local
+                        placeholderText="Selecione uma data"
+                        locale="pt"
+                    />
                 </Box>
-                <Button
-                    sx={{ height: 53 }}
-                    type="button"
-                    variant="contained"
-                    color="info"
-                    onClick={() => setOpenModal(true)}
-                >
-                    alterar endereço
-                </Button>
-                <Button
-                    sx={{ height: 53 }}
-                    type="submit"
-                    variant="contained"
-                    color="success"
-                    disabled={block}
-                >
-                    agendar coleta
-                </Button>
+                <form style={{ zIndex: 1, marginTop: "20px" }} onSubmit={handleSubmit}>
+                    <TextField
+                        name="collect_time"
+                        value={selectedTime}
+                        onChange={handleChangeTime}
+                        required
+                        select
+                        SelectProps={{
+                            native: true,
+                        }}
+                    >
+                        <option value="" disabled>
+                            Selecione um horário
+                        </option>
+                        {scheduleList.map((time) => {
+                            const isDisabled = collects.some(
+                                (collect) => collect.collect_time === time && collect.status !== 'recusada'
 
-            </form>
+                            );
+                            return (
+                                <option key={time} style={{ color: isDisabled ? 'gray' : 'green' }} value={time} disabled={isDisabled}>
+                                    {time}
+                                </option>
+                            );
+                        })}
+                    </TextField>
+                    <Box mt={5}>
+                        <Typography variant="body1"><strong>Logradouro:</strong> {address?.street}</Typography>
+                        <Typography variant="body1"><strong>Número:</strong> {address?.number}</Typography>
+                        <Typography variant="body1"><strong>Bairro:</strong> {address?.neighborhood}</Typography>
+                        <Typography variant="body1"><strong>Cidade:</strong> {address?.city}</Typography>
+                        <Typography variant="body1"><strong>Estado:</strong> {address?.state}</Typography>
+                        <Typography variant="body1"><strong>CEP:</strong> {address?.zip_code}</Typography>
+                        {address?.complement && <Typography variant="body1"><strong>Complemento:</strong> {address?.complement}</Typography>}
+                    </Box>
+                    <Button
+                        sx={{ height: 53, marginTop: 2,  marginRight: 4 }}
+                        type="submit"
+                        variant="contained"
+                        color="success"
+                        disabled={block}
+                    >
+                        agendar coleta
+                    </Button>
+                    <Button
+                        sx={{ height: 53, marginTop: 2, }}
+                        type="button"
+                        variant="outlined"
+                        color="success"
+                        onClick={() => setOpenModal(true)}
+                    >
+                        alterar endereço
+                    </Button>
+
+                </form>
+            </Box>
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Editar Endereço

@@ -17,6 +17,7 @@ import BI from "./BI";
 import Lists from "./Lists";
 import Register from "./Register";
 import Collects from "./Collects";
+import { Link } from "react-router-dom";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
@@ -29,7 +30,7 @@ const StyledNav = styled(Box)(({ theme, expanded }) => ({
   width: expanded === 'true' ? '220px' : '50px',
   transition: 'width 0.3s ease',
   color: 'white',
-  background: theme.palette.primary.main,
+  background: theme.palette?.primary?.main,
   display: 'flex',
   height: '100%',
   flexDirection: 'column',
@@ -69,13 +70,13 @@ const Bar = styled(Grid)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  background: theme.palette.primary.main,
+  background: theme?.palette?.primary?.main,
   height: '25px',
 
 }));
 
 const ContainerRenderItem = styled(Card)(({ theme }) => ({
-  background: theme.palette.background.main,
+  background: theme?.palette?.background?.main,
   flex: 1
 }));
 
@@ -100,7 +101,6 @@ const Home = () => {
   };
 
   const handleComponentClick = (component) => {
-    console.log('chamado 2')
     setSelectedComponent(component);
   };
 
@@ -209,7 +209,10 @@ const Home = () => {
           <Button variant="contained" color="success" onClick={toggleNav}>
             {expanded === true ? <KeyboardArrowLeft style={{ fontSize: '12px' }} /> : <KeyboardArrowRight style={{ fontSize: '12px' }} />}
           </Button>
+          <Box>
+          <Button><Link to="/Landing" style={{color: "white"}}>Home</Link></Button>
           <ThemeToggleButton />
+          </Box>
         </Bar>
         <NavBar />
         <Box>

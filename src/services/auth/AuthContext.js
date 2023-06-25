@@ -21,15 +21,14 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     if(user){
         const now = new Date().getTime() / 1000;
-        if (Number(now) > Number(localStorage.getItem("expiresAt"))) {
+        if (Number(now) > expiresAt) {
           localStorage.removeItem("token");
           localStorage.removeItem("expiresAt");
           setUser(null);
-          navigate("/login");
+          navigate("/Landing");
         }
-        console.log('user', user);
     }
-  }, [expiresAt, navigate, user]);
+  }, [navigate, user, expiresAt]);
 
   const login = async (payload) => {
     localStorage.removeItem("token");
@@ -54,8 +53,9 @@ export const AuthContextProvider = ({ children }) => {
         navigate("/Home");
       }
     } else {
-      console.log("else resonse api");
-      return null;
+      
+      navigate("/Landing");
+
     }
   };
 
@@ -63,7 +63,7 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
     setUser(null);
-    navigate("/login");
+    navigate("/Landing");
   };
 
   return (
