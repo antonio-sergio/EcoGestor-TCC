@@ -9,6 +9,9 @@ class CollectService {
     getAllCollects() {
         return axios.get(`${process.env.REACT_APP_API_URL}/collect`)
     }
+    getCollectsByUser(id) {
+        return axios.get(`${process.env.REACT_APP_API_URL}/collect/user/${id}`)
+    }
     getCollectsByDate(date) {
         return axios.get(`${process.env.REACT_APP_API_URL}/collect/date/date=${date}`)
     }

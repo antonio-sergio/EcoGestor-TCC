@@ -5,9 +5,11 @@ import purchaseService from '../../services/purchase/purchase-service';
 
 function AnnualTransactions() {
     const chartRef = useRef(null);
+    const projectionChartRef = useRef(null);
     const [salesData, setSalesData] = useState([]);
     const [purchaseData, setPurchaseData] = useState([]);
     const [chartInstance, setChartInstance] = useState(null);
+    const [projectionChartInstance, setProjectionChartInstance] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -89,72 +91,22 @@ function AnnualTransactions() {
                         {
                             label: 'Total de Vendas R$',
                             data: salesTotals,
-                            backgroundColor: [
-                                'rgba(0, 255, 0, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba( 240, 255, 240, 1)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)',
-                                'rgba(255, 0, 0, 0.2)',
-                                'rgba(0, 0, 255, 0.2)',
-                                'rgba(255, 255, 0, 0.2)',
-                                'rgba(255, 0, 255, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(0,250,154)',
-                                'rgb(75, 192, 192)',
-                                'rgb(255, 99, 132)',
-                                'rgb(0,255,255)',
-                                'rgb(255, 205, 86)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)',
-                                'rgb(255, 146, 132)',
-                                'rgb(147,112,219)',
-                                'rgb(255,255,0)',
-                                'rgb(255,215,0)'
-                            ],
+                            backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                            borderColor: 'rgb(0, 250, 154)',
                             borderWidth: 1
                         },
                         {
                             label: 'Total de Compras R$',
                             data: purchaseTotals,
-                            backgroundColor: [
-                                'rgba(255, 0, 0, 0.2)',
-                                'rgba(0, 0, 255, 0.2)',
-                                'rgba(255, 255, 0, 0.2)',
-                                'rgba(255, 0, 255, 0.2)',
-                                'rgba(0, 255, 0, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba( 240, 255, 240, 1)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)',
-                            ],
-                            borderColor: [
-                                'rgb(255, 0, 0)',
-                                'rgb(0, 0, 255)',
-                                'rgb(255, 255, 0)',
-                                'rgb(255, 0, 255)',
-                                'rgb(0,250,154)',
-                                'rgb(75, 192, 192)',
-                                'rgb(255, 99, 132)',
-                                'rgb(0,255,255)',
-                                'rgb(255, 205, 86)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)',
-                            ],
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            borderColor: 'rgb(255, 0, 0)',
                             borderWidth: 1
                         },
                     ],
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -166,10 +118,10 @@ function AnnualTransactions() {
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const datasetIndex = context.datasetIndex;
                                     const dataIndex = context.dataIndex;
-                    
+
                                     if (datasetIndex === 0) {
                                         // Dados de Vendas
                                         const salesTotal = salesTotals[dataIndex];
@@ -181,13 +133,12 @@ function AnnualTransactions() {
                                         const purchaseCount = purchaseCounts[dataIndex];
                                         return `Qtd: ${purchaseCount}\nTotal: R$ ${purchaseTotal}`;
                                     }
-                    
+
                                     return '';
                                 }
                             }
                         }
                     }
-                    
                 },
             };
 
@@ -197,17 +148,85 @@ function AnnualTransactions() {
 
             const newChartInstance = new Chart(chartRef.current, chartConfig);
             setChartInstance(newChartInstance);
+
+            // Calculate projection for current month
+            const currentMonthIndex = new Date().getMonth();
+            const lastFiveMonthsSales = salesTotals.slice(currentMonthIndex - 5, currentMonthIndex).filter((_, i) => i !== currentMonthIndex);
+            const lastFiveMonthsPurchases = purchaseTotals.slice(currentMonthIndex - 5, currentMonthIndex).filter((_, i) => i !== currentMonthIndex );
+            const salesProjection = lastFiveMonthsSales.reduce((total, value) => total + value, 0) / 5;
+            const purchasesProjection = lastFiveMonthsPurchases.reduce((total, value) => total + value, 0) / 5;
+
+            // Create projection chart
+            const projectionChartConfig = {
+                type: 'line',
+                data: {
+                    labels: ['Vendas', 'Compras'],
+                    datasets: [
+                        {
+                            label: 'Valor Atual',
+                            data: [salesTotals[currentMonthIndex], purchaseTotals[currentMonthIndex]],
+                            borderColor: '#1E90FF',
+                            backgroundColor: '#2196F3',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Projeção',
+                            data: [salesProjection, purchasesProjection],
+                            borderColor: '#B22222',
+                            backgroundColor: '#FF1744',
+                            borderWidth: 1
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 10,
+                            },
+                        },
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const datasetIndex = context.datasetIndex;
+                                    const dataIndex = context.dataIndex;
+
+                                    if (datasetIndex === 0) {
+                                        return `Valor Atual: R$ ${context.raw}`;
+                                    } else if (datasetIndex === 1) {
+                                        return `Projeção: R$ ${context.raw}`;
+                                    }
+
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                },
+            };
+
+            if (projectionChartInstance) {
+                projectionChartInstance.destroy();
+            }
+
+            const newProjectionChartInstance = new Chart(projectionChartRef.current, projectionChartConfig);
+            setProjectionChartInstance(newProjectionChartInstance);
         }
     }, [salesData, purchaseData]);
 
-    const totalSales = salesData.length;
-    const totalPurchases = purchaseData.length;
-
     return (
-        <div>
-            <canvas ref={chartRef} />
-            <div>Quantidade de Vendas: {totalSales}</div>
-            <div>Quantidade de Compras: {totalPurchases}</div>
+        <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+            <div style={{ width: "45%", height: "55vh" }}>
+                <canvas ref={chartRef} style={{ width: "100%", height: "100%" }} />
+            </div>
+            <div style={{ width: "45%", height: "55vh" }}>
+                <canvas ref={projectionChartRef} style={{ width: "100%", height: "100%" }} />
+            </div>
         </div>
     );
 }

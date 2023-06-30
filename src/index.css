@@ -23,6 +23,14 @@ h2{
   font-weight: 600;
 }
 
+.react-datepicker__input-container  > input {
+  background: #e0e0e0;
+  color: green;
+  border-radius: 5%;
+  font-weight: bold;
+}
+
+/* tela login */
 .rotate-center{-webkit-animation:rotate-center 12s ease-in-out 3s infinite both;animation:rotate-center 12s ease-in-out 3s infinite both}
 
 /* ----------------------------------------------

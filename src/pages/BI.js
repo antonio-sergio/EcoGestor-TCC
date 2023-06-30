@@ -124,7 +124,7 @@ const BIComponent = ({ handleComponentClick }) => {
                         </Card>
                     </Grid>
             </Grid>
-            <Box sx={{ width: 600, height: 300, marginTop: 5 }} >
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 5}} >
                 <AnnualTransactions />
             </Box>
         </Container>

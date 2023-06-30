@@ -2,13 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import collectService from '../../services/collect/collect-service';
 import addressService from '../../services/address/address-service';
 import { toast, ToastContainer } from 'react-toastify';
-import { TextField, Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { TextField, Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, CardMedia, Card } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { format, startOfDay, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import AuthContext from '../../services/auth/AuthContext';
-registerLocale('pt', pt)
+import imageCalendar from "../../assets/images/calendar.png";
+registerLocale('pt', pt);
 
 const CollectForm = () => {
     const { user } = useContext(AuthContext);
@@ -120,7 +121,7 @@ const CollectForm = () => {
     return (
         <>
             <ToastContainer />
-            <Box mt={10}>
+            <Box >
                 <Box>
                     <DatePicker
                         selected={selectedDate}
@@ -128,6 +129,7 @@ const CollectForm = () => {
                         dateFormat="dd/MM/yyyy" // Define o formato de data local
                         placeholderText="Selecione uma data"
                         locale="pt"
+                        style={{color: "red"}}
                     />
                 </Box>
                 <form style={{ zIndex: 1, marginTop: "20px" }} onSubmit={handleSubmit}>
@@ -166,7 +168,7 @@ const CollectForm = () => {
                         {address?.complement && <Typography variant="body1"><strong>Complemento:</strong> {address?.complement}</Typography>}
                     </Box>
                     <Button
-                        sx={{ height: 53, marginTop: 2,  marginRight: 4 }}
+                        sx={{ height: 53, marginTop: 2, marginRight: 4 }}
                         type="submit"
                         variant="contained"
                         color="success"
@@ -181,10 +183,20 @@ const CollectForm = () => {
                         color="success"
                         onClick={() => setOpenModal(true)}
                     >
-                        alterar endereço
+                        alterar endereço da coleta
                     </Button>
 
                 </form>
+            </Box>
+            <Box sx={{display: "flex", justifyContent: "center", width: "100%"}}>
+                <Card>
+                    <CardMedia
+                        component="img"
+                        alt="Logomarca da EcoGestor"
+                        height="400"
+                        image={imageCalendar}
+                    />
+                </Card>
             </Box>
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>

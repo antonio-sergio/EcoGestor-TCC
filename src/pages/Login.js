@@ -4,6 +4,7 @@ import AuthContext from "../services/auth/AuthContext";
 import { TextField, Button, Grid, Card, Box, CardContent, CardMedia, Typography } from "@mui/material";
 import earth from '../assets/images/login/earth2.png';
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
     const { login } = useContext(AuthContext);
@@ -13,13 +14,14 @@ const Login = () => {
     const loginSubmit = async (e) => {
         e.preventDefault();
         let payload = {
-            email: email,
-            password: password
+            email: email.trim(),
+            password: password.trim()
         };
         try {
             await login(payload);
         } catch (error) {
             console.log(error);
+            toast.error(error?.response?.data?.message);
         }
     };
 
@@ -35,6 +37,7 @@ const Login = () => {
 
     return (
         <Grid container justifyContent="center" alignItems="center" height="100vh">
+            <ToastContainer />
             <Grid display="flex" width="80vw" height="70vh" justifyContent="space-around" alignItems="center" style={{
                 background: "linear-gradient(to bottom, #98FB98, #27AB6E)", borderRadius: "10px",
             }}>
@@ -63,7 +66,7 @@ const Login = () => {
                             <Grid item xs={12}>
                                 <TextField
                                     color="success"
-                                    inputProps={{ style: { color: '#98FB96' } }}
+                                    inputProps={{ style: { color: '#fff' } }}
                                     label="Email"
                                     type="email"
                                     value={email}
@@ -74,7 +77,7 @@ const Login = () => {
                             <Grid item xs={12}>
                                 <TextField
                                     color="success"
-                                    inputProps={{ style: { color: '#98FB96' } }}
+                                    inputProps={{ style: { color: '#fff' } }}
                                     label="Password"
                                     type="password"
                                     value={password}

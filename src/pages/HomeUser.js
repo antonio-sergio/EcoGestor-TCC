@@ -1,21 +1,41 @@
 import { Grid, Typography, Button, Box, Container, AppBar, Toolbar, } from "@mui/material";
 import CollectForm from "../components/forms/CollectRequestForm";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../services/auth/AuthContext";
+import MyCollectRequestList from "../components/lists/MyCollectRequestList";
+import Profile from "./Profile";
+import UserImage from "../components/render/UserImage";
+import userService from "../services/user/user-service";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const HomeUser = () => {
-    const [selectedComponent, setSelectedComponent] = useState(null);
+    const [selectedComponent, setSelectedComponent] = useState('collectForm');
     const { logout, user } = useContext(AuthContext);
+    const [dataImage, setDataImage] = useState([]);
+
+    useEffect(() => {
+        userService.getUserImage(user?.id).then(response => {
+            if (response.status === 200) {
+                setDataImage(response.data)
+            }
+        })
+    }, [user?.id])
 
     const handleComponentClick = (component) => {
         setSelectedComponent(component);
     };
+
     const renderComponent = () => {
         if (selectedComponent === 'collectForm') {
             return <CollectForm />;
+        }else if(selectedComponent === 'myRequests'){
+            return <MyCollectRequestList />
+        }else if(selectedComponent === 'profile'){
+            return <Profile />
         }
     };
+
     return (
         <Box sx={{ padding: "2rem" }}>
             <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", display: "flex", justifyContent: "center" }}>
@@ -25,8 +45,9 @@ const HomeUser = () => {
                             ECOGESTOR
                         </Typography>
                     </Box>
-                    <Box>
-                        <Button color="inherit" onClick={() => logout()}><Link to="/Login" style={{ color: "white" }}>Logoff</Link></Button>
+                    <Box display="flex">
+                        <UserImage imageUrl={dataImage.imageUrl} />
+                        <Button color="inherit" onClick={() => logout()}><Link to="/Login"><LogoutIcon sx={{color: "#B22222", fontSize: 40}} /></Link></Button>
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -60,7 +81,7 @@ const HomeUser = () => {
                             color="success"
                             size="large"
                             fullWidth
-                            onClick={() => handleComponentClick("")}
+                            onClick={() => handleComponentClick("myRequests")}
                         >
                             Minhas Solicitações
                         </Button>
@@ -72,14 +93,14 @@ const HomeUser = () => {
                             color="success"
                             size="large"
                             fullWidth
-                            onClick={() => handleComponentClick("")}
+                            onClick={() => handleComponentClick("profile")}
                         >
                             Meu Perfil
                         </Button>
                     </Grid>
                 </Grid>
             </Container>
-            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
+            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "65vh" }}>
 
                 {renderComponent()}
             </Container>

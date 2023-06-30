@@ -70,7 +70,7 @@ const LandingPage = () => {
                             component="img"
                             alt="produtos recicláveis"
                             image={banner}
-                            sx={{ maxWidth: '100%' }}
+                            sx={{ maxWidth: '100%', margin: 15 }}
                         />
                     </Box>
                 </Container>

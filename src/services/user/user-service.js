@@ -20,13 +20,17 @@ class UserService {
         return axios.get(`${process.env.REACT_APP_API_URL}/user`)
     }
     updateUser(user){
-        return axios.put(`${process.env.REACT_APP_API_URL}/user/${user.id}`, user)
+        return axios.put(`${process.env.REACT_APP_API_URL}/user/${user.id_user}`, user)
     }
     getCustomers(){
         return axios.get(`${process.env.REACT_APP_API_URL}/user/type/customer`)
     }
     getSellers(){
         return axios.get(`${process.env.REACT_APP_API_URL}/user/type/seller`)
+    }
+    getUserById(id){
+        console.log('id service', id)
+        return axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`)
     }
 }
 

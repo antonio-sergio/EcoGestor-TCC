@@ -32,7 +32,7 @@ const Infos = styled('span')({
   color: 'white'
 });
 
-const UserImage = ({ imageUrl }) => {
+const UserImage = ({ imageUrl, dimension }) => {
   const { user } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
@@ -46,7 +46,7 @@ const UserImage = ({ imageUrl }) => {
 
   return (
     <StyledGrid theme={theme}>
-      <Avatar src={imageUrl ? imageUrl : userProfile} alt="User" sx={{ width: 56, height: 56 }} />
+      <Avatar src={imageUrl ? imageUrl : userProfile} alt="User" sx={{ width: dimension || 56, height: dimension || 56 }} />
       <UserInfos >
         <Infos>{formatName()}</Infos>
         <Infos>{user.role}</Infos>
