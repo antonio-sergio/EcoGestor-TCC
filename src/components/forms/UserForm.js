@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
+import { TextField, Button, Grid, InputLabel } from '@mui/material';
 import { cpf as validateCPF } from 'cpf-cnpj-validator';
 import MaskedInput from 'react-text-mask';
 import zipCodeService from '../../services/external/zip-code-service';
@@ -274,6 +274,7 @@ const UserForm = () => {
 
                     <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                         <TextField
+                            required
                             label="CEP"
                             name="zip_code"
                             defaultValue={user.zip_code}

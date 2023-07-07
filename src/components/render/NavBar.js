@@ -18,7 +18,7 @@ const NavBar = () => {
     return (
         <StyledGrid>
             <Card>
-                teste
+                testes
             </Card>
         </StyledGrid >
     );

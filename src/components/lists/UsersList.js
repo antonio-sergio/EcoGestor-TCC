@@ -270,6 +270,7 @@ const UsersList = () => {
             <FormControl fullWidth margin="normal">
               <InputLabel id="acesso-label">Acesso</InputLabel>
               <Select
+                label="Acesso"
                 labelId="acesso-label"
                 value={selectedUser?.role || ''}
                 onChange={(e) => setSelectedUser({ ...selectedUser, role: e.target.value })}
@@ -280,8 +281,9 @@ const UsersList = () => {
             </FormControl>
 
             <FormControl fullWidth margin="normal">
-              <InputLabel id="type-label" sx={{ paddingBottom: 5 }}>Função</InputLabel>
+              <InputLabel id="type-label">Função</InputLabel>
               <Select
+                label="Função"
                 labelId="type-label"
                 value={selectedUser?.type || ''}
                 onChange={(e) => setSelectedUser({ ...selectedUser, type: e.target.value })}

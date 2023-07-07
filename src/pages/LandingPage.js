@@ -49,10 +49,10 @@ const LandingPage = () => {
                     alignItems: 'center',
                 }}
             >
-                <Container sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 30 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 30, marginLeft: 20, marginRight: 20 }}>
                     <Box sx={{ width: "55%" }}>
                         <Typography variant="h2" sx={{ color: '#27AB6E', mb: 2 }}>
-                            Bem-vindo visitante
+                            Bem-vindo!
                         </Typography>
                         <Typography variant="h5" sx={{ color: '#1C1C1C', mb: 4, textAlign: "justify" }}>
                             A EcoGestor é uma empresa dedicada à gestão de materiais recicláveis. Compramos e vendemos produtos como papel,
@@ -70,49 +70,50 @@ const LandingPage = () => {
                             component="img"
                             alt="produtos recicláveis"
                             image={banner}
-                            sx={{ maxWidth: '100%', margin: 15 }}
+                            sx={{ maxWidth: '100%' }}
                         />
                     </Box>
-                </Container>
+                </Box>
             </Box>
 
-            <Box sx={{
+            {/* <Box sx={{
                 height: '50vh', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2327AB6E' fill-opacity='1' d='M0,224L48,229.3C96,235,192,245,288,234.7C384,224,480,192,576,202.7C672,213,768,267,864,261.3C960,256,1056,192,1152,160C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat",
                 backgroundSize: "cover"
-            }}></Box>
+            }}></Box> */}
 
-            <Box sx={{ py: 10 }}>
-                <Container>
-                    <Grid container spacing={4}>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Paper sx={{ p: 2, height: '100%' }}>
-                                <Typography variant="h4">Compramos</Typography>
-                                <Typography variant="body1">
-                                    Que tal ajudar o planeta e ainda conseguir uma grana? Junte e separe os materiais recicláveis, traga até nós e receba à vista.
-                                </Typography>
-                            </Paper>
+            <Box sx={{ backgroundColor: "#27AB6E", height: 200, marginBottom: -75, marginTop: 40 }}></Box>
+            <Box sx={{ py: 25 }}>
+                <Box sx={{ py: 10, height: "100%" }}>
+                    <Container  >
+                        <Grid container spacing={4} >
+                            <Grid item xs={12} sm={6} md={4} >
+                                <Paper sx={{ p: 2, height: '100%' }}>
+                                    <Typography variant="h4">Compramos</Typography>
+                                    <Typography variant="body1">
+                                        Que tal faturar ajudando? Junte e separe os materiais recicláveis, traga até nós ou agende uma coleta.
+                                    </Typography>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Paper sx={{ p: 2, height: '100%' }}>
+                                    <Typography variant="h4">Vendemos</Typography>
+                                    <Typography variant="body1">
+                                        Vendemos materiais de alta qualidade, separado e tratado por excelentes profissionais. O material sai daqui pronto para o processamento.
+                                    </Typography>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <Paper sx={{ p: 2, height: '100%' }}>
+                                    <Typography variant="h4">Coletamos</Typography>
+                                    <Typography variant="body1">
+                                        Possui material reciclável em casa e não tem como transportar? Deixa por nossa conta, registre-se, escolha um dia e um horário e enviamos uma equipe para a coleta, e você ainda recebe pelo material coletado.
+                                    </Typography>
+                                </Paper>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Paper sx={{ p: 2, height: '100%' }}>
-                                <Typography variant="h4">Vendemos</Typography>
-                                <Typography variant="body1">
-                                    Vendemos materiais de alta qualidade, separado e tratado por excelentes profissionais. O material sai daqui pronto para o processamento.
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Paper sx={{ p: 2, height: '100%' }}>
-                                <Typography variant="h4">Coletamos</Typography>
-                                <Typography variant="body1">
-                                    Possui material reciclável em casa e não tem como transportar? Deixa por nossa conta, registre-se, escolha um dia e um horário e enviamos uma equipe para a coleta, e você ainda recebe pelo material coletado.
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Box>
-            <Box sx={{ py: 4 }}>
-                <Container>
+                    </Container>
+                </Box >
+                <Container sx={{ marginTop: "80px" }}>
                     <Tabs
                         value={selectedTab}
                         onChange={handleTabChange}
@@ -175,7 +176,7 @@ const LandingPage = () => {
                 </Container>
 
             </Box>
-            <Box sx={{ py: 4, backgroundColor: '#27AB6E' }}>
+            <Box sx={{ py: 4, backgroundColor: '#27AB6E', marginTop: -10 }}>
                 <Container id="whoisare">
                     <Grid container spacing={4}>
                         <Grid item color="white">
@@ -212,23 +213,29 @@ const LandingPage = () => {
             <Box sx={{ py: 4 }}>
                 <Container id="contact">
                     <Grid container spacing={4}>
-                        <Grid item color="#27AB6E">
+                        <Grid item >
                             <Typography variant="h4" sx={{ mb: 2 }}>
                                 Contato
                             </Typography>
-                            <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
-                                Tel (16) 00000-0000
-                            </Typography>
-                            <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
-                                ecogestor@outlook.com
-                            </Typography>
+                            <Box display="flex" justifyContent="space-between" minWidth="600px">
+                                <Box>
+                                    <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
+                                        Tel (16) 00000-0000
+                                    </Typography>
+                                    <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
+                                        ecogestor@outlook.com
+                                    </Typography>
+                                </Box>
 
-                            <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
-                                antonioalves.dev@outlook.com
-                            </Typography>
-                            <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
-                                sauloananias93@gmail.com
-                            </Typography>
+                                <Box>
+                                    <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
+                                        antonioalves.dev@outlook.com
+                                    </Typography>
+                                    <Typography variant="body1" textAlign="justify" sx={{ mb: 2 }}>
+                                        sauloananias93@gmail.com
+                                    </Typography>
+                                </Box>
+                            </Box>
                         </Grid>
 
                     </Grid>

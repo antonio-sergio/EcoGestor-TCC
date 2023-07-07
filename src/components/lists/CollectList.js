@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
+import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import PrintIcon from '@mui/icons-material/Print';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import ShareIcon from '@mui/icons-material/Share';
+import ExcelJS from 'exceljs';
 
 
 const CollectList = () => {
     const [collects, setCollects] = useState([]);
     const [openModal, setOpenModal] = useState(false);
-    const [address, setAddress] = useState(false);
+    const [details, setDetails] = useState(false);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const dataGridRef = useRef(null);
 
     useEffect(() => {
         collectService.getAllCollects().then(response => {
@@ -25,8 +32,8 @@ const CollectList = () => {
         return moment(dateString).format('DD/MM/YYYY');
     };
 
-    const handleAddress = (address) => {
-        setAddress(address);
+    const handleDetails = (details) => {
+        setDetails(details);
         setOpenModal(true);
     }
 
@@ -46,13 +53,13 @@ const CollectList = () => {
                 }
             }
         },
-        { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
+        { field: 'details_address', headerName: 'Endereço', width: 600, editable: true },
         {
-            field: 'details_address', headerName: 'Endereço', width: 200, editable: true, renderCell: (params) => (
+            field: 'details', headerName: 'Observação', width: 200, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
-                    onClick={() => handleAddress(params.row)}
+                    onClick={() => handleDetails(params.row)}
                 >
                     <ContentPasteSearchIcon />
                 </Button>
@@ -60,29 +67,209 @@ const CollectList = () => {
         },
     ];
 
-    const FormatAddress = ({ address }) => {
-        let array = String(address).split('; ');
+    const handleExportToExcel = () => {
+        const selectedCollectIds = selectedRows.map((rowIndex) => rowIndex.id);
+        const selectedCollects = collects.filter((collect) => selectedCollectIds.includes(collect.id));
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Coletas');
+
+        columns.forEach((column, index) => {
+            if (column.headerName !== 'Observação') {
+                worksheet.getColumn(index + 1).header = column.headerName;
+                worksheet.getColumn(index + 1).key = column.field;
+                worksheet.getColumn(index + 1).width = 10;
+            }
+        });
+
+        selectedCollects.forEach((collect) => {
+            const rowData = {};
+            columns.forEach((column) => {
+                if (column.field === 'id') {
+                    rowData[column.field] = collect.id;
+                } else if (column.field === 'user_id' || column.field === 'phone') {
+                    rowData[column.field] = column.valueGetter ? column.valueGetter({ row: collect }) : collect[column.field];
+                } else if (column.field === 'collect_date') {
+                    rowData[column.field] = formatDate(collect.createdAt);
+                } else if (column.field === 'collect_time') {
+                    rowData[column.field] = collect.collect_time;
+                } else if (column.field === 'status') {
+                    rowData[column.field] = collect.status;
+                } else if (column.field === 'details_address') {
+                    rowData[column.field] = collect.details_address;
+                } else if (column.field === 'final_date') {
+                    rowData[column.field] = formatDate(collect.final_date);
+                }
+            });
+            worksheet.addRow(rowData);
+        });
+
+        const saveOptions = {
+            filename: 'coletas.xlsx',
+            useStyles: true,
+            useSharedStrings: true
+        };
+
+        workbook.xlsx.writeBuffer().then((buffer) => {
+            const data = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(data);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = saveOptions.filename;
+            link.click();
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        });
+    };
+
+    const handlePrint = () => {
+        const printableData = selectedRows.map((collect) => ({
+            ID: collect.id,
+            Solicitante: collect.user?.name,
+            Telefone: collect.user?.phone,
+            Data: formatDate(collect.collect_date),
+            Hora: collect.collect_time,
+            Status: collect.status,
+            DataColeta:  formatDate(collect.final_date),
+            Endereco: collect.details_address
+        }));
+
+        const content = printableData
+            .map((row) => `<tr>
+            <td>${row.ID}</td>
+            <td>${row.Solicitante}</td>
+            <td>${row.Telefone}</td>
+            <td>${row.Data}</td>
+            <td>${row.Status}</td>
+            <td>${row.DataColeta}</td>
+            <td>${row.Endereco}</td>
+            </tr>`)
+            .join('');
+
+        const printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write(`
+        <html>
+          <head>
+            <style>
+              @media print {
+                body {
+                  font-family: Arial, sans-serif;
+                  font-size: 12px;
+                  margin: 20px;
+                }
+                table {
+                  width: 100%;
+                  border-collapse: collapse;
+                }
+                th, td {
+                  border: 1px solid #ccc;
+                  padding: 8px;
+                  text-align: left;
+                }
+                thead {
+                  display: table-header-group;
+                }
+                tr {
+                  page-break-inside: avoid;
+                }
+              }
+              .header {
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+              }
+            </style>
+          </head>
+          <body>
+            <h2 class="header">Lista de Coletas</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Solicitante</th>
+                  <th>Telefone</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                  <th>Data Coleta</th>
+                  <th>Endereço</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${content}
+              </tbody>
+            </table>
+          </body>
+        </html>
+      `);
+        printWindow.document.close();
+        printWindow.print();
+    };
+
+    const onRowsSelectionHandler = (ids) => {
+        const selectedRowsData = ids.map((id) => collects.find((row) => row.id === id));
+        setSelectedRows(selectedRowsData);
+    };
+
+    const actions = [
+        { icon: <ShareIcon />, name: 'Exportar Excel' },
+        { icon: <PrintIcon />, name: 'Imprimir' },
+    ];
+
+    const handleActionClick = (actionName) => {
+        switch (actionName) {
+            case 'Exportar Excel':
+                handleExportToExcel();
+                break;
+            case 'Imprimir':
+                handlePrint();
+                break;
+            default:
+                break;
+        }
+    };
+
+    const SpeedDialShared = () => {
         return (
-            <Box>
-                <Typography>Logradouro: <strong>{array[0]}</strong></Typography>
-                <Typography>Nº: <strong>{array[1]}</strong></Typography>
-                <Typography>Bairro: <strong>{array[2]}</strong></Typography>
-                <Typography>Cidade: <strong>{array[3]}</strong></Typography>
-                <Typography>Estado: <strong>{array[4]}</strong></Typography>
-                <Typography>Complemento: <strong>{array[5]}</strong></Typography>
-                <Typography>CEP: <strong>{array[6]}</strong></Typography>
+            <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
+                <SpeedDial
+                    ariaLabel="SpeedDial"
+                    sx={{ position: 'absolute', bottom: 16, right: 16, }}
+                    icon={<SpeedDialIcon />}
+                    FabProps={{
+                        sx: {
+                            bgcolor: 'success.main',
+                            '&:hover': {
+                                bgcolor: 'success.main',
+                            }
+                        }
+                    }}
+                >
+                    {actions.map((action) => (
+                        <SpeedDialAction
+                            key={action.name}
+                            icon={action.icon}
+                            tooltipTitle={action.name}
+                            onClick={() => handleActionClick(action.name)}
+                        />
+                    ))}
+                </SpeedDial>
             </Box>
         )
     }
 
     return (
-        <div style={{ height: '80vh', width: '100%' }}>
+        <div style={{ height: '80vh', width: '100%', maxWidth: "90vw" }}>
             <ToastContainer />
             <Typography>
                 Solicitações de Coleta
             </Typography>
+            <Box id="collects-table" height="60vh">
+
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+                ref={dataGridRef}
+                sx={{ marginBottom: '10px', paddingBottom: '10px' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}
@@ -93,14 +280,20 @@ const CollectList = () => {
                     }
                 }}
                 getRowId={(row) => row.id}
+                checkboxSelection
+                onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
             />
+            </Box>
+
+            <SpeedDialShared />
+
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Endereço
+                    Observação
                 </DialogTitle>
                 <DialogContent sx={{ marginTop: 3 }}>
                     <>
-                        <FormatAddress address={address.details_address} />
+                        {details?.details || "Nenhuma observação foi adicionada"}
                     </>
                 </DialogContent>
                 <DialogActions>

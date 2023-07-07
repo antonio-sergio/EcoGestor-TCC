@@ -5,8 +5,7 @@ import UserImage from "../components/render/UserImage";
 import ThemeContext from "../components/style/ThemeContext";
 import { styled } from '@mui/material/styles';
 import { Container, Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia } from '@mui/material';
-import { PlaylistAddCheckCircle, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
-import NavBar from "../components/render/NavBar";
+import { LocalShipping, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
 import logo from "../assets/images/mark/logo2.png";
 import Profile from "./Profile";
 import Sales from "./Sales";
@@ -148,19 +147,19 @@ const Home = () => {
             <StyledListItemIcon>
               <PointOfSale />
             </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Vendas" />}
+            {expanded === true && <StyledListItemText primary="Venda" />}
           </StyledListItem>
 
           <StyledListItem button onClick={() => handleComponentClick('purchases')}>
             <StyledListItemIcon>
               <ShoppingCart />
             </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Compras" />}
+            {expanded === true && <StyledListItemText primary="Compra" />}
           </StyledListItem>
 
           <StyledListItem button onClick={() => handleComponentClick('collects')}>
             <StyledListItemIcon>
-              <PlaylistAddCheckCircle />
+              <LocalShipping />
             </StyledListItemIcon>
             {expanded === true && <StyledListItemText primary="Solicitações" />}
           </StyledListItem>
@@ -186,12 +185,7 @@ const Home = () => {
             {expanded === true && <StyledListItemText primary="Perfil" />}
           </StyledListItem>
 
-          <StyledListItem button >
-            <StyledListItemIcon>
-              <SettingsIcon />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Configurações" />}
-          </StyledListItem>
+          
 
         </StyledList>
         <StyledDivider />
@@ -214,12 +208,10 @@ const Home = () => {
           <ThemeToggleButton />
           </Box>
         </Bar>
-        <NavBar />
         <Box>
 
         </Box>
         <ContainerRenderItem theme={theme}>
-
           {renderComponent()}
         </ContainerRenderItem>
         <Footer />

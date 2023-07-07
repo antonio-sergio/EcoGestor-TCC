@@ -221,10 +221,10 @@ function AnnualTransactions() {
 
     return (
         <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
-            <div style={{ width: "45%", height: "55vh" }}>
+            <div style={{ width: "45%", height: "40vh" }}>
                 <canvas ref={chartRef} style={{ width: "100%", height: "100%" }} />
             </div>
-            <div style={{ width: "45%", height: "55vh" }}>
+            <div style={{ width: "45%", height: "40vh" }}>
                 <canvas ref={projectionChartRef} style={{ width: "100%", height: "100%" }} />
             </div>
         </div>

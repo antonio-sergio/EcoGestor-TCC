@@ -50,6 +50,10 @@ class CollectService {
         console.log('pay', collect, payload)
         return axios.put(`${process.env.REACT_APP_API_URL}/collect/${collect.id}`, payload)
     }
+    findBeteweenDate(startDate, endDate){
+        return axios.get(`${process.env.REACT_APP_API_URL}/collect/date/${startDate}/${endDate}`)
+
+    }
 }
 
 const collectService = new CollectService();

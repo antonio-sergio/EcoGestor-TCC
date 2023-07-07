@@ -168,6 +168,15 @@ const CollectForm = () => {
                         {address?.complement && <Typography variant="body1"><strong>Complemento:</strong> {address?.complement}</Typography>}
                     </Box>
                     <Button
+                        sx={{ height: 53, marginTop: 2, }}
+                        type="button"
+                        variant="outlined"
+                        color="success"
+                        onClick={() => setOpenModal(true)}
+                    >
+                        editar endereço
+                    </Button>
+                    <Button
                         sx={{ height: 53, marginTop: 2, marginRight: 4 }}
                         type="submit"
                         variant="contained"
@@ -175,15 +184,6 @@ const CollectForm = () => {
                         disabled={block}
                     >
                         agendar coleta
-                    </Button>
-                    <Button
-                        sx={{ height: 53, marginTop: 2, }}
-                        type="button"
-                        variant="outlined"
-                        color="success"
-                        onClick={() => setOpenModal(true)}
-                    >
-                        alterar endereço da coleta
                     </Button>
 
                 </form>
