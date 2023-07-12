@@ -123,33 +123,37 @@ const UserForm = () => {
             neighborhood: user.neighborhood
         }
 
-        addressService.create(address).then(response => {
-            console.log('response addres', response)
-            if (response.status === 201) {
-                user.address_id = Number(response?.data?.id_address);
-                console.log('selectedImage', selectedImage)
-                user.image = selectedImage;
-                userService.create(user).then(response => {
-                    if (response.status === 201) {
-                        toast.success('Usuário adicionado com sucesso!');
-                        resetForm();
-                    }
-                }).catch(error => {
-                    toast.error(`${error.response.data.message}`);
-                    addressService.delete(user.address_id).then(response => {
-                        console.log('response delete adddres', response)
+        if(String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca'){
+            addressService.create(address).then(response => {
+                console.log('response addres', response)
+                if (response.status === 201) {
+                    user.address_id = Number(response?.data?.id_address);
+                    console.log('selectedImage', selectedImage)
+                    user.image = selectedImage;
+                    userService.create(user).then(response => {
+                        if (response.status === 201) {
+                            toast.success('Usuário adicionado com sucesso!');
+                            resetForm();
+                        }
+                    }).catch(error => {
+                        toast.error(`${error.response.data.message}`);
+                        addressService.delete(user.address_id).then(response => {
+                            console.log('response delete adddres', response)
+                        })
+                        console.log(error)
                     })
-                    console.log(error)
-                })
-
-            }
-        }).catch(
-            error => {
-                console.log(error);
-                toast.error(`${error.response.data.message}`);
-
-            }
-        )
+    
+                }
+            }).catch(
+                error => {
+                    console.log(error);
+                    toast.error(`${error.response.data.message}`);
+    
+                }
+            )
+        }else{
+            toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
+        }
     };
 
     const cpfMask = [

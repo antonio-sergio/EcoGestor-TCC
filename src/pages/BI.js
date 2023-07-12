@@ -12,6 +12,8 @@ import AnnualTransactions from '../components/graphics/AnnualTransactions';
 import CollectChart from '../components/graphics/CollectChart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import CategoryIcon from '@mui/icons-material/Category';
+import Background from '../components/render/Background';
+import ProductsChart from '../components/graphics/ProductsChart';
 
 const BIComponent = ({ handleComponentClick }) => {
     const [dateObject, setDateObject] = useState({
@@ -67,8 +69,12 @@ const BIComponent = ({ handleComponentClick }) => {
     const renderComponent = () => {
         if (selectedComponent === 'collects') {
             return <CollectChart />;
-        } else {
+        } else if(selectedComponent === 'trasations') {
             return <AnnualTransactions />
+        }else if(selectedComponent === 'products'){
+            return <ProductsChart />
+        } else{
+            return <Background />
         }
     }
 
@@ -152,7 +158,8 @@ const BIComponent = ({ handleComponentClick }) => {
                         }}
                     >
                         <BottomNavigationAction value="collects" label="Coletas" icon={<LocalShippingIcon />} />
-                        <BottomNavigationAction label="Transações" icon={<CurrencyExchangeIcon />} />
+                        <BottomNavigationAction value="trasations" label="Transações" icon={<CurrencyExchangeIcon />} />
+                        <BottomNavigationAction value="products" label="Produtos" icon={<CategoryIcon />} />
                     </BottomNavigation>
                 </Box>
             </Box>

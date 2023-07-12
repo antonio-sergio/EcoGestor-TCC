@@ -9,6 +9,7 @@ import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import emailService from '../../services/email/email-service';
 
 const WaitingApprovalList = () => {
     const [collects, setCollects] = useState([]);
@@ -58,8 +59,18 @@ const WaitingApprovalList = () => {
     }
 
     const handleApprovalCollect = () => {
+        console.log(selectedCollect)
         collectService.approval(selectedCollect.id).then(response => {
             if (response.status === 200) {
+                const obj = {
+                    "recipient": selectedCollect?.user?.email,
+                    "user": selectedCollect?.user?.name,
+                    "textMsg": "Boas notícias! Sua solicitação foi aprovada e no dia e horário agendado realizaremos a coleta. Obrigado por escolher a EcoGestor!",
+                    "date" : formatDate(selectedCollect.collect_date),
+                    "schedule": selectedCollect.collect_time,
+                    "address": selectedCollect.details_address
+                }
+                emailService.sendEmail(obj);
                 toast.success('Solicitação de coleta aprovada com sucesso!');
                 setOpenModalApproval(false);
                 handleProcessed();
@@ -78,6 +89,15 @@ const WaitingApprovalList = () => {
         } else {
             collectService.refuse(selectedCollect.id, reason?.current?.value).then(response => {
                 if (response.status === 200) {
+                    const obj = {
+                        "recipient": selectedCollect?.user?.email,
+                        "user": selectedCollect?.user?.name,
+                        "textMsg": `:( Sua solicitação não pôde ser atendida, lamentamos por isso. Motivo: ${reason?.current?.value}. Para mais informações, entre em contato conosco. Obrigado por escolher a EcoGestor!`,
+                        "date" : formatDate(selectedCollect.collect_date),
+                        "schedule": selectedCollect.collect_time,
+                        "address": selectedCollect.details_address
+                    }
+                    emailService.sendEmail(obj);
                     toast.success('Solicitação de coleta recusada com sucesso!');
                     setOpenModalRefuse(false);
                     handleProcessed();

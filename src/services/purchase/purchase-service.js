@@ -17,6 +17,9 @@ class PurchaseService {
     getTotalPurchase(period){
         return axios.get(`${process.env.REACT_APP_API_URL}/purchase/total?startDate=${period.startDate}&endDate=${period.endDate}`)
     }
+    delele(id){
+        return axios.delete(`${process.env.REACT_APP_API_URL}/purchase/${id}`);
+    }
 }
 
 const purchaseService = new PurchaseService();

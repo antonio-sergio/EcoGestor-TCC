@@ -76,7 +76,7 @@ const CollectChart = () => {
     }, [collects]);
 
     return (
-        <Box style={{ width: "100%", height: "75vh", display: "flex",  backgroundColor: "#D8FFDA", }}>
+        <Box style={{ width: "100%", height: "75vh", display: "flex",  }}>
             <Box width="50%">
                 <Box sx={{ display: "flex", flexDirection: "collumn", alignItems: "center", height: "100px", padding: 2 }}>
                     <Typography fontSize={20} >Período de coleta: </Typography>

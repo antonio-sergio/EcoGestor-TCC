@@ -16,6 +16,9 @@ class SaleService {
     getTotalSale(period){
         return axios.get(`${process.env.REACT_APP_API_URL}/sale/total?startDate=${period.startDate}&endDate=${period.endDate}`)
     }
+    delele(id){
+        return axios.delete(`${process.env.REACT_APP_API_URL}/sale/${id}`);
+    }
 }
 
 const saleService = new SaleService();

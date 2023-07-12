@@ -9,6 +9,7 @@ import { format, startOfDay, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import AuthContext from '../../services/auth/AuthContext';
 import imageCalendar from "../../assets/images/calendar.png";
+import emailService from '../../services/email/email-service';
 registerLocale('pt', pt);
 
 const CollectForm = () => {
@@ -45,6 +46,7 @@ const CollectForm = () => {
             .catch(error => console.log(error));
     }, [user, edited]);
 
+    console.log('userr', user)
     const scheduleList = ["08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00"];
 
     const handleChangeDate = (date) => {
@@ -73,37 +75,76 @@ const CollectForm = () => {
     };
 
     const handleSaveAddress = () => {
-        console.log('addres para salvar', address)
-        addressService.updateAddress(address).then(response => {
-            console.log('response update', response)
-            if (response.status === 200) {
-                toast.success('Endereço atualizado com sucesso!');
-                if (edited === true) {
-                    setEdited(false)
-                } else {
-                    setEdited(true)
+        let numberCep = extrairNumeros(address.zip_code);
+        console.log('number cep', numberCep)
+        address.zip_code = String(numberCep);
+        if (String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca') {
+            addressService.updateAddress(address).then(response => {
+                console.log('response update', response)
+                if (response.status === 200) {
+                    toast.success('Endereço atualizado com sucesso!');
+                    if (edited === true) {
+                        setEdited(false)
+                    } else {
+                        setEdited(true)
+                    }
+                    setOpenModal(false);
                 }
-                setOpenModal(false);
-            }
-        }).catch(error => {
-            console.log(error);
-            toast.error('Não foi possível atualizar o endereço.')
-        })
+            }).catch(error => {
+                console.log(error);
+                toast.error('Não foi possível atualizar o endereço.')
+            })
+        } else {
+            toast.warning('Desculpe-nos! Por enquanto só atendemos a cidade de Franca-SP')
+
+        }
+
     };
+
+    function extrairNumeros(string) {
+        // eslint-disable-next-line
+        var regex = /\d+[\+\.,]?\d*|-\d+[\+\.,]?\d*/g;
+        var numeros = string.match(regex);
+        if (numeros) {
+            numeros = numeros.map(function (num) {
+                return num.replace(/[-]/g, '');
+            });
+        } else {
+            numeros = [];
+        }
+        console.log('numeros', numeros)
+        if (numeros[1]) {
+            return Number(numeros[0] + numeros[1]);
+        }
+        return Number(numeros[0]);
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formattedDate = format(startOfDay(selectedDate), 'yyyy-MM-dd');
-
+        const formattedDateEmail = format(startOfDay(selectedDate), 'dd-MM-yyyy');
         let payload = {
             user_id: user?.id,
             collect_time: selectedTime,
             collect_date: formattedDate,
             address_id: user.address_id,
-            details_address: address.street + '; ' + address.number + '; ' + address.neighborhood + '; ' + address.city + '; ' + address.state + '; ' + address?.complement + '; ' + address.zip_code
+            details_address: address.street + ' ' + address.number + ', ' + address.neighborhood + ', ' + address.city + ' ' + address.state + '. ' + address?.complement + ' ' + address.zip_code + '.'
         }
         collectService.create(payload).then(response => {
             if (response.status === 201) {
+                try {
+                    const obj = {
+                        "recipient": user?.email,
+                        "user": user?.name,
+                        "textMsg": "Recebemos sua solicitação de coleta e em breve ela passará por uma análise e retornaremos com mais informações. Por favor aguarde!",
+                        "date" : formattedDateEmail,
+                        "schedule": payload.collect_time,
+                        "address": payload.details_address
+                    }
+                    emailService.sendEmail(obj)
+                } catch (error) {
+                    console.log(error);
+                }
                 toast.success('Coleta agendada com sucesso!');
                 if (created === true) {
                     setCreated(false)
@@ -129,7 +170,7 @@ const CollectForm = () => {
                         dateFormat="dd/MM/yyyy" // Define o formato de data local
                         placeholderText="Selecione uma data"
                         locale="pt"
-                        style={{color: "red"}}
+                        style={{ color: "red" }}
                     />
                 </Box>
                 <form style={{ zIndex: 1, marginTop: "20px" }} onSubmit={handleSubmit}>
@@ -152,9 +193,10 @@ const CollectForm = () => {
 
                             );
                             return (
-                                <option key={time} style={{ color: isDisabled ? 'gray' : 'green' }} value={time} disabled={isDisabled}>
-                                    {time}
-                                </option>
+                                !isDisabled ?
+                                    <option key={time} style={{}} value={time} disabled={isDisabled}>
+                                        {time}
+                                    </option> : ""
                             );
                         })}
                     </TextField>
@@ -188,7 +230,7 @@ const CollectForm = () => {
 
                 </form>
             </Box>
-            <Box sx={{display: "flex", justifyContent: "center", width: "100%"}}>
+            <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
                 <Card>
                     <CardMedia
                         component="img"
@@ -245,6 +287,9 @@ const CollectForm = () => {
                             onChange={(e) => setAddress({ ...address, zip_code: e.target.value })}
                             fullWidth
                             margin="normal"
+                            inputProps={{
+                                maxLength: 9, 
+                            }}
                         />
                         <TextField
                             label="Complemento"

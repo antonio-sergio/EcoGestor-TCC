@@ -12,7 +12,7 @@ const StyledGrid = styled(Grid)({
     position: 'fixed',
     bottom: 0,
     width: '100%',
-    color: 'gray',
+    color: '#B6CAB4',
 });
 
 

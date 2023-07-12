@@ -23,13 +23,16 @@ import PrintIcon from '@mui/icons-material/Print';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ShareIcon from '@mui/icons-material/Share';
+import DeleteIcon from '@mui/icons-material/Delete';
 import saleService from '../../services/sale/sale-service';
 import moment from 'moment';
 import ExcelJS from 'exceljs';
+import { toast, ToastContainer } from "react-toastify";
 
 const SalesList = () => {
     const [sales, setSales] = useState([]);
     const [openModalSale, setOpenModalSale] = useState(false);
+    const [openModalDelete, setOpenModalDelete] = useState(false);
     const [selectedSale, setSelectedSale] = useState(null);
     const [items, setItems] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
@@ -41,7 +44,7 @@ const SalesList = () => {
                 setSales(response.data.sales);
             }
         })
-    }, [openModalSale]);
+    }, [openModalSale, openModalDelete]);
 
     const columns = [
         { field: 'id_sale', headerName: 'ID', width: 50 },
@@ -77,6 +80,17 @@ const SalesList = () => {
                     <ContentPasteSearchIcon sx={{ color: 'green' }} />
                 </Button>
             )
+        },
+        {
+            field: 'delete',
+            headerName: 'Deletar',
+            width: 70,
+            align: 'center',
+            renderCell: (params) => (
+                <Button variant="outlined" size="small" onClick={() => handleDelete(params.row)}>
+                    <DeleteIcon sx={{ color: 'red' }} />
+                </Button>
+            )
         }
     ];
 
@@ -89,6 +103,23 @@ const SalesList = () => {
         });
         setOpenModalSale(!openModalSale);
     };
+
+    const handleDelete = async (sale) => {
+        setSelectedSale(sale);
+        setOpenModalDelete(true);
+    }
+
+    const deleteSale = async () => {
+        await saleService.delele(selectedSale.id_sale).then(response => {
+            if(response.status === 200){
+                toast.success('Venda deletada com sucesso!');
+                setOpenModalDelete(false);
+            }
+        }).catch(error => {
+            toast.error("Não foi possível deletar a venda!");
+            console.log(error);
+        })
+    }
 
     const handleExportToExcel = () => {
         const selectedSaleIds = selectedRows.map((rowIndex) => rowIndex.id_sale);
@@ -272,6 +303,7 @@ const SalesList = () => {
 
     return (
         <div style={{ height: '100%', width: '100%' }}>
+            <ToastContainer />
             <Typography>
                 Vendas
             </Typography>
@@ -337,7 +369,23 @@ const SalesList = () => {
                     </>
                 </DialogActions>
             </Dialog>
-
+            <Dialog open={openModalDelete} onClose={() => setOpenModalDelete(false)}>
+                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+                    Deletar Venda
+                </DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        
+                         {selectedSale && `Deseja deletar a venda do cliente ${selectedSale?.customer?.name}`}
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <>
+                        <Button onClick={() => deleteSale()}>Confirmar</Button>
+                        <Button onClick={() => setOpenModalDelete(false)}>Cancelar</Button>
+                    </>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

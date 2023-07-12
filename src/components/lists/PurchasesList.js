@@ -6,16 +6,19 @@ import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import purchaseService from '../../services/purchase/purchase-service';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ShareIcon from '@mui/icons-material/Share';
 import ExcelJS from 'exceljs';
+
 
 import moment from 'moment';
 
 const PurchasesList = () => {
     const [purchases, setPurchases] = useState([]);
     const [openModalPurchase, setOpenModalPurchase] = useState(false);
+    const [openModalDelete, setOpenModalDelete] = useState(false);
     const [selectedPurchase, setSelectedPurchase] = useState(null);
     const [items, setItems] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
@@ -51,6 +54,18 @@ const PurchasesList = () => {
                 </Button>
             )
         }
+        ,
+        {
+            field: 'delete',
+            headerName: 'Deletar',
+            width: 70,
+            align: 'center',
+            renderCell: (params) => (
+                <Button variant="outlined" size="small" onClick={() => handleDelete(params.row)}>
+                    <DeleteIcon sx={{ color: 'red' }} />
+                </Button>
+            )
+        }
 
     ];
 
@@ -65,6 +80,24 @@ const PurchasesList = () => {
         console.log('items', items)
         setOpenModalPurchase(!openModalPurchase);
     };
+
+    
+    const handleDelete = async (purchase) => {
+        setSelectedPurchase(purchase);
+        setOpenModalDelete(true);
+    }
+
+    const deletePurchase = async () => {
+        await purchaseService.delele(selectedPurchase.id_purchase).then(response => {
+            if(response.status === 200){
+                toast.success('Compra deletada com sucesso!');
+                setOpenModalDelete(false);
+            }
+        }).catch(error => {
+            toast.error("Não foi possível deletar a venda!");
+            console.log(error);
+        })
+    }
 
     const handleExportToExcel = () => {
         const selectedPurchasesIds = selectedRows.map((rowIndex) => rowIndex.id_purchase);
@@ -320,6 +353,23 @@ const PurchasesList = () => {
 
                     <>
                         <Button onClick={() => setOpenModalPurchase(false)}>Fechar</Button>
+                    </>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={openModalDelete} onClose={() => setOpenModalDelete(false)}>
+                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+                    Deletar Venda
+                </DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        
+                         {selectedPurchase && `Deseja deletar a compra do fornecedor ${selectedPurchase?.seller?.name}`}
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <>
+                        <Button onClick={() => deletePurchase()}>Confirmar</Button>
+                        <Button onClick={() => setOpenModalDelete(false)}>Cancelar</Button>
                     </>
                 </DialogActions>
             </Dialog>
