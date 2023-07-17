@@ -6,7 +6,6 @@ import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AuthContext from '../../services/auth/AuthContext';
 
@@ -29,7 +28,7 @@ const MyCollectRequestList = () => {
                 setCollects(response.data);
             }
         })
-    }, [processed]);
+    }, [processed, user.id]);
 
     const formatDate = (dateString) => {
         return moment(dateString).format('DD/MM/YYYY');
@@ -48,10 +47,7 @@ const MyCollectRequestList = () => {
         }
     }
 
-    const handlefinalizeCollect = (collect) => {
-        setSelectedCollect(collect);
-        setOpenModalFinalize(true);
-    }
+   
 
     const handleCancel = (collect) => {
         setSelectedCollect(collect);

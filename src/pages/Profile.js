@@ -1,32 +1,25 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../services/auth/AuthContext";
-import { Box, Card, CardMedia, Typography, Grid, Paper, Container, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from "@mui/material";
-import avatar from "../assets/images/avatar_1.png";
+import { Box, Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from "@mui/material";
 import userService from "../services/user/user-service";
 import addressService from "../services/address/address-service";
 import { styled } from '@mui/material/styles';
 import { toast, ToastContainer } from "react-toastify";
-import UserImage from "../components/render/UserImage";
+import ThemeContext from "../components/style/ThemeContext";
 
-const Profile = () => {
+const Profile = ({color}) => {
+  console.log('color', color)
+  const { theme } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
   const [dataUser, setDataUser] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openModalPassword, setOpenModalPassword] = useState(false);
-  const [dataImage, setDataImage] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  useEffect(() => {
-    userService.getUserImage(user?.id).then(response => {
-      if (response.status === 200) {
-        setDataImage(response.data)
-      }
-    })
-  }, [user?.id])
-
+ 
   useEffect(() => {
     userService.getUserById(user.id).then(response => {
       if (response.status === 200) {
@@ -36,13 +29,13 @@ const Profile = () => {
   }, [user, openModal, openModalPassword]);
 
   const StyledPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    padding: 10,
+    marginBottom: 2,
+    backgroundColor: color !== undefined ? color : theme?.palette?.type === 'dark' ? 'black' : ''
   }));
 
   const handleSaveAddress = () => {
     addressService.updateAddress(selectedAddress).then(response => {
-      console.log('response update', response)
       if (response.status === 200) {
         toast.success('Endereço atualizado com sucesso!');
         setOpenModal(false);
@@ -57,7 +50,6 @@ const Profile = () => {
     if (password === confirmPassword) {
       const updatedUser = { ...selectedUser, password };
       userService.updateUser(updatedUser).then(response => {
-        console.log('response update', response)
         if (response.status === 200) {
           toast.success('Senha atualizada com sucesso!');
           setOpenModalPassword(false);
@@ -84,40 +76,40 @@ const Profile = () => {
   };
 
   return (
-    <Grid container xs={12} width="100%">
+    <Grid container xs={12} width="100%" >
       <ToastContainer />
-      <Box width="100%">
-        <StyledPaper elevation={3}>
-          <Grid container spacing={2}>
+      <Box width="100%" >
+        <StyledPaper  elevation={3} theme={theme}>
+          <Grid container spacing={2} >
             <Grid item xs={12}>
-              <Typography variant="h5"><strong>{String(dataUser?.name).toUpperCase()}</strong> </Typography>
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="h5"><strong>{String(dataUser?.name).toUpperCase()}</strong> </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">Acesso: <strong>{dataUser?.role}</strong> </Typography>
-              <Typography variant="body1">Email: <strong>{dataUser?.email}</strong> </Typography>
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">Acesso: <strong>{dataUser?.role}</strong> </Typography>
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">Email: <strong>{dataUser?.email}</strong> </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6" mb={2}>Endereço:</Typography>
-              <Typography variant="body1">
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="h6" mb={2}>Endereço:</Typography>
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                 Logradouro: <strong>{dataUser?.address.street}</strong>{" "}
               </Typography>
-              <Typography variant="body1">
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                 Número: <strong>{dataUser?.address.number}</strong>{" "}
               </Typography>
-              <Typography variant="body1">
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                 Bairro: <strong>{dataUser?.address.neighborhood}</strong>
               </Typography>
-              <Typography variant="body1">
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                 Cidade: <strong>{dataUser?.address.city}</strong>
               </Typography>
-              <Typography variant="body1">
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                 Estado: <strong>{dataUser?.address.state}</strong>
               </Typography>
-              <Typography variant="body1">
+              <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                 Cep: <strong>{dataUser?.address.zip_code}</strong>
-              </Typography>
+              </Typography >
               {dataUser?.address?.complement && (
-                <Typography variant="body1">
+                <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
                   Complemento: <strong>{dataUser?.address.complement}</strong>
                 </Typography>
               )}

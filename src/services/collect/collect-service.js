@@ -46,8 +46,6 @@ class CollectService {
             "status": "finalizado",
             "final_date": currentDate
         }
-
-        console.log('pay', collect, payload)
         return axios.put(`${process.env.REACT_APP_API_URL}/collect/${collect.id}`, payload)
     }
     findBeteweenDate(startDate, endDate){

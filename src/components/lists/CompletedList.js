@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box } from '@mui/material';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import ThemeContext from '../style/ThemeContext';
 
 
 const CompletedList = () => {
+    const { theme } = useContext(ThemeContext);
     const [collects, setCollects] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [address, setAddress] = useState(false);
@@ -77,12 +78,11 @@ const CompletedList = () => {
 
     return (
         <div style={{ height: '100%', width: '100%' }}>
-            <ToastContainer />
             <Typography>
                 Coletas Realizadas
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

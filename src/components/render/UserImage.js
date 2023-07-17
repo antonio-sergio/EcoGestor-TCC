@@ -10,7 +10,7 @@ const StyledGrid = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',  
   alignItems: 'center', 
-  backgroundColor: theme?.palette?.primary?.main,
+  backgroundColor:  theme?.palette?.primary?.main,
   marginTop: 4
 }));
 
@@ -22,8 +22,7 @@ const UserInfos = styled(Grid)({
   justifyContent: 'center',
   alignItems: 'start',
   marginLeft: 10,
-  padding: 3
-
+  padding: 3,
 
 });
 
@@ -32,7 +31,7 @@ const Infos = styled('span')({
   color: 'white'
 });
 
-const UserImage = ({ imageUrl, dimension }) => {
+const UserImage = ({ imageUrl, dimension, color }) => {
   const { user } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
@@ -45,8 +44,8 @@ const UserImage = ({ imageUrl, dimension }) => {
   }
 
   return (
-    <StyledGrid theme={theme}>
-      <Avatar src={imageUrl ? imageUrl : userProfile} alt="User" sx={{ width: dimension || 56, height: dimension || 56 }} />
+    <StyledGrid style={{backgroundColor: color !== undefined ? color : ""}} theme={theme}>
+      <Avatar src={imageUrl ? imageUrl : userProfile} alt="User" sx={{ width: dimension || 56, height: dimension || 56}} />
       <UserInfos >
         <Infos>{formatName()}</Infos>
         <Infos>{user.role}</Infos>

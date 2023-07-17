@@ -3,11 +3,9 @@ import {
     TextField,
     Button,
     Grid,
-    Container,
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions,
     Box,
     Typography
 } from '@mui/material';
@@ -43,7 +41,7 @@ const Signup = () => {
     });
     const [added, setAdded] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [open, setOpen] = useState(true);
+    const [open] = useState(true);
 
     const handleChange = (e) => {
         setUser((prevUser) => ({
@@ -67,7 +65,6 @@ const Signup = () => {
                 const { logradouro, uf, localidade, bairro } = response.data;
                 setZipCodeData(response.data);
 
-                console.log('cep cortado', String(digitsOnly).substring(0, 7))
                 setUser((prevUser) => ({
                     ...prevUser,
                     street: logradouro,
@@ -140,12 +137,9 @@ const Signup = () => {
             neighborhood: user.neighborhood
         }
         if (String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca') {
-            {
                 addressService.create(address).then(response => {
-                    console.log('response addres', response)
                     if (response.status === 201) {
                         user.address_id = Number(response?.data?.id_address);
-                        console.log('selectedImage', selectedImage)
                         user.image = selectedImage;
                         userService.create(user).then(response => {
                             if (response.status === 201) {
@@ -155,9 +149,7 @@ const Signup = () => {
                         }).catch(error => {
                             toast.error(`${error.response.data.message}`);
                             addressService.delete(user.address_id).then(response => {
-                                console.log('response delete adddres', response)
                             })
-                            console.log(error)
                         })
 
                     }
@@ -168,7 +160,6 @@ const Signup = () => {
 
                     }
                 )
-            }
         } else {
             toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
         }

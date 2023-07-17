@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid, InputLabel } from '@mui/material';
+import { TextField, Button, Grid} from '@mui/material';
 import { cpf as validateCPF } from 'cpf-cnpj-validator';
 import MaskedInput from 'react-text-mask';
 import zipCodeService from '../../services/external/zip-code-service';
 import userService from '../../services/user/user-service';
 import addressService from '../../services/address/address-service';
 import { ToastContainer, toast } from 'react-toastify';
+
 
 const UserForm = () => {
     const [zipCodeMask, setZipCodeMask] = useState([/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]);
@@ -125,10 +126,8 @@ const UserForm = () => {
 
         if(String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca'){
             addressService.create(address).then(response => {
-                console.log('response addres', response)
                 if (response.status === 201) {
                     user.address_id = Number(response?.data?.id_address);
-                    console.log('selectedImage', selectedImage)
                     user.image = selectedImage;
                     userService.create(user).then(response => {
                         if (response.status === 201) {
@@ -138,7 +137,6 @@ const UserForm = () => {
                     }).catch(error => {
                         toast.error(`${error.response.data.message}`);
                         addressService.delete(user.address_id).then(response => {
-                            console.log('response delete adddres', response)
                         })
                         console.log(error)
                     })

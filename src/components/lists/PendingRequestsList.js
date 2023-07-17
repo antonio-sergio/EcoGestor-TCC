@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
@@ -8,9 +8,11 @@ import moment from 'moment';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ThemeContext from '../style/ThemeContext';
 
 
 const PendingRequestsList = () => {
+    const { theme } = useContext(ThemeContext);
     const [collects, setCollects] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [address, setAddress] = useState(false);
@@ -162,7 +164,7 @@ const PendingRequestsList = () => {
                 Aprovadas, aguardando coleta
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

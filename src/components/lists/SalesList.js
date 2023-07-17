@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
     Button,
     Dialog,
@@ -28,8 +28,11 @@ import saleService from '../../services/sale/sale-service';
 import moment from 'moment';
 import ExcelJS from 'exceljs';
 import { toast, ToastContainer } from "react-toastify";
+import ThemeContext from '../style/ThemeContext';
+
 
 const SalesList = () => {
+    const { theme } = useContext(ThemeContext);
     const [sales, setSales] = useState([]);
     const [openModalSale, setOpenModalSale] = useState(false);
     const [openModalDelete, setOpenModalDelete] = useState(false);
@@ -304,13 +307,13 @@ const SalesList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
-            <Typography>
+            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Vendas
             </Typography>
             <Box id="sales-table" height="60vh">
                 <DataGrid
                     ref={dataGridRef}
-                    sx={{ marginBottom: '10px', paddingBottom: '10px' }}
+                    sx={{ marginBottom: '10px', paddingBottom: '10px', color: theme?.palette?.type === 'dark' ? '#fff' : ''  }}
                     localeText={localizedTextsMap}
                     rows={sales}
                     columns={columns}

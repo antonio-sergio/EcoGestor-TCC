@@ -30,12 +30,12 @@ const ProductsChart = () => {
             datasets: [
                 {
                     label: 'Vendas (kg)',
-                    backgroundColor: 'green',
+                    backgroundColor: '#00C853',
                     data: [],
                 },
                 {
                     label: 'Compras (kg)',
-                    backgroundColor: 'blue',
+                    backgroundColor: '#2196F3',
                     data: [],
                 },
             ],

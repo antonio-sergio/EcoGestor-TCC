@@ -32,12 +32,12 @@ const HomeUser = () => {
         }else if(selectedComponent === 'myRequests'){
             return <MyCollectRequestList />
         }else if(selectedComponent === 'profile'){
-            return <Profile />
+            return <Profile color={"#fff"} />
         }
     };
 
     return (
-        <Box sx={{ padding: "2rem" }}>
+        <Box sx={{  backgroundColor: "#fff", height: "90vh", marginTop: "-25px" }}>
             <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", display: "flex", justifyContent: "center" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box >
@@ -45,8 +45,8 @@ const HomeUser = () => {
                             ECOGESTOR
                         </Typography>
                     </Box>
-                    <Box display="flex">
-                        <UserImage imageUrl={dataImage.imageUrl} />
+                    <Box display="flex" >
+                        <UserImage color="#27AB6E" imageUrl={dataImage.imageUrl} />
                         <Button color="inherit" onClick={() => logout()}><Link to="/Login"><LogoutIcon sx={{color: "#B22222", fontSize: 40}} /></Link></Button>
                     </Box>
                 </Toolbar>

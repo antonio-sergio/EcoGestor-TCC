@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
@@ -6,12 +6,13 @@ import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import emailService from '../../services/email/email-service';
+import ThemeContext from '../style/ThemeContext';
 
 const WaitingApprovalList = () => {
+    const { theme } = useContext(ThemeContext);
     const [collects, setCollects] = useState([]);
     const [selectedCollect, setSelectedCollect] = useState([]);
     const [openModal, setOpenModal] = useState(false);
@@ -27,7 +28,7 @@ const WaitingApprovalList = () => {
                 setCollects(response.data);
             }
         })
-    }, [selectedCollect, processed]);
+    }, [selectedCollect, processed, ]);
 
     const formatDate = (dateString) => {
         return moment(dateString).format('DD/MM/YYYY');
@@ -59,7 +60,6 @@ const WaitingApprovalList = () => {
     }
 
     const handleApprovalCollect = () => {
-        console.log(selectedCollect)
         collectService.approval(selectedCollect.id).then(response => {
             if (response.status === 200) {
                 const obj = {
@@ -82,8 +82,6 @@ const WaitingApprovalList = () => {
     };
 
     const handleRefuseCollect = () => {
-        console.log('reaon ref', reason.current.value)
-
         if (!reason.current.value) {
             toast.warning('Por favor informe o motivo pela recusa da coleta');
         } else {
@@ -168,7 +166,7 @@ const WaitingApprovalList = () => {
     const FormatAddress = ({ address }) => {
         let array = String(address).split('; ');
         return (
-            <Box>
+            <Box >
                 <Typography>Logradouro: <strong>{array[0]}</strong></Typography>
                 <Typography>Nº: <strong>{array[1]}</strong></Typography>
                 <Typography>Bairro: <strong>{array[2]}</strong></Typography>
@@ -183,11 +181,11 @@ const WaitingApprovalList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
-            <Typography>
+            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Aguardando Aprovação
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}
@@ -199,16 +197,16 @@ const WaitingApprovalList = () => {
                 }}
                 getRowId={(row) => row.id}
             />
-            <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+            <Dialog open={openModal} onClose={() => setOpenModal(false)} >
+                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? 'black' : 'green', color: 'white' }}>
                     Endereço
                 </DialogTitle>
-                <DialogContent sx={{ marginTop: 3 }}>
+                <DialogContent sx={{ marginTop: 3 , backgroundColor: theme?.palette?.type === 'dark' ? 'black' : '', color: theme?.palette?.type === 'dark' ? 'white' : ''}}>
                     <>
                         <FormatAddress address={address.details_address} />
                     </>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions sx={{backgroundColor: theme?.palette?.type === 'dark' ? 'black' : '' }}>
                     <>
                         <Button onClick={() => setOpenModal(false)}>Fechar</Button>
                     </>
@@ -219,7 +217,7 @@ const WaitingApprovalList = () => {
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Aprovar Coleta
                 </DialogTitle>
-                <DialogContent sx={{ marginTop: 3 }}>
+                <DialogContent sx={{ marginTop: 31 }}>
                     <Typography>Você deseja aprovar a solicitação de {selectedCollect?.user?.name}?</Typography>
                 </DialogContent>
 

@@ -29,7 +29,6 @@ class UserService {
         return axios.get(`${process.env.REACT_APP_API_URL}/user/type/seller`)
     }
     getUserById(id){
-        console.log('id service', id)
         return axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`)
     }
 }

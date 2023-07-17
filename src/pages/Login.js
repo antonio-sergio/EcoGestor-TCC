@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext, useState } from "react";
 import AuthContext from "../services/auth/AuthContext";
-import { TextField, Button, Grid, Card, Box, CardContent, CardMedia, Typography } from "@mui/material";
+import { TextField, Button, Grid, Box, CardContent, CardMedia, Typography } from "@mui/material";
 import earth from '../assets/images/login/earth2.png';
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,6 +19,8 @@ const Login = () => {
         };
         try {
             await login(payload);
+            localStorage.setItem('theme', `{"palette":{"type":"light","primary":{"main":"#27AB6E"},"secondary":{"main":"#000"},"background":{"main":"#F2F2F2"},"mode":{"main":"#27C46E"},"teste":{"main":"black"}}}`);
+
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message);
@@ -36,7 +38,7 @@ const Login = () => {
     };
 
     return (
-        <Grid container justifyContent="center" alignItems="center" height="100vh">
+        <Grid container justifyContent="center" alignItems="center" height="100vh" sx={{backgroundColor: "#fff"}}>
             <ToastContainer />
             <Grid display="flex" width="80vw" height="70vh" justifyContent="space-around" alignItems="center" style={{
                 background: "linear-gradient(to bottom, #98FB98, #27AB6E)", borderRadius: "10px",
@@ -93,10 +95,10 @@ const Login = () => {
                         </Grid>
                         <Grid item xs={12} height="10%" sx={{ marginTop: 20 }} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                             <Button type="button" >
-                                <Link style={{color: "#98FB80" }} to="/Signup">  Ainda não possui uma conta? Cadastre-se</Link>
+                                <Link style={{ color: "#98FB80" }} to="/Signup">  Ainda não possui uma conta? Cadastre-se</Link>
                             </Button>
                             <Button type="button" >
-                                <Link style={{color: "#98FB80" }} to="/Landing">  Home</Link>
+                                <Link style={{ color: "#98FB80" }} to="/Landing">  Home</Link>
                             </Button>
                         </Grid>
                     </form>

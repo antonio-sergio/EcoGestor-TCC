@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, SpeedDial,  Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
+import { Button, SpeedDial,  Dialog, DialogTitle, DialogContent, DialogActions, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import purchaseService from '../../services/purchase/purchase-service';
@@ -11,11 +11,13 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ShareIcon from '@mui/icons-material/Share';
 import ExcelJS from 'exceljs';
+import ThemeContext from '../style/ThemeContext';
 
 
 import moment from 'moment';
 
 const PurchasesList = () => {
+    const { theme } = useContext(ThemeContext);
     const [purchases, setPurchases] = useState([]);
     const [openModalPurchase, setOpenModalPurchase] = useState(false);
     const [openModalDelete, setOpenModalDelete] = useState(false);
@@ -26,7 +28,6 @@ const PurchasesList = () => {
 
     useEffect(() => {
         purchaseService.getAllPurchase().then(response => {
-            console.log('reponse purchase', response.data.purchases)
             if (response.status === 200) {
                 setPurchases(response.data.purchases);
             }
@@ -71,13 +72,11 @@ const PurchasesList = () => {
 
     const handleShowPurchase = async (purchase) => {
         setSelectedPurchase(purchase);
-        console.log('selectedpurc', selectedPurchase)
         await purchaseService.getPurchaseItems(purchase.id_purchase).then(response => {
             if (response.status === 200) {
                 setItems(response.data)
             }
         })
-        console.log('items', items)
         setOpenModalPurchase(!openModalPurchase);
     };
 
@@ -282,14 +281,14 @@ const PurchasesList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
-            <Typography>
+            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Compras
             </Typography>
             <Box id="purchases-table" height="60vh">
 
                 <DataGrid
                     ref={dataGridRef}
-                    sx={{ marginBottom: '10px', paddingBottom: '10px' }}
+                    sx={{ marginBottom: '10px', paddingBottom: '10px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                     localeText={localizedTextsMap}
                     rows={purchases}
                     columns={columns}

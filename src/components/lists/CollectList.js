@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify';
+import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box } from '@mui/material';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
@@ -11,9 +10,11 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ShareIcon from '@mui/icons-material/Share';
 import ExcelJS from 'exceljs';
+import ThemeContext from '../style/ThemeContext';
 
 
 const CollectList = () => {
+    const { theme } = useContext(ThemeContext);
     const [collects, setCollects] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [details, setDetails] = useState(false);
@@ -261,15 +262,14 @@ const CollectList = () => {
 
     return (
         <div style={{ height: '80vh', width: '100%', maxWidth: "90vw" }}>
-            <ToastContainer />
-            <Typography>
+            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Solicitações de Coleta
             </Typography>
             <Box id="collects-table" height="60vh">
 
             <DataGrid
                 ref={dataGridRef}
-                sx={{ marginBottom: '10px', paddingBottom: '10px' }}
+                sx={{ marginBottom: '10px', paddingBottom: '10px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

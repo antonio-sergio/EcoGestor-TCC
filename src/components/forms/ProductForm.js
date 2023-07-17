@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { NumericFormat } from 'react-number-format';
 import productService from '../../services/product/product-service';
 
+
 const ProductForm = () => {
     const [product, setProduct] = useState({
         type: '',

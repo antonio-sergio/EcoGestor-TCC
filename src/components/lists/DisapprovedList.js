@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
-import { toast, ToastContainer } from 'react-toastify';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box } from '@mui/material';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import ThemeContext from '../style/ThemeContext';
 
 
 const DisapprovedList = () => {
+    const { theme } = useContext(ThemeContext);
     const [collects, setCollects] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [address, setAddress] = useState(false);
@@ -77,12 +78,11 @@ const DisapprovedList = () => {
 
     return (
         <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
-            <ToastContainer />
             <Typography>
                 Coletas Recusadas
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

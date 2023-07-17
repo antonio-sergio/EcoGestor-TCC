@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
@@ -6,15 +6,16 @@ import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import productService from '../../services/product/product-service';
 import inventoryService from '../../services/inventory/inventory-service';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import ThemeContext from '../style/ThemeContext';
 
 const ProductsList = () => {
+    const { theme } = useContext(ThemeContext);
     const [products, setProducts] = useState([]);
     const [openModalProduct, setOpenModalProduct] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     useEffect(() => {
         productService.getAllProducts().then(response => {
-            console.log('reponse prod', response.data.products)
             if (response.status === 200) {
                 setProducts(response.data.products);
             }
@@ -75,11 +76,11 @@ const ProductsList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
-            <Typography>
+            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Produtos
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={products}
                 columns={columns}

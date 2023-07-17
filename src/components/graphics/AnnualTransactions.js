@@ -194,7 +194,6 @@ function AnnualTransactions() {
                             callbacks: {
                                 label: function (context) {
                                     const datasetIndex = context.datasetIndex;
-                                    const dataIndex = context.dataIndex;
 
                                     if (datasetIndex === 0) {
                                         return `Valor Atual: R$ ${context.raw}`;
@@ -217,6 +216,7 @@ function AnnualTransactions() {
             const newProjectionChartInstance = new Chart(projectionChartRef.current, projectionChartConfig);
             setProjectionChartInstance(newProjectionChartInstance);
         }
+         // eslint-disable-next-line
     }, [salesData, purchaseData]);
 
     return (

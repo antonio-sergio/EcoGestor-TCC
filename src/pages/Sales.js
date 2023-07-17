@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import ThemeContext from "../components/style/ThemeContext";
 import productService from "../services/product/product-service";
 import saleService from "../services/sale/sale-service";
 import userService from "../services/user/user-service";
@@ -7,13 +6,14 @@ import { TextField, Box, Grid, Typography, FormControl, InputLabel, MenuItem, Se
 import { ToastContainer, toast } from 'react-toastify';
 import AuthContext from '../services/auth/AuthContext';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import ThemeContext from '../components/style/ThemeContext';
 
 
 const Sales = () => {
+    const { theme } = useContext(ThemeContext);
     const { user } = useContext(AuthContext);
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
-    const { theme } = useContext(ThemeContext);
     const [sale, setSale] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -111,10 +111,9 @@ const Sales = () => {
     const currentDate = new Date().toLocaleDateString(undefined, currentDateOptions);
 
     const createSale = () => {
-        console.log('items', items)
         if (selectedCustomer === null) {
             toast.warning('Por favor selecione o cliente!');
-        } else if (items.length === 0 ) {
+        } else if (items.length === 0) {
             toast.warning('Por favor adicione pelo menos 1 item antes de finalizar a venda!');
         } else {
             const sale = {
@@ -140,11 +139,12 @@ const Sales = () => {
         }
     }
 
+    console.log('tema', theme)
     return (
         <Grid container spacing={2} display="flex" justifyContent="center" alignItems="center" height="100%">
             <ToastContainer />
             <Grid item xs={12}>
-                <Box component={Paper} elevation={2} p={3}>
+                <Box component={Paper} sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} elevation={2} p={3}>
                     <Typography variant="subtitle1">Procedimento: <strong>VENDA</strong></Typography>
                     <Typography variant="subtitle1">Data: <strong>{currentDate}</strong></Typography>
                 </Box>
@@ -152,45 +152,45 @@ const Sales = () => {
             <Grid item xs={12} display="flex" alignItems="center" pr={5}>
                 <Grid item xs={12} display="flex" justifyContent="center">
                     <Grid item xs={12} sm={9} >
-                        <Box component={Paper} elevation={2} m={5} p={3} height="450px" position="relative">
+                        <Box component={Paper} elevation={2} m={5} p={3} height="450px" position="relative" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black',   border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
                             <Typography variant="h6">Lista de items</Typography>
                             {items.length === 0 ? (
                                 <Box sx={{ height: "80%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "10px" }}>
                                     <Typography variant="body2" fontSize={24}>Nenhum item adicionado</Typography>
                                 </Box>
                             ) : (
-                                <Box sx={{ maxHeight: "360px", overflowY: "auto" }}>
+                                <Box sx={{ maxHeight: "360px", overflowY: "auto"  }}>
                                     <TableContainer>
-                                        <Table>
+                                        <Table >
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell>Código</TableCell>
-                                                    <TableCell>Produto</TableCell>
-                                                    <TableCell>Quantidade</TableCell>
-                                                    <TableCell>Subtotal</TableCell>
-                                                    <TableCell>Remover</TableCell>
+                                                    <TableCell sx={{color: 'green'}}>Código</TableCell>
+                                                    <TableCell sx={{color: 'green'}}>Produto</TableCell>
+                                                    <TableCell sx={{color: 'green'}}>Quantidade</TableCell>
+                                                    <TableCell sx={{color: 'green'}}>Subtotal</TableCell>
+                                                    <TableCell sx={{color: 'green'}}>Remover</TableCell>
                                                 </TableRow>
                                             </TableHead>
-                                            <TableBody>
+                                            <TableBody >
                                                 {items.map((item, index) => (
-                                                    <TableRow key={index}>
+                                                    <TableRow   key={index}>
                                                         <TableCell>
-                                                            <Typography>
-                                                                <strong>{item.product_id}</strong>
+                                                            <Typography sx={{color: 'green'}}>
+                                                                <strong >{item.product_id}</strong>
                                                             </Typography>
                                                         </TableCell>
                                                         <TableCell>
-                                                            <Typography>
+                                                            <Typography sx={{color: 'green'}}>
                                                                 {String(item.product_name).toUpperCase()}
                                                             </Typography>
                                                         </TableCell>
                                                         <TableCell>
-                                                            <Typography>
+                                                            <Typography sx={{color: 'green'}}>
                                                                 <strong>{item.amount} Un.</strong>
                                                             </Typography>
                                                         </TableCell>
                                                         <TableCell>
-                                                            <Typography><strong>R$ {item.subtotal}</strong></Typography>
+                                                            <Typography sx={{color: 'green'}}><strong>R$ {item.subtotal}</strong></Typography>
                                                         </TableCell>
                                                         <TableCell>
                                                             <Button onClick={() => handleRemoveItem(index)}>
@@ -220,13 +220,13 @@ const Sales = () => {
                     </Grid>
                 </Grid>
 
-                <Grid component={Paper} item xs={9} py={2} my={5} sm={3} display="flex" minWidth="400px" justifyContent="center" flexDirection="column" alignItems="center">
+                <Grid component={Paper} item xs={9} py={2} my={5} sm={3} display="flex" minWidth="400px" justifyContent="center" flexDirection="column" alignItems="center" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }}>
                     <Grid item xs={12} sm={9} height="450px" >
                         <FormControl fullWidth margin="normal">
-                            <InputLabel id="" sx={{ width: '100%' }}>Cliente</InputLabel>
+                            <InputLabel color='success' sx={{ width: '100%', color: theme?.palette?.type === 'dark' ? 'green' : 'black' }}>Cliente</InputLabel>
                             <Select
                                 labelId="customer-label"
-                                color='primary'
+                                color='success'
                                 label="Cliente"
                                 size='medium'
                                 value={selectedCustomer}
@@ -235,7 +235,7 @@ const Sales = () => {
                             >
                                 {customers.map((value) => (
                                     <MenuItem key={value.id_user} value={value}>
-                                        {String(value.name).toUpperCase()}
+                                        <Typography sx={{ color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} > {String(value.name).toUpperCase()}</Typography>
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -249,9 +249,10 @@ const Sales = () => {
 
                         <Grid item xs={12} sm={12}>
                             <FormControl fullWidth margin="normal">
-                                <InputLabel id="product-label" sx={{ width: '100%' }}>Produto</InputLabel>
+                                <InputLabel id="product-label" color='success' sx={{ width: '100%', color: theme?.palette?.type === 'dark' ? 'green' : 'black' }}>Produto</InputLabel>
                                 <Select
                                     label="Produto"
+                                    color='success'
                                     labelId="product-label"
                                     value={selectedProduct}
                                     onChange={(e) => setSelectedProduct(e.target.value)}
@@ -259,21 +260,23 @@ const Sales = () => {
                                 >
                                     {products.map((value) => (
                                         <MenuItem key={value.id_product} value={value}>
-                                            {String(value.type).toUpperCase()}
+                                            <Typography sx={{ color: theme?.palette?.type === 'dark' ? 'green' : 'black' }}>{String(value.type).toUpperCase()}</Typography>
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
-                            <Box border={1} sx={{ backgroundColor: "#F5F5F5", borderRadius: "5px", paddingLeft: "10px", height: "60px" }}>
+                            <Box border={1} sx={{ borderRadius: "5px", paddingLeft: "10px", height: "60px", backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "#F5F5F5", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }}>
                                 <Typography>Preço: <strong>{selectedProduct?.sale_price}</strong></Typography>
                                 <Typography>Estoque: <strong>{selectedProduct?.inventory?.amount}</strong></Typography>
                             </Box>
                         </Grid>
                         <Grid item xs={6} sm={3} >
-                            <FormControl fullWidth margin="normal">
+                            <FormControl fullWidth color='success' margin="normal">
+
                                 <TextField
+                                    color='success'
                                     inputProps={{ min: 0 }}
-                                    sx={{ minWidth: "300px" }}
+                                    sx={{ minWidth: "300px", color: "green", backgroundColor: theme?.palette?.type === 'dark' ? 'green' : '#f3f3f3' }}
                                     type="number"
                                     label="Quantidade"
                                     value={amount}

@@ -1,10 +1,13 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Container, Box, Grid, Button, Paper, Card, CardMedia, Tabs, Tab } from '@mui/material';
+import React, { useEffect, useRef } from 'react';
+import { AppBar, Toolbar, Typography, Container, Box, Grid, Button, Paper, CardMedia, Tabs, Tab } from '@mui/material';
 import banner from "../assets/images/reciclagem.png";
 import { Link } from "react-router-dom";
+import background from "../assets/videos/background.mp4";
+
 
 const LandingPage = () => {
 
+    const videoRef = useRef(null);
     const handleScrollToSection = (id) => {
         const element = document.getElementById(id);
         if (element) {
@@ -12,17 +15,23 @@ const LandingPage = () => {
         }
     };
 
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.6;
+        }
+    }, []);
+
     const [selectedTab, setSelectedTab] = React.useState(0);
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
     return (
-        <div>
+        <div style={{ backgroundColor: "#fff" }}>
             <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", display: "flex", justifyContent: "center" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box >
-                        <Typography style={{ fontFamily: 'Belanosima, sans-serif' }} variant="h5" component="h2" align="center" color="white" fontSize="50px">
+                        <Typography  style={{ fontFamily: 'Belanosima, sans-serif' }} variant="h5" component="h2" align="center" color="white" fontSize="50px">
                             ECOGESTOR
                         </Typography>
                     </Box>
@@ -40,8 +49,27 @@ const LandingPage = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
+            <Box pt={10} width="99vw" sx={{ backgroundColor: "red" }}>
+                <CardMedia
+                    component="video"
+                    src={background}
+                    ref={videoRef}
+                    autoPlay="true"
+                    vi
+                    loop
+                    muted
+                    width="95vw"
+                    sx={{ position: 'absolute' }}
+                />
+            </Box>
 
+            <Box height="90vh" display="flex" justifyContent="center" alignItems="center" sx={{position: 'relative'}}>
+                <Typography  textAlign="center" color='white' fontFamily='Belanosima, sans-serif' variant='h3' fontSize={80}>
+                    Juntos, podemos fazer a diferença!
+                </Typography>
+            </Box>
             <Box
+                mt={20}
                 id="home"
                 sx={{
                     height: '50vh',
@@ -244,14 +272,14 @@ const LandingPage = () => {
 
             <AppBar position="static" sx={{ mt: 'auto', backgroundColor: "#27AB6E" }}>
                 <Toolbar>
-                    <Typography variant="body1" sx={{ flexGrow: 1, color: '#A9A9A9' }}>
+                    <Typography variant="body1" sx={{ flexGrow: 1, color: 'gray' }}>
                         &copy; 2023 EcoGestor. Todos os direitos reservados.
                     </Typography>
-                    <Typography variant="body1" sx={{ flexGrow: 1, color: '#A9A9A9' }}>
+                    <Typography variant="body1" sx={{ flexGrow: 1, color: 'gray' }}>
                         Av. Tristão D'almeida 170, Distrito Industrial - Franca SP
                     </Typography>
-                    <Button sx={{ color: "#A9A9A9" }}>Política de Privacidade</Button>
-                    <Button sx={{ color: "#A9A9A9" }}>Termos de Uso</Button>
+                    <Button sx={{ color: "gray" }}>Política de Privacidade</Button>
+                    <Button sx={{ color: "gray" }}>Termos de Uso</Button>
                 </Toolbar>
             </AppBar>
         </div>

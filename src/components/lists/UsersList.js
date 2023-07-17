@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
@@ -7,9 +7,11 @@ import userService from '../../services/user/user-service';
 import addressService from '../../services/address/address-service';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import ThemeContext from '../style/ThemeContext';
 
 
 const UsersList = () => {
+  const { theme } = useContext(ThemeContext);
   const [users, setUsers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openModalUser, setOpenModalUser] = useState(false);
@@ -109,7 +111,6 @@ const UsersList = () => {
 
   const handleSaveAddress = () => {
     addressService.updateAddress(selectedAddress).then(response => {
-      console.log('response update', response)
       if (response.status === 200) {
         toast.success('Endereço atualizado com sucesso!');
         setEditMode(!editMode);
@@ -122,7 +123,6 @@ const UsersList = () => {
   };
 
   const handleSaveUser = () => {
-    console.log('seletc uiser ', selectedUser)
     userService.updateUser(selectedUser).then(response => {
       if (response.status === 200) {
         toast.success('Usuário atualizado com sucesso!');
@@ -140,11 +140,11 @@ const UsersList = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <ToastContainer />
-      <Typography>
+      <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
         Usuários
       </Typography>
       <DataGrid
-        sx={{ marginBottom: '160px', paddingBottom: '160px' }}
+        sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : ''}}
         localeText={localizedTextsMap}
         rows={users}
         columns={columns}

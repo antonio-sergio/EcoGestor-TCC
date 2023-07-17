@@ -4,7 +4,7 @@ import addressService from '../../services/address/address-service';
 import { toast, ToastContainer } from 'react-toastify';
 import { TextField, Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, CardMedia, Card } from '@mui/material';
 import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import { format, startOfDay, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import AuthContext from '../../services/auth/AuthContext';
@@ -46,7 +46,6 @@ const CollectForm = () => {
             .catch(error => console.log(error));
     }, [user, edited]);
 
-    console.log('userr', user)
     const scheduleList = ["08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00"];
 
     const handleChangeDate = (date) => {
@@ -76,11 +75,9 @@ const CollectForm = () => {
 
     const handleSaveAddress = () => {
         let numberCep = extrairNumeros(address.zip_code);
-        console.log('number cep', numberCep)
         address.zip_code = String(numberCep);
         if (String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca') {
             addressService.updateAddress(address).then(response => {
-                console.log('response update', response)
                 if (response.status === 200) {
                     toast.success('Endereço atualizado com sucesso!');
                     if (edited === true) {
@@ -112,7 +109,6 @@ const CollectForm = () => {
         } else {
             numeros = [];
         }
-        console.log('numeros', numeros)
         if (numeros[1]) {
             return Number(numeros[0] + numeros[1]);
         }
@@ -170,10 +166,10 @@ const CollectForm = () => {
                         dateFormat="dd/MM/yyyy" // Define o formato de data local
                         placeholderText="Selecione uma data"
                         locale="pt"
-                        style={{ color: "red" }}
+                        style={{ color: "red", width: 250 }}
                     />
                 </Box>
-                <form style={{ zIndex: 1, marginTop: "20px" }} onSubmit={handleSubmit}>
+                <form style={{ zIndex: 1, marginTop: "20px", width: 250 }} onSubmit={handleSubmit}>
                     <TextField
                         name="collect_time"
                         value={selectedTime}
