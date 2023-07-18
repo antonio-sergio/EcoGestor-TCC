@@ -49,7 +49,7 @@ const LandingPage = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Box pt={10} width="99vw" sx={{ backgroundColor: "red" }}>
+            <Box pt={10} width="99vw">
                 <CardMedia
                     component="video"
                     src={background}
@@ -64,12 +64,13 @@ const LandingPage = () => {
             </Box>
 
             <Box height="90vh" display="flex" justifyContent="center" alignItems="center" sx={{position: 'relative'}}>
-                <Typography  textAlign="center" color='white' fontFamily='Belanosima, sans-serif' variant='h3' fontSize={80}>
+                <Typography className='tracking-in-expand'  textAlign="center" color='white' fontFamily='Belanosima, sans-serif' variant='h3' fontSize={80}>
                     Juntos, podemos fazer a diferença!
                 </Typography>
             </Box>
+
             <Box
-                mt={20}
+                pt={10}
                 id="home"
                 sx={{
                     height: '50vh',
