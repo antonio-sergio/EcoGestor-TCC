@@ -159,17 +159,16 @@ const CollectForm = () => {
         <>
             <ToastContainer />
             <Box >
-                <Box>
+                <Box sx={{width: 250}}>
                     <DatePicker
                         selected={selectedDate}
                         onChange={handleChangeDate}
                         dateFormat="dd/MM/yyyy" // Define o formato de data local
                         placeholderText="Selecione uma data"
                         locale="pt"
-                        style={{ color: "red", width: 250 }}
                     />
                 </Box>
-                <form style={{ zIndex: 1, marginTop: "20px", width: 250 }} onSubmit={handleSubmit}>
+                <form style={{ zIndex: 1, marginTop: "10px", width: 250 }} onSubmit={handleSubmit}>
                     <TextField
                         name="collect_time"
                         value={selectedTime}
@@ -178,7 +177,9 @@ const CollectForm = () => {
                         select
                         SelectProps={{
                             native: true,
+                        
                         }}
+                        sx={{width: 250}}
                     >
                         <option value="" disabled>
                             Selecione um horário
@@ -196,7 +197,7 @@ const CollectForm = () => {
                             );
                         })}
                     </TextField>
-                    <Box mt={5}>
+                    <Box mt={1}>
                         <Typography variant="body1"><strong>Logradouro:</strong> {address?.street}</Typography>
                         <Typography variant="body1"><strong>Número:</strong> {address?.number}</Typography>
                         <Typography variant="body1"><strong>Bairro:</strong> {address?.neighborhood}</Typography>
@@ -206,16 +207,16 @@ const CollectForm = () => {
                         {address?.complement && <Typography variant="body1"><strong>Complemento:</strong> {address?.complement}</Typography>}
                     </Box>
                     <Button
-                        sx={{ height: 53, marginTop: 2, }}
+                        sx={{ height: 53, marginTop: 2, width: 250 }}
                         type="button"
                         variant="outlined"
                         color="success"
                         onClick={() => setOpenModal(true)}
                     >
-                        editar endereço
+                        coleta p/ outro endereço?
                     </Button>
                     <Button
-                        sx={{ height: 53, marginTop: 2, marginRight: 4 }}
+                        sx={{ height: 53, marginTop: 2, marginRight: 4, width: 250 }}
                         type="submit"
                         variant="contained"
                         color="success"

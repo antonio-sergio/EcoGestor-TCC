@@ -23,12 +23,17 @@ h2 {
         font-weight: 600;
 }
 
-.react-datepicker__input-container>input {
-        background: #e0e0e0;
+.react-datepicker__input-container > input {
+        background: white;
         color: green;
-        border-radius: 5%;
         font-weight: bold;
+        display: block;
+        width: 240px !important;
+        border: 1px solid #fff;
+        box-shadow: 0 0 2px #fff;
 }
+
+
 
 /* tela login */
 .rotate-center {

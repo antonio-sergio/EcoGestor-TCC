@@ -29,15 +29,15 @@ const HomeUser = () => {
     const renderComponent = () => {
         if (selectedComponent === 'collectForm') {
             return <CollectForm />;
-        }else if(selectedComponent === 'myRequests'){
+        } else if (selectedComponent === 'myRequests') {
             return <MyCollectRequestList />
-        }else if(selectedComponent === 'profile'){
+        } else if (selectedComponent === 'profile') {
             return <Profile color={"#fff"} />
         }
     };
 
     return (
-        <Box sx={{  backgroundColor: "#fff", height: "90vh", marginTop: "-25px" }}>
+        <Box sx={{ backgroundColor: "#fff", height: "90vh", marginTop: "-25px" }}>
             <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", display: "flex", justifyContent: "center" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box >
@@ -47,14 +47,14 @@ const HomeUser = () => {
                     </Box>
                     <Box display="flex" >
                         <UserImage color="#27AB6E" imageUrl={dataImage.imageUrl} />
-                        <Button color="inherit" onClick={() => logout()}><Link to="/Login"><LogoutIcon sx={{color: "#B22222", fontSize: 40}} /></Link></Button>
+                        <Button color="inherit" onClick={() => logout()}><Link to="/Login"><LogoutIcon sx={{ color: "#B22222", fontSize: 40 }} /></Link></Button>
                     </Box>
                 </Toolbar>
             </AppBar>
             <Container>
                 <Grid container spacing={2} mt={15}>
                     <Grid item xs={12}>
-                        <Typography variant="h4" gutterBottom sx={{color: "#27AB6E", fontWeight: 700}}>
+                        <Typography variant="h4" gutterBottom sx={{ color: "#27AB6E", fontWeight: 700 }}>
                             Sistema de Coleta
                         </Typography>
                         <Typography variant="body1" gutterBottom >
@@ -65,7 +65,7 @@ const HomeUser = () => {
 
                     <Grid item xs={12} md={4}>
                         <Button
-                            variant="contained"
+                            variant={selectedComponent === 'collectForm' ? 'contained' : 'outlined'}
                             color="success"
                             size="large"
                             fullWidth
@@ -77,7 +77,7 @@ const HomeUser = () => {
 
                     <Grid item xs={12} md={4}>
                         <Button
-                            variant="contained"
+                            variant={selectedComponent === 'myRequests' ? 'contained' : 'outlined'}
                             color="success"
                             size="large"
                             fullWidth
@@ -89,7 +89,7 @@ const HomeUser = () => {
 
                     <Grid item xs={12} md={4}>
                         <Button
-                            variant="contained"
+                            variant={selectedComponent === 'profile' ? 'contained' : 'outlined'}
                             color="success"
                             size="large"
                             fullWidth
