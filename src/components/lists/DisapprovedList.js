@@ -82,7 +82,7 @@ const DisapprovedList = () => {
                 Coletas Recusadas
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

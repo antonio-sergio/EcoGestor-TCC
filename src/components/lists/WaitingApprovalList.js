@@ -129,7 +129,7 @@ const WaitingApprovalList = () => {
         },
         { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
         {
-            field: 'details_address', headerName: 'Endereço', width: 200, editable: true, renderCell: (params) => (
+            field: 'details_address', headerName: 'Endereço', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -140,7 +140,7 @@ const WaitingApprovalList = () => {
             )
         },
         {
-            field: 'to_approve', headerName: 'Aprovar', width: 200, editable: true, renderCell: (params) => (
+            field: 'to_approve', headerName: 'Aprovar', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -151,7 +151,7 @@ const WaitingApprovalList = () => {
             )
         },
         {
-            field: 'refuse', headerName: 'Recusar', width: 200, editable: true, renderCell: (params) => (
+            field: 'refuse', headerName: 'Recusar', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -179,13 +179,13 @@ const WaitingApprovalList = () => {
     }
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
             <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Aguardando Aprovação
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

@@ -108,29 +108,30 @@ const PendingRequestsList = () => {
         },
         { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
         {
-            field: 'details_address', headerName: 'Endereço', width: 200, editable: true, renderCell: (params) => (
+            field: 'details_address', headerName: 'Endereço', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
                     onClick={() => handleAddress(params.row)}
+
                 >
                     <ContentPasteSearchIcon />
                 </Button>
             )
         },
         {
-            field: 'finalize', headerName: 'Concluir Coleta', width: 200, editable: true, renderCell: (params) => (
+            field: 'finalize', headerName: 'Concluir Coleta', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
                     onClick={() => handlefinalizeCollect(params.row)}
                 >
-                    <CheckCircleIcon sx={{color: 'green'}} />
+                    <CheckCircleIcon sx={{ color: 'green' }} />
                 </Button>
             )
         },
         {
-            field: 'cancel', headerName: 'Cancelar', width: 200, editable: true, renderCell: (params) => (
+            field: 'cancel', headerName: 'Cancelar', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -158,17 +159,17 @@ const PendingRequestsList = () => {
     }
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
             <Typography>
                 Aprovadas, aguardando coleta
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}
-                pageSize={5}
+                pageSize={10}
                 componentsProps={{
                     pagination: {
                         labelRowsPerPage: "Linhas por página",
@@ -195,7 +196,7 @@ const PendingRequestsList = () => {
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Concluir Coleta
                 </DialogTitle>
-                
+
                 <DialogActions>
                     <>
                         <Button onClick={() => handleFinalizeCollect()}>Concluir Coleta</Button>
@@ -225,7 +226,6 @@ const PendingRequestsList = () => {
                 </DialogActions>
             </Dialog>
         </div>
-
     );
 };
 

@@ -77,12 +77,12 @@ const CompletedList = () => {
     }
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <Typography>
                 Coletas Realizadas
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

@@ -78,7 +78,7 @@ const BIComponent = ({ handleComponentClick }) => {
     }
 
     return (
-        <Container  sx={{ marginTop: 2, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+        <Container  sx={{ marginTop: 2, justifyContent: "center", alignItems: "center", width: "80vw", flexDirection: "row" }}>
             <Typography >Informação Diária</Typography>
             <Grid container height={140} width="100%" display="flex" justifyContent="space-around" alignItems="center" spacing={2} marginRight={1}>
 

@@ -114,7 +114,7 @@ const SalesList = () => {
 
     const deleteSale = async () => {
         await saleService.delele(selectedSale.id_sale).then(response => {
-            if(response.status === 200){
+            if (response.status === 200) {
                 toast.success('Venda deletada com sucesso!');
                 setOpenModalDelete(false);
             }
@@ -280,7 +280,7 @@ const SalesList = () => {
             <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
                 <SpeedDial
                     ariaLabel="SpeedDial"
-                    sx={{ position: 'absolute', bottom: 16, right: 16, }}
+                    sx={{ position: 'absolute', bottom: 38, right: 16, }}
                     icon={<SpeedDialIcon />}
                     FabProps={{
                         sx: {
@@ -305,15 +305,15 @@ const SalesList = () => {
     }
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
-            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
+            <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Vendas
             </Typography>
             <Box id="sales-table" height="60vh">
                 <DataGrid
                     ref={dataGridRef}
-                    sx={{ marginBottom: '10px', paddingBottom: '10px', color: theme?.palette?.type === 'dark' ? '#fff' : ''  }}
+                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                     localeText={localizedTextsMap}
                     rows={sales}
                     columns={columns}
@@ -327,9 +327,9 @@ const SalesList = () => {
                     checkboxSelection
                     onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
                 />
+                <SpeedDialShared />
             </Box>
 
-            <SpeedDialShared />
 
             <Dialog open={openModalSale} onClose={() => setOpenModalSale(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
@@ -378,8 +378,8 @@ const SalesList = () => {
                 </DialogTitle>
                 <DialogContent>
                     <Typography>
-                        
-                         {selectedSale && `Deseja deletar a venda do cliente ${selectedSale?.customer?.name}`}
+
+                        {selectedSale && `Deseja deletar a venda do cliente ${selectedSale?.customer?.name}`}
                     </Typography>
                 </DialogContent>
                 <DialogActions>

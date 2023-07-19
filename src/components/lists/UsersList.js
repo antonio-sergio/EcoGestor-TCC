@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, FormControl, InputLabel, MenuItem, Select, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import userService from '../../services/user/user-service';
@@ -140,21 +140,23 @@ const UsersList = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <ToastContainer />
-      <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
+      <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
         Usuários
       </Typography>
-      <DataGrid
-        sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : ''}}
-        localeText={localizedTextsMap}
-        rows={users}
-        columns={columns}
-        pageSize={5}
-        componentsProps={{
-          pagination: {
-            labelRowsPerPage: "Linhas por página",
-          }
-        }}
-      />
+      <Box height="60vh">
+        <DataGrid
+          sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+          localeText={localizedTextsMap}
+          rows={users}
+          columns={columns}
+          pageSize={5}
+          componentsProps={{
+            pagination: {
+              labelRowsPerPage: "Linhas por página",
+            }
+          }}
+        />
+      </Box>
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
         <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
           {editMode ? 'Editar Endereço' : 'Dados do Endereço'}

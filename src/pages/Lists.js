@@ -54,8 +54,8 @@ const Lists = () => {
                 }} />
 
             </Tabs>
-            <Box sx={{ width: '100%' }}>
-                <Box sx={{ p: 3 }}>
+            <Box sx={{ width: '80vw' }}>
+                <Box sx={{ p: 3, width: '100%' }}>
                     {value === 0 && <SalesList />}
                     {value === 1 && <PurchasesList />}
                     {value === 2 && <CollectList />}

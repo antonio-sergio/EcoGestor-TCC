@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import productService from '../../services/product/product-service';
@@ -47,8 +47,8 @@ const ProductsList = () => {
     ];
 
     const handleEditProduct = (product) => {
-        product.amount =  product?.inventory?.amount;
-        
+        product.amount = product?.inventory?.amount;
+
         setSelectedProduct(product);
         setOpenModalProduct(!openModalProduct);
     };
@@ -56,11 +56,11 @@ const ProductsList = () => {
 
 
     const handleSaveProduct = () => {
-        
+
         productService.updateProduct(selectedProduct).then(response => {
             if (response.status === 200) {
                 inventoryService.updateInventory(selectedProduct?.inventory?.id_inventory, selectedProduct?.amount).then(response => {
-                    if(response.status === 200){
+                    if (response.status === 200) {
                         toast.success('Produto atualizado com sucesso!');
                         setOpenModalProduct(false);
 
@@ -76,22 +76,24 @@ const ProductsList = () => {
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <ToastContainer />
-            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
+            <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Produtos
             </Typography>
-            <DataGrid
-                sx={{ marginBottom: '160px', paddingBottom: '160px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
-                localeText={localizedTextsMap}
-                rows={products}
-                columns={columns}
-                pageSize={5}
-                componentsProps={{
-                    pagination: {
-                        labelRowsPerPage: "Linhas por página",
-                    }
-                }}
-                getRowId={(row) => row.id_product}
-            />
+            <Box height="60vh">
+                <DataGrid
+                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                    localeText={localizedTextsMap}
+                    rows={products}
+                    columns={columns}
+                    pageSize={5}
+                    componentsProps={{
+                        pagination: {
+                            labelRowsPerPage: "Linhas por página",
+                        }
+                    }}
+                    getRowId={(row) => row.id_product}
+                />
+            </Box>
             <Dialog open={openModalProduct} onClose={() => setOpenModalProduct(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Editar Produto

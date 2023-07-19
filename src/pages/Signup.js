@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 
 const Signup = () => {
-    const [zipCodeMask, setZipCodeMask] = useState([/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]);
+    const [zipCodeMask, setZipCodeMask] = useState([/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]);
     const [zipCodeError, setZipCodeError] = useState('');
     const [zipCodeData, setZipCodeData] = useState(null);
     const [user, setUser] = useState({
@@ -54,7 +54,7 @@ const Signup = () => {
         const value = e.target.value;
         const digitsOnly = value.replace(/\D/g, ''); // Remove caracteres não numéricos
 
-        // Define a máscara baseada na quantidade de dígitos inseridos
+        // // Define a máscara baseada na quantidade de dígitos inseridos
         let mask;
         if (digitsOnly.length === 8) {
             mask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
@@ -71,7 +71,7 @@ const Signup = () => {
                     state: uf,
                     city: localidade,
                     neighborhood: bairro,
-                    zip_code: String(digitsOnly).substring(0, 7),
+                    zip_code: String(digitsOnly).substring(0, 8),
                 }));
             } else {
                 setZipCodeData(null);
@@ -80,12 +80,11 @@ const Signup = () => {
             mask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
             setZipCodeData(null);
         }
-
         setZipCodeMask(mask);
 
-        const isValid = digitsOnly.length === 8; // Verifica se a quantidade de dígitos é igual a 8
 
-        // Define a mensagem de erro condicional
+        const isValid = digitsOnly.length === 8;
+
         setZipCodeError(isValid ? '' : 'CEP inválido');
     };
 
@@ -122,7 +121,10 @@ const Signup = () => {
         } else {
             numeros = [];
         }
-        return Number(numeros[0] + numeros[1]);
+        if (numeros[1]) {
+            return numeros[0] + numeros[1];
+        }
+        return numeros[0]
     }
 
     const handleSubmit = (e) => {
@@ -136,30 +138,31 @@ const Signup = () => {
             complement: user.complement,
             neighborhood: user.neighborhood
         }
+
         if (String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca') {
-                addressService.create(address).then(response => {
-                    if (response.status === 201) {
-                        user.address_id = Number(response?.data?.id_address);
-                        user.image = selectedImage;
-                        userService.create(user).then(response => {
-                            if (response.status === 201) {
-                                toast.success('Usuário adicionado com sucesso!');
-                                resetForm();
-                            }
-                        }).catch(error => {
-                            toast.error(`${error.response.data.message}`);
-                            addressService.delete(user.address_id).then(response => {
-                            })
-                        })
-
-                    }
-                }).catch(
-                    error => {
-                        console.log(error);
+            addressService.create(address).then(response => {
+                if (response.status === 201) {
+                    user.address_id = Number(response?.data?.id_address);
+                    user.image = selectedImage;
+                    userService.create(user).then(response => {
+                        if (response.status === 201) {
+                            toast.success('Usuário adicionado com sucesso!');
+                            resetForm();
+                        }
+                    }).catch(error => {
                         toast.error(`${error.response.data.message}`);
+                        addressService.delete(user.address_id).then(response => {
+                        })
+                    })
 
-                    }
-                )
+                }
+            }).catch(
+                error => {
+                    console.log(error);
+                    toast.error(`${error.response.data.message}`);
+
+                }
+            )
         } else {
             toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
         }

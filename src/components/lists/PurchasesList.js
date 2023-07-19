@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, SpeedDial,  Dialog, DialogTitle, DialogContent, DialogActions, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
+import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import purchaseService from '../../services/purchase/purchase-service';
@@ -80,7 +80,7 @@ const PurchasesList = () => {
         setOpenModalPurchase(!openModalPurchase);
     };
 
-    
+
     const handleDelete = async (purchase) => {
         setSelectedPurchase(purchase);
         setOpenModalDelete(true);
@@ -88,7 +88,7 @@ const PurchasesList = () => {
 
     const deletePurchase = async () => {
         await purchaseService.delele(selectedPurchase.id_purchase).then(response => {
-            if(response.status === 200){
+            if (response.status === 200) {
                 toast.success('Compra deletada com sucesso!');
                 setOpenModalDelete(false);
             }
@@ -106,8 +106,8 @@ const PurchasesList = () => {
         const worksheet = workbook.addWorksheet('Compras');
 
         columns.forEach((column, index) => {
-            if(column.headerName !== 'Detalhar'){
-                worksheet.getColumn(index + 1).header = column.headerName ;
+            if (column.headerName !== 'Detalhar') {
+                worksheet.getColumn(index + 1).header = column.headerName;
                 worksheet.getColumn(index + 1).key = column.field;
                 worksheet.getColumn(index + 1).width = 10;
             }
@@ -248,7 +248,7 @@ const PurchasesList = () => {
             <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
                 <SpeedDial
                     ariaLabel="SpeedDial"
-                    sx={{ position: 'absolute', bottom: 16, right: 16, }}
+                    sx={{ position: 'absolute', bottom: 38, right: 16, }}
                     icon={<SpeedDialIcon />}
                     FabProps={{
                         sx: {
@@ -279,16 +279,16 @@ const PurchasesList = () => {
 
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
-            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
+            <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Compras
             </Typography>
             <Box id="purchases-table" height="60vh">
 
                 <DataGrid
                     ref={dataGridRef}
-                    sx={{ marginBottom: '10px', paddingBottom: '10px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                    sx={{  color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                     localeText={localizedTextsMap}
                     rows={purchases}
                     columns={columns}
@@ -302,8 +302,8 @@ const PurchasesList = () => {
                     checkboxSelection
                     onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
                 />
+                <SpeedDialShared />
             </Box>
-            <SpeedDialShared />
             <Dialog open={openModalPurchase} onClose={() => setOpenModalPurchase(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Detalhes da Compra
@@ -361,8 +361,8 @@ const PurchasesList = () => {
                 </DialogTitle>
                 <DialogContent>
                     <Typography>
-                        
-                         {selectedPurchase && `Deseja deletar a compra do fornecedor ${selectedPurchase?.seller?.name}`}
+
+                        {selectedPurchase && `Deseja deletar a compra do fornecedor ${selectedPurchase?.seller?.name}`}
                     </Typography>
                 </DialogContent>
                 <DialogActions>

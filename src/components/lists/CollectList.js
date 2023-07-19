@@ -40,11 +40,11 @@ const CollectList = () => {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 50 },
-        { field: 'name', headerName: 'Solicitante', width: 100, editable: true, valueGetter: (params) => params.row.user.name },
-        { field: 'phone', headerName: 'Telefone', width: 100, editable: true, valueGetter: (params) => params.row.user.phone },
+        { field: 'name', headerName: 'Solicitante', width: 150, editable: true, valueGetter: (params) => params.row.user.name },
+        { field: 'phone', headerName: 'Telefone', width: 150, editable: true, valueGetter: (params) => params.row.user.phone },
         { field: 'collect_date', headerName: 'Data', width: 100, editable: true, valueGetter: (params) => formatDate(params.row.collect_date) },
         { field: 'collect_time', headerName: 'Hora', width: 100, editable: true },
-        { field: 'status', headerName: 'Status', width: 150, editable: true },
+        { field: 'status', headerName: 'Status', width: 100, editable: true },
         {
             field: 'final_date', headerName: 'Data de Coleta', width: 200, editable: true, valueGetter: (params) => {
                 if (params.row.final_date !== null) {
@@ -56,7 +56,7 @@ const CollectList = () => {
         },
         { field: 'details_address', headerName: 'Endereço', width: 600, editable: true },
         {
-            field: 'details', headerName: 'Observação', width: 200, editable: true, renderCell: (params) => (
+            field: 'details', headerName: 'Observação', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -132,7 +132,7 @@ const CollectList = () => {
             Data: formatDate(collect.collect_date),
             Hora: collect.collect_time,
             Status: collect.status,
-            DataColeta:  formatDate(collect.final_date),
+            DataColeta: formatDate(collect.final_date),
             Endereco: collect.details_address
         }));
 
@@ -236,7 +236,7 @@ const CollectList = () => {
             <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
                 <SpeedDial
                     ariaLabel="SpeedDial"
-                    sx={{ position: 'absolute', bottom: 16, right: 16, }}
+                    sx={{ position: 'absolute', bottom: 38, right: 16, }}
                     icon={<SpeedDialIcon />}
                     FabProps={{
                         sx: {
@@ -261,31 +261,32 @@ const CollectList = () => {
     }
 
     return (
-        <div style={{ height: '80vh', width: '100%', maxWidth: "90vw" }}>
-            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
+        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+
+            <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Solicitações de Coleta
             </Typography>
             <Box id="collects-table" height="60vh">
 
-            <DataGrid
-                ref={dataGridRef}
-                sx={{ marginBottom: '10px', paddingBottom: '10px', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
-                localeText={localizedTextsMap}
-                rows={collects}
-                columns={columns}
-                pageSize={5}
-                componentsProps={{
-                    pagination: {
-                        labelRowsPerPage: "Linhas por página",
-                    }
-                }}
-                getRowId={(row) => row.id}
-                checkboxSelection
-                onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
-            />
+                <DataGrid
+                    ref={dataGridRef}
+                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                    localeText={localizedTextsMap}
+                    rows={collects}
+                    columns={columns}
+                    pageSize={5}
+                    componentsProps={{
+                        pagination: {
+                            labelRowsPerPage: "Linhas por página",
+                        }
+                    }}
+                    getRowId={(row) => row.id}
+                    checkboxSelection
+                    onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+                />
+                <SpeedDialShared />
             </Box>
 
-            <SpeedDialShared />
 
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>

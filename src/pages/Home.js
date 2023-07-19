@@ -26,7 +26,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 const StyledNav = styled(Box)(({ theme, expanded }) => ({
-  width: expanded === 'true' ? '220px' : '50px',
+  width: expanded === 'true' ? '20vw' : '50px',
   transition: 'width 0.3s ease',
   color: 'white',
   background: theme.palette?.primary?.main,
@@ -124,7 +124,7 @@ const Home = () => {
 
   return (
     <StyledContainer sx={{ minWidth: '100vw' }}>
-      <StyledNav theme={theme} expanded={expanded.toString()}>
+      <StyledNav theme={theme}  expanded={expanded.toString()}>
         <StyledList>
           {expanded === true && <Card>
             <CardMedia
@@ -208,10 +208,8 @@ const Home = () => {
           <ThemeToggleButton />
           </Box>
         </Bar>
-        <Box>
-
-        </Box>
-        <ContainerRenderItem theme={theme}>
+        
+        <ContainerRenderItem sx={{width: "100%"}} theme={theme}>
           {renderComponent()}
         </ContainerRenderItem>
         <Footer />

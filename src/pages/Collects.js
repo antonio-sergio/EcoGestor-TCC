@@ -50,7 +50,7 @@ const Lists = () => {
 
 
             </Tabs>
-            <Box sx={{ width: '100%' }}>
+            <Box sx={{ width: '80vw' }}>
                 <Box sx={{ p: 3,color: theme?.palette?.type === 'dark' ? 'green' : ''}}>
                     {value === 0 && <WaitingApprovalList />}
                     {value === 1 && <PendingRequestsList />}
