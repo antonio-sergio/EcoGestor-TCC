@@ -23,13 +23,13 @@ export const darkTheme = {
   palette: {
     type: 'dark',
     primary: {
-      main: '#000',
+      main: '#111827',
     },
     secondary: {
       main: '#f50057',
     },
     background: {
-      main: '#000',
+      main: '#111827',
     },
     mode: {
       main: '#000',

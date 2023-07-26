@@ -134,6 +134,9 @@ const ProductForm = () => {
                             label="Quantidade"
                             name="amount"
                             type="number"
+                            inputProps={{
+                                min: 0
+                            }}
                             value={product.amount}
                             onChange={handleChange}
                             fullWidth

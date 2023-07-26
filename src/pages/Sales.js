@@ -47,11 +47,12 @@ const Sales = () => {
 
     const handleAddItem = () => {
         if (selectedProduct === 0 || amount < 1) {
-            toast.warning('Por favor selecione o produto e insira a quantidade!')
+            toast.warning('Por favor selecione o produto e insira uma quantidade válida!')
         } else {
             const selectedProductInventory = selectedProduct?.inventory?.amount;
 
             if (amount < 1 || amount > selectedProductInventory) {
+                toast.warning("Não pode ser adicionada uma quantidade maior que o estoque atual!")
                 return; // Não adiciona o item se a quantidade for menor que 1 ou maior que o estoque disponível
             }
 
@@ -278,6 +279,9 @@ const Sales = () => {
                                     inputProps={{ min: 0 }}
                                     sx={{ minWidth: "300px", color: "green", backgroundColor: theme?.palette?.type === 'dark' ? 'green' : '#f3f3f3' }}
                                     type="number"
+                                    InputProps={{
+                                        min: 1
+                                    }}
                                     label="Quantidade"
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}

@@ -93,7 +93,7 @@ const Login = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} height="10%" sx={{ marginTop: 10 }} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                        <Grid item xs={12} height="100px" sx={{position: "relative", bottom: 0}}  display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                             <Button type="button" >
                                 <Link style={{ color: "#98FB80" }} to="/Signup">  Ainda não possui uma conta? Cadastre-se</Link>
                             </Button>
