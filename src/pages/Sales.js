@@ -142,12 +142,12 @@ const Sales = () => {
 
     console.log('tema', theme)
     return (
-        <Grid container spacing={2} display="flex" justifyContent="center" alignItems="center" height="100%">
+        <Grid container spacing={14} display="flex" justifyContent="center" alignItems="center"  height="100%">
             <ToastContainer />
             <Grid item xs={12}>
-                <Box component={Paper} sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} elevation={2} p={3}>
-                    <Typography variant="subtitle1">Procedimento: <strong>VENDA</strong></Typography>
-                    <Typography variant="subtitle1">Data: <strong>{currentDate}</strong></Typography>
+                <Box component={Paper} display="flex" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} elevation={4} p={3}>
+                    <Typography variant="subtitle1">Operação: <strong>VENDA</strong></Typography>
+                    <Typography sx={{marginLeft: 5}} variant="subtitle1">Data: <strong>{currentDate}</strong></Typography>
                 </Box>
             </Grid>
             <Grid item xs={12} display="flex" alignItems="center" pr={5}>

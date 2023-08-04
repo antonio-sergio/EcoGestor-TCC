@@ -1,5 +1,4 @@
-import { Box, CardMedia, Typography } from "@mui/material";
-import colors from "../../assets/images/colors.png";
+import { Box, Typography } from "@mui/material";
 
 const Background = () => {
   return (
@@ -18,15 +17,7 @@ const Background = () => {
           EcoGestor
         </Typography>
       </Box>
-      <Box className="bounce-in-top" height="50%" width="100%" display="flex" justifyContent="center" alignItems="flex-end">
-        <CardMedia
-          component="img"
-          height="300"
-          image={colors}
-          alt="Carrinhos de reciclagem"
-          sx={{ objectFit: 'contain' }}
-        />
-      </Box>
+      
     </Box>
   );
 };

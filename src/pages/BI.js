@@ -17,7 +17,7 @@ import ProductsChart from '../components/graphics/ProductsChart';
 import ThemeContext from '../components/style/ThemeContext';
 
 const BIComponent = ({ handleComponentClick }) => {
-  const { theme } = useContext(ThemeContext);
+    const { theme } = useContext(ThemeContext);
 
     const [dateObject] = useState({
         startDate: moment().add(1, 'days').format('YYYY-MM-DD'),
@@ -64,21 +64,27 @@ const BIComponent = ({ handleComponentClick }) => {
         })
     }, [dateObject]);
 
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+          setSelectedComponent('transations');
+        }, 2000);
+        return () => clearTimeout(timeout);
+      }, []);
 
     const renderComponent = () => {
         if (selectedComponent === 'collects') {
             return <CollectChart />;
-        } else if(selectedComponent === 'trasations') {
+        } else if (selectedComponent === 'transations') {
             return <AnnualTransactions />
-        }else if(selectedComponent === 'products'){
+        } else if (selectedComponent === 'products') {
             return <ProductsChart />
-        } else{
+        } else {
             return <Background />
         }
     }
 
     return (
-        <Container  sx={{ marginTop: 2, justifyContent: "center", alignItems: "center", width: "80vw", flexDirection: "row" }}>
+        <Container sx={{ marginTop: 2, justifyContent: "center", alignItems: "center", width: "80vw", flexDirection: "row" }}>
             <Typography >Informação Diária</Typography>
             <Grid container height={140} width="100%" display="flex" justifyContent="space-around" alignItems="center" spacing={2} marginRight={1}>
 
@@ -146,20 +152,21 @@ const BIComponent = ({ handleComponentClick }) => {
                 </Grid>
             </Grid>
 
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 5, marginRight: 3, borderRadius: "5px", maxWidth: "90vw"}} >
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 5, marginRight: 3, borderRadius: "5px", maxWidth: "90vw" }} >
                 {renderComponent()}
                 <Box id="modules" sx={{ position: 'fixed', bottom: 50, right: 45 }}>
                     <BottomNavigation
-                    sx={{backgroundColor: theme.palette?.primary?.main}}
+                        
+                        sx={{ backgroundColor: theme.palette?.primary?.main, width: 250 }}
                         showLabels
                         value={selectedComponent}
                         onChange={(event, newValue) => {
                             setSelectedComponent(newValue);
                         }}
                     >
-                        <BottomNavigationAction sx={{color: "white"}} value="collects" label="Coletas" icon={<LocalShippingIcon  />} />
-                        <BottomNavigationAction sx={{color: "white"}} value="trasations" label="Transações" icon={<CurrencyExchangeIcon />} />
-                        <BottomNavigationAction sx={{color: "white"}} value="products" label="Produtos" icon={<CategoryIcon />} />
+                        <BottomNavigationAction sx={{ color: "white" }} value="collects" label="Coletas" icon={<LocalShippingIcon />} />
+                        <BottomNavigationAction sx={{ color: "white" }} value="transations" label="Transações" icon={<CurrencyExchangeIcon />} />
+                        <BottomNavigationAction sx={{ color: "white" }} value="products" label="Produtos" icon={<CategoryIcon />} />
                     </BottomNavigation>
                 </Box>
             </Box>

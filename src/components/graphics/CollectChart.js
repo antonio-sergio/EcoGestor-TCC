@@ -4,8 +4,7 @@ import moment from 'moment';
 import collectService from '../../services/collect/collect-service';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Box, CardMedia, Typography } from '@mui/material';
-import truck from "../../assets/images/truck.png";
+import { Box, Typography } from '@mui/material';
 
 const CollectChart = () => {
     const chartRef = useRef(null);
@@ -76,9 +75,15 @@ const CollectChart = () => {
     }, [collects]);
 
     return (
-        <Box style={{ width: "100%", height: "75vh", display: "flex",  }}>
-            <Box width="50%">
-                <Box sx={{ display: "flex", flexDirection: "collumn", alignItems: "center", height: "100px", padding: 2 }}>
+        <Box style={{ width: "100%", height: "40vh", display: "flex",  }}>
+            <Box width="100%">
+                
+                <Box  padding= {2}>
+                    <Box sx={{height: "300px" }}>
+                        <canvas ref={chartRef}></canvas>
+                    </Box>
+                </Box>
+            <Box sx={{ display: "flex", flexDirection: "collumn", alignItems: "center", height: "100px", padding: 2 }}>
                     <Typography fontSize={20} >Período de coleta: </Typography>
                     <DatePicker
                         dateFormat="dd/MM/yyyy"
@@ -88,7 +93,7 @@ const CollectChart = () => {
                         selectsStart
                         startDate={startDate}
                         endDate={endDate}
-                    /> <Typography mx={1}>a</Typography>
+                        /> <Typography mx={1}>a</Typography>
                     <DatePicker
                         dateFormat="dd/MM/yyyy"
                         locale="pt"
@@ -98,15 +103,10 @@ const CollectChart = () => {
                         startDate={startDate}
                         endDate={endDate}
                         minDate={startDate}
-                    />
+                        />
                 </Box>
-                <Box  padding= {2}>
-                    <Box sx={{ width: "50%", height: "200px" }}>
-                        <canvas ref={chartRef}></canvas>
-                    </Box>
                 </Box>
-            </Box>
-            <Box width="50%" display="flex" alignItems="flex-end" >
+            {/* <Box width="50%" display="flex" alignItems="flex-end" >
                 <CardMedia
                     component="img"
                     height="400"
@@ -114,7 +114,7 @@ const CollectChart = () => {
                     alt="Caminhão de reciclagem"
                     sx={{objectFit: 'contain'}}
                 />
-            </Box>
+            </Box> */}
 
         </Box>
     );
