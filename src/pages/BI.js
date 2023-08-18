@@ -20,8 +20,8 @@ const BIComponent = ({ handleComponentClick }) => {
     const { theme } = useContext(ThemeContext);
     const timezone = 'America/Sao_Paulo';
     const [dateObject] = useState({
-        startDate: moment.tz(timezone).add(1, 'days').format('YYYY-MM-DD'),
-        endDate: moment().add(1, 'days').format('YYYY-MM-DD')
+        startDate: moment.tz(timezone).format('YYYY-MM-DD'),
+        endDate: moment().format('YYYY-MM-DD')
     });
     const [today] = useState(moment().format('YYYY-MM-DD'));
     const [totalSale, setTotalSale] = useState([]);
