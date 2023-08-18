@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Container, Card, CardContent, Typography, Box, BottomNavigation, BottomNavigationAction } from '@mui/material';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import saleService from '../services/sale/sale-service';
 import purchaseService from '../services/purchase/purchase-service';
 import collectService from '../services/collect/collect-service';
@@ -18,9 +18,9 @@ import ThemeContext from '../components/style/ThemeContext';
 
 const BIComponent = ({ handleComponentClick }) => {
     const { theme } = useContext(ThemeContext);
-
+    const timezone = 'America/Sao_Paulo';
     const [dateObject] = useState({
-        startDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+        startDate: moment.tz(timezone).add(1, 'days').format('YYYY-MM-DD'),
         endDate: moment().add(1, 'days').format('YYYY-MM-DD')
     });
     const [today] = useState(moment().format('YYYY-MM-DD'));
@@ -66,10 +66,10 @@ const BIComponent = ({ handleComponentClick }) => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-          setSelectedComponent('transations');
+            setSelectedComponent('transations');
         }, 2000);
         return () => clearTimeout(timeout);
-      }, []);
+    }, []);
 
     const renderComponent = () => {
         if (selectedComponent === 'collects') {
@@ -156,7 +156,7 @@ const BIComponent = ({ handleComponentClick }) => {
                 {renderComponent()}
                 <Box id="modules" sx={{ position: 'fixed', bottom: 50, right: 45 }}>
                     <BottomNavigation
-                        
+
                         sx={{ backgroundColor: theme.palette?.primary?.main, width: 250 }}
                         showLabels
                         value={selectedComponent}
