@@ -135,7 +135,7 @@ const Purchases = () => {
     }
 
     return (
-        <Grid container spacing={14} display="flex" justifyContent="center" alignItems="center" height="100%">
+        <Grid container  display="flex" justifyContent="center" alignItems="center" height="100%"  overflow='auto'>
             <ToastContainer />
             <Grid item xs={12}>
                 <Box component={Paper} display="flex" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} elevation={4} p={3}>

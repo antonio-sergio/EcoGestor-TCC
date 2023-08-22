@@ -78,7 +78,7 @@ const LandingPage = () => {
                     alignItems: 'center',
                 }}
             >
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 30, marginLeft: 20, marginRight: 20 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 60, marginLeft: 20, marginRight: 20 }}>
                     <Box sx={{ width: "55%" }}>
                         <Typography variant="h2" sx={{ color: '#27AB6E', mb: 2 }}>
                             Bem-vindo!
@@ -110,7 +110,7 @@ const LandingPage = () => {
                 backgroundSize: "cover"
             }}></Box> */}
 
-            <Box sx={{ backgroundColor: "#27AB6E", height: 200, marginBottom: -75, marginTop: 40 }}></Box>
+            <Box sx={{ backgroundColor: "#27AB6E", height: 200, marginBottom: -50, marginTop: 40 }}></Box>
             <Box sx={{ py: 25 }}>
                 <Box sx={{ py: 10, height: "100%" }}>
                     <Container  >
