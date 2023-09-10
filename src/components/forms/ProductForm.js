@@ -95,6 +95,24 @@ const ProductForm = () => {
 
                     <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                         <NumericFormat
+                            label="Preço de Compra"
+                            name="purchase_price"
+                            value={product.purchase_price}
+                            customInput={TextField}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix="R$ "
+                            allowNegative={false}
+                            decimalScale={2}
+                            fixedDecimalScale
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                        />
+                    </Grid>
+                    
+                    <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
+                        <NumericFormat
                             label="Preço de Venda"
                             name="sale_price"
                             value={product.sale_price}
@@ -111,23 +129,7 @@ const ProductForm = () => {
                         />
                     </Grid>
 
-                    <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
-                        <NumericFormat
-                            label="Preço de Compra"
-                            name="purchase_price"
-                            value={product.purchase_price}
-                            customInput={TextField}
-                            thousandSeparator="."
-                            decimalSeparator=","
-                            prefix="R$ "
-                            allowNegative={false}
-                            decimalScale={2}
-                            fixedDecimalScale
-                            onChange={handleChange}
-                            required
-                            fullWidth
-                        />
-                    </Grid>
+                    
 
                     <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                         <TextField

@@ -8,7 +8,6 @@ import { toast, ToastContainer } from "react-toastify";
 import ThemeContext from "../components/style/ThemeContext";
 
 const Profile = ({color}) => {
-  console.log('color', color)
   const { theme } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
   const [dataUser, setDataUser] = useState(null);
@@ -22,11 +21,14 @@ const Profile = ({color}) => {
  
   useEffect(() => {
     userService.getUserById(user.id).then(response => {
+      console.log('responseeeee', response)
       if (response.status === 200) {
         setDataUser(response.data);
+        console.log('response data user', response.data)
       }
     });
   }, [user, openModal, openModalPassword]);
+  console.log('aux', dataUser)
 
   const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: 10,
@@ -91,22 +93,22 @@ const Profile = ({color}) => {
             <Grid item xs={12}>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="h6" mb={2}>Endereço:</Typography>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
-                Logradouro: <strong>{dataUser?.address.street}</strong>{" "}
+                Logradouro: <strong>{dataUser?.address?.street}</strong>{" "}
               </Typography>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
-                Número: <strong>{dataUser?.address.number}</strong>{" "}
+                Número: <strong>{dataUser?.address?.number}</strong>{" "}
               </Typography>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
-                Bairro: <strong>{dataUser?.address.neighborhood}</strong>
+                Bairro: <strong>{dataUser?.address?.neighborhood}</strong>
               </Typography>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
-                Cidade: <strong>{dataUser?.address.city}</strong>
+                Cidade: <strong>{dataUser?.address?.city}</strong>
               </Typography>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
-                Estado: <strong>{dataUser?.address.state}</strong>
+                Estado: <strong>{dataUser?.address?.state}</strong>
               </Typography>
               <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">
-                Cep: <strong>{dataUser?.address.zip_code}</strong>
+                Cep: <strong>{dataUser?.address?.zip_code}</strong>
               </Typography >
               {dataUser?.address?.complement && (
                 <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="body1">

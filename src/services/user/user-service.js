@@ -31,6 +31,9 @@ class UserService {
     getUserById(id){
         return axios.get(`${process.env.REACT_APP_API_URL}/user/${id}`)
     }
+    recoveryPassword(email){
+        return axios.post(`${process.env.REACT_APP_API_URL}/user/recovery`, {email: email})
+    }
 }
 
 const userService = new UserService();

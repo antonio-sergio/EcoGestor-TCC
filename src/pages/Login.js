@@ -1,15 +1,18 @@
 import React from "react";
 import { useContext, useState } from "react";
 import AuthContext from "../services/auth/AuthContext";
-import { TextField, Button, Grid, Box, CardContent, CardMedia, Typography } from "@mui/material";
+import { TextField, Button, Grid, Box, CardContent, CardMedia, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import earth from '../assets/images/login/earth2.png';
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import userService from "../services/user/user-service";
 
 const Login = () => {
     const { login } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+
 
     const loginSubmit = async (e) => {
         e.preventDefault();
@@ -37,8 +40,20 @@ const Login = () => {
         setPassword(password);
     };
 
+    const handleRecoveryPassword = () => {
+        userService.recoveryPassword(email).then(response => {
+            if (response.status === 200) {
+                toast.success('Enviamos uma senha temporária para o seu email!');
+                setOpenModal(false);
+            }
+        }).catch(error => {
+            console.log(error);
+            toast.error('Não foi possível recuperar a senha.')
+        })
+    };
+
     return (
-        <Grid container justifyContent="center" alignItems="center" height="100vh" sx={{backgroundColor: "#fff"}}>
+        <Grid container justifyContent="center" alignItems="center" height="100vh" sx={{ backgroundColor: "#fff" }}>
             <ToastContainer />
             <Grid display="flex" width="80vw" height="70vh" justifyContent="space-around" alignItems="center" style={{
                 background: "linear-gradient(to bottom, #98FB98, #27AB6E)", borderRadius: "10px",
@@ -93,18 +108,44 @@ const Login = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} height="100px" sx={{position: "relative", bottom: 0}}  display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                            <Button type="button" >
-                                <Link style={{ color: "#98FB80" }} to="/Signup">  Ainda não possui uma conta? Cadastre-se</Link>
+                        <Grid item xs={12} height="100px" sx={{ position: "relative", bottom: 0 }} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                            <Button type="button" sx={{ mt: 1 }} >
+                                <Link style={{ color: "#98FB80" }} to="/Signup">  Ainda não possui uma conta?</Link>
                             </Button>
                             <Button type="button" >
                                 <Link style={{ color: "#98FB80" }} to="/Landing">  Home</Link>
+                            </Button>
+                            <Button type="button" variant="outlined" color="success" onClick={() => setOpenModal(true)}>
+                                  Esqueceu a senha?
                             </Button>
                         </Grid>
                     </form>
 
                 </Grid>
             </Grid>
+            <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+                    Recuperar Acesso
+                </DialogTitle>
+                <DialogContent sx={{ marginTop: 3 }}>
+                    <>
+                        <TextField
+                            label="E-mail"
+                            defaultValue={''}
+                            onChange={(e) => setEmail( e.target.value )}
+                            fullWidth
+                            margin="normal"
+                        />
+
+                    </>
+                </DialogContent>
+                <DialogActions>
+                    <>
+                        <Button onClick={handleRecoveryPassword}>Salvar</Button>
+                        <Button onClick={() => setOpenModal(false)}>Voltar</Button>
+                    </>
+                </DialogActions>
+            </Dialog>
         </Grid>
     );
 };

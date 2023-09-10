@@ -23,12 +23,12 @@ const Register = () => {
             <Tabs value={value} onChange={handleChange}  TabIndicatorProps={{
                 style: { backgroundColor: 'green' } 
             }}>
-                <Tab label="Usuário" sx={{
+                <Tab label="Produto" sx={{
                     '&.Mui-selected': {
                         color: 'green' 
                     }, color: theme?.palette?.type === 'dark' ? 'green' : ''
                 }} />
-                <Tab label="Produto" sx={{
+                <Tab label="Usuário" sx={{
                     '&.Mui-selected': {
                         color: 'green' 
                     }, color: theme?.palette?.type === 'dark' ? 'green' : ''
@@ -36,8 +36,8 @@ const Register = () => {
             </Tabs>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ p: 3 }}>
-                    {value === 0 && <UserForm />}
-                    {value === 1 && <ProductForm />}
+                    {value === 0 && <ProductForm />}
+                    {value === 1 && <UserForm />}
                 </Box>
             </Box>
         </Grid >

@@ -31,7 +31,7 @@ const LandingPage = () => {
             <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", display: "flex", justifyContent: "center" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box >
-                        <Typography  style={{ fontFamily: 'Belanosima, sans-serif' }} variant="h5" component="h2" align="center" color="white" fontSize="50px">
+                        <Typography style={{ fontFamily: 'Belanosima, sans-serif' }} variant="h5" component="h2" align="center" color="white" fontSize="50px">
                             ECOGESTOR
                         </Typography>
                     </Box>
@@ -44,12 +44,11 @@ const LandingPage = () => {
                             Quem Somos
                         </Button>
                         <Button color="inherit" onClick={() => handleScrollToSection("contact")} >Contato</Button>
-                        <Button color="inherit"> <Link to="/Signup" style={{ color: "white" }}>Registre-se</Link> </Button>
                         <Button color="inherit"><Link to="/Login" style={{ color: "white" }}>Login</Link></Button>
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Box pt={10} width="99vw">
+            {/* <Box pt={10} width="99vw">
                 <CardMedia
                     component="video"
                     src={background}
@@ -61,24 +60,23 @@ const LandingPage = () => {
                     width="95vw"
                     sx={{ position: 'absolute' }}
                 />
-            </Box>
+            </Box> */}
 
-            <Box height="90vh" display="flex" justifyContent="center" alignItems="center" sx={{position: 'relative'}}>
+            {/* <Box height="10vh" display="flex" justifyContent="center" alignItems="center" >
                 <Typography className='tracking-in-expand'  textAlign="center" color='white' fontFamily='Belanosima, sans-serif' variant='h3' fontSize={80}>
                     Juntos, podemos fazer a diferença!
                 </Typography>
-            </Box>
+            </Box> */}
 
             <Box
-                pt={10}
                 id="home"
                 sx={{
-                    height: '50vh',
+                    height: '600px',
                     display: 'flex',
                     alignItems: 'center',
                 }}
             >
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 60, marginLeft: 20, marginRight: 20 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: 20, marginRight: 20, marginTop: 55 }}>
                     <Box sx={{ width: "55%" }}>
                         <Typography variant="h2" sx={{ color: '#27AB6E', mb: 2 }}>
                             Bem-vindo!
@@ -87,11 +85,13 @@ const LandingPage = () => {
                             A EcoGestor é uma empresa dedicada à gestão de materiais recicláveis. Compramos e vendemos produtos como papel,
                             alumínio e plástico, contribuindo para a preservação do meio ambiente. Ao escolher nossa empresa, você fará parte de um movimento para um mundo mais sustentável, onde cada ação conta. Junte-se a nós e faça a diferença!
                         </Typography>
-                        <Button variant="contained" color="success" sx={{ mr: 2, px: 4 }}>
-                            Botão 1
+                        <Button variant="contained" color="success" onClick={() => handleScrollToSection("knowmore")} sx={{ mr: 2, px: 4 }}>
+                            Saiba Mais
                         </Button>
                         <Button variant="outlined" color="success" sx={{ px: 4 }}>
-                            Botão 2
+                            <Link style={{ color: '#2e7d32' }} to="/Signup">
+                                Cadastre-se
+                            </Link>
                         </Button>
                     </Box>
                     <Box sx={{ width: "40%" }}>
@@ -111,7 +111,7 @@ const LandingPage = () => {
             }}></Box> */}
 
             <Box sx={{ backgroundColor: "#27AB6E", height: 200, marginBottom: -50, marginTop: 40 }}></Box>
-            <Box sx={{ py: 25 }}>
+            <Box sx={{ py: 25 }} id="knowmore">
                 <Box sx={{ py: 10, height: "100%" }}>
                     <Container  >
                         <Grid container spacing={4} >

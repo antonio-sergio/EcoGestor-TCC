@@ -124,7 +124,7 @@ const CollectForm = () => {
             collect_time: selectedTime,
             collect_date: formattedDate,
             address_id: user.address_id,
-            details_address: address.street + ' ' + address.number + ', ' + address.neighborhood + ', ' + address.city + ' ' + address.state + '. ' + address?.complement + ' ' + address.zip_code + '.'
+            details_address: address?.street + ' ' + address.number + ', ' + address.neighborhood + ', ' + address.city + ' ' + address.state + '. ' + address?.complement + ' ' + address.zip_code + '.'
         }
         collectService.create(payload).then(response => {
             if (response.status === 201) {

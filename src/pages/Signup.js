@@ -25,7 +25,7 @@ const Signup = () => {
     const [zipCodeData, setZipCodeData] = useState(null);
     const [user, setUser] = useState({
         name: '',
-        cpf: '',
+        document: '',
         email: '',
         phone: '',
         password: '',
@@ -93,7 +93,7 @@ const Signup = () => {
     const resetForm = () => {
         setUser({
             name: '',
-            cpf: '',
+            document: '',
             email: '',
             phone: '',
             password: '',
@@ -250,8 +250,8 @@ const Signup = () => {
                                 <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                                     <TextField
                                         label="CPF"
-                                        name="cpf"
-                                        value={user.cpf}
+                                        name="document"
+                                        value={user.document}
                                         onChange={handleChange}
                                         required
                                         fullWidth
@@ -261,8 +261,8 @@ const Signup = () => {
                                                 mask: cpfMask,
                                             },
                                         }}
-                                        error={user.cpf && !isCPFValid(user.cpf)}
-                                        helperText={user.cpf && !isCPFValid(user.cpf) ? 'CPF inválido' : ''}
+                                        error={user.document && !isCPFValid(user.document)}
+                                        helperText={user.document && !isCPFValid(user.document) ? 'CPF inválido' : ''}
                                     />
                                 </Grid>
 

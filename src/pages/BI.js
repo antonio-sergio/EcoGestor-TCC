@@ -49,6 +49,7 @@ const BIComponent = ({ handleComponentClick }) => {
 
     useEffect(() => {
         collectService.getCollectsByDate(today).then(response => {
+            console.log('response col today', response)
             if (response.status === 200) {
                 const filteredData = response.data.filter(item => item.status === 'pendente');
                 setCollectsToday(filteredData);
@@ -128,7 +129,8 @@ const BIComponent = ({ handleComponentClick }) => {
                                     <LocalShippingIcon sx={{ color: 'white', fontSize: '60px' }} />
                                 </Grid>
                                 <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
-                                    <Typography color="white">Coletas</Typography>
+                                    {/* para hoje */}
+                                    <Typography color="white">Coletas</Typography> 
                                     <Typography fontSize={30} color="white">{collectsToday.length}</Typography>
                                 </Grid>
                             </Grid>
