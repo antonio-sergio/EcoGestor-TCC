@@ -9,7 +9,7 @@ const StyledGrid =  styled(Grid)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     background: theme.palette?.primary?.main,
-    height: '5vh',
+    height: '25px',
     position: 'fixed',
     bottom: 0,
     width: '100%',

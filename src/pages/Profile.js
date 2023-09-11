@@ -115,15 +115,15 @@ const Profile = ({color}) => {
                   Complemento: <strong>{dataUser?.address.complement}</strong>
                 </Typography>
               )}
-              <Button variant="contained" color="success" sx={{ marginTop: 3 }} onClick={handleEditAddress}>Editar Endereço</Button>
-              <Button variant="outlined" color="success" sx={{ marginTop: 3, marginLeft: 2 }} onClick={handleEditPassword}>Editar Senha</Button>
+              <Button variant="contained" color="success" sx={{ marginTop: 3 }} onClick={handleEditAddress}>Alterar Endereço</Button>
+              <Button variant="outlined" color="success" sx={{ marginTop: 3, marginLeft: 2 }} onClick={handleEditPassword}>Alterar Senha</Button>
             </Grid>
           </Grid>
         </StyledPaper>
       </Box>
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
         <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-          Editar Endereço
+          Alterar Endereço
         </DialogTitle>
         <DialogContent sx={{ marginTop: 3 }}>
           <>
@@ -187,7 +187,7 @@ const Profile = ({color}) => {
       </Dialog>
       <Dialog open={openModalPassword} onClose={() => setOpenModalPassword(false)}>
         <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-          Editar Senha
+          Alterar Senha
         </DialogTitle>
         <DialogContent sx={{ marginTop: 3 }}>
           <>

@@ -32,6 +32,7 @@ const UsersList = () => {
     { field: 'name', headerName: 'Nome', width: 200, editable: true },
     { field: 'email', headerName: 'Email', width: 300, editable: true },
     { field: 'phone', headerName: 'Contato', width: 150, editable: true },
+    { field: 'document', headerName: 'Identificação', width: 150, editable: true },
     {
       field: 'role',
       headerName: 'Acesso',
@@ -53,9 +54,9 @@ const UsersList = () => {
       renderCell: (params) => {
         const { value } = params;
         if (value === 'seller') {
-          return "Vendedor";
+          return "Fornecedor";
         } else {
-          return "Comprador";
+          return "Cliente";
         }
       },
     },
@@ -290,7 +291,7 @@ const UsersList = () => {
                 value={selectedUser?.type || ''}
                 onChange={(e) => setSelectedUser({ ...selectedUser, type: e.target.value })}
               >
-                <MenuItem value="seller">Vendedor</MenuItem>
+                <MenuItem value="seller">Fornecedor</MenuItem>
                 <MenuItem value="customer">Comprador</MenuItem>
               </Select>
             </FormControl>

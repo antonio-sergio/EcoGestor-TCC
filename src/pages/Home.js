@@ -4,8 +4,8 @@ import userService from "../services/user/user-service";
 import UserImage from "../components/render/UserImage";
 import ThemeContext from "../components/style/ThemeContext";
 import { styled } from '@mui/material/styles';
-import { Container, Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia } from '@mui/material';
-import { LocalShipping, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon,  ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
+import { Container, Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia, Typography } from '@mui/material';
+import { LocalShipping, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
 import logo from "../assets/images/mark/logo2.png";
 import Profile from "./Profile";
 import Sales from "./Sales";
@@ -18,18 +18,16 @@ import Register from "./Register";
 import Collects from "./Collects";
 import { Link } from "react-router-dom";
 
-const StyledContainer = styled(Container)(({ theme }) => ({
+const StyledContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  height: '100vh',
-  justifyContent: 'flex-start',
-  alignItems: 'flex-start', // Adiciona alinhamento superior
+  height: 'calc(100vh - 50px)',
 }));
 
 const StyledNav = styled(Box)(({ theme, expanded }) => ({
-  width: expanded === 'true' ? '20vw' : '50px',
+  width: expanded === 'true' ? '220px' : '65px',
   transition: 'width 0.3s ease',
   color: 'white',
-  background: theme.palette?.primary?.main,
+  background: theme.palette.primary.main,
   display: 'flex',
   height: '100%',
   flexDirection: 'column',
@@ -69,13 +67,13 @@ const Bar = styled(Grid)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  background: theme?.palette?.primary?.main,
+  background: theme.palette.primary.main,
   height: '25px',
-
+  width: "100%"
 }));
 
 const ContainerRenderItem = styled(Card)(({ theme }) => ({
-  background: theme?.palette?.background?.main,
+  background: theme.palette.background.main,
   flex: 1
 }));
 
@@ -86,7 +84,7 @@ const Home = () => {
   const [expanded, setExpanded] = useState(false);
   const [selectedComponent, setSelectedComponent] = useState('bi');
 
-  
+
   useEffect(() => {
     userService.getUserImage(user?.id).then(response => {
       if (response.status === 200) {
@@ -107,7 +105,7 @@ const Home = () => {
     if (selectedComponent === 'sales') {
       return <Sales handleComponentClick={handleComponentClick} />;
     } else if (selectedComponent === 'purchases') {
-      return <Purchases handleComponentClick={handleComponentClick}/>;
+      return <Purchases handleComponentClick={handleComponentClick} />;
     } else if (selectedComponent === 'profile') {
       return <Profile />;
     } if (selectedComponent === 'lists') {
@@ -115,106 +113,113 @@ const Home = () => {
     } else if (selectedComponent === 'register') {
       return <Register />;
     } else if (selectedComponent === 'collects') {
-      return <Collects  handleComponentClick={handleComponentClick} />
-    } else if(selectedComponent === 'bi') {
+      return <Collects handleComponentClick={handleComponentClick} />
+    } else if (selectedComponent === 'bi') {
       return <BI handleComponentClick={handleComponentClick} />;
     }
   };
 
 
   return (
-    <StyledContainer sx={{ minWidth: '100vw' }}>
-      <StyledNav theme={theme}  expanded={expanded.toString()}>
-        <StyledList>
-          {expanded === true && <Card>
-            <CardMedia
-              component="img"
-              alt="Logomarca da EcoGestor"
-              height="100"
-              image={logo}
-            />
-          </Card>}
-          {expanded === true && <UserImage imageUrl={dataImage.imageUrl} />}
-
-          <StyledListItem button onClick={() => handleComponentClick('bi')}>
-            <StyledListItemIcon>
-              <Equalizer />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="BI" />}
-          </StyledListItem>
-
-          <StyledListItem button onClick={() => handleComponentClick('sales')}>
-            <StyledListItemIcon>
-              <PointOfSale />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Venda" />}
-          </StyledListItem>
-
-          <StyledListItem button onClick={() => handleComponentClick('purchases')}>
-            <StyledListItemIcon>
-              <ShoppingCart />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Compra" />}
-          </StyledListItem>
-
-          <StyledListItem button onClick={() => handleComponentClick('collects')}>
-            <StyledListItemIcon>
-              <LocalShipping />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Solicitações" />}
-          </StyledListItem>
-
-          <StyledListItem button onClick={() => handleComponentClick('lists')}>
-            <StyledListItemIcon>
-              <FormatListBulleted />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Listas" />}
-          </StyledListItem>
-
-          <StyledListItem button onClick={() => handleComponentClick('register')}>
-            <StyledListItemIcon>
-              <AddCircle />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Cadastros" />}
-          </StyledListItem>
-
-          <StyledListItem button onClick={() => handleComponentClick('profile')}>
-            <StyledListItemIcon>
-              <AccountBoxIcon />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Perfil" />}
-          </StyledListItem>
-
-          
-
-        </StyledList>
-        <StyledDivider />
-        <StyledList>
-          <StyledListItem button onClick={logout}>
-            <StyledListItemIcon >
-              <ExitToAppIcon />
-            </StyledListItemIcon>
-            {expanded === true && <StyledListItemText primary="Sair" />}
-          </StyledListItem>
-        </StyledList>
-      </StyledNav>
-      <ContentContainer>
-        <Bar theme={theme}>
-          <Button variant="contained" color="success" onClick={toggleNav}>
-            {expanded === true ? <KeyboardArrowLeft style={{ fontSize: '12px' }} /> : <KeyboardArrowRight style={{ fontSize: '12px' }} />}
-          </Button>
-          <Box>
-          <Button><Link to="/Landing" style={{color: "white"}}>Home</Link></Button>
+    <Box>
+      <Bar theme={theme}>
+        <Button variant="contained" color="success" sx={{ backgroundColor: 'white', maxWidth: '15px', height: '20px' }} onClick={toggleNav}>
+          {expanded === true ? <KeyboardArrowLeft style={{ fontSize: '12px', color: '#753BBD', width: "10px" }} /> : <KeyboardArrowRight style={{ fontSize: '12px', color: '#753BBD', width: "10px" }} />}
+        </Button>
+        <Typography className="tracking-out-expand" fontSize={22} fontFamily="monospace" color='white'>
+          Juntos, podemos fazer a diferença!
+        </Typography>
+        <Box mr={1} >
+          <a href="/Landing" target="_blank" rel="noopener noreferrer" style={{ color: "white", marginRight: 6 }}>
+            Site
+          </a>
           <ThemeToggleButton />
-          </Box>
-        </Bar>
-        
-        <ContainerRenderItem sx={{width: "100%"}} theme={theme}>
-          {renderComponent()}
-        </ContainerRenderItem>
-        <Footer />
-      </ContentContainer>
-    </StyledContainer>
+        </Box>
+      </Bar>
+      <StyledContainer >
+        <StyledNav theme={theme} expanded={expanded.toString()}>
+          <StyledList>
+            {expanded === true && <Card>
+              <CardMedia
+                component="img"
+                alt="Logomarca da EcoGestor"
+                height="100"
+                image={logo}
+              />
+            </Card>}
+            {expanded === true && <UserImage imageUrl={dataImage.imageUrl} />}
+
+            <StyledListItem button onClick={() => handleComponentClick('bi')} sx={{ backgroundColor: selectedComponent === 'bi' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <Equalizer />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="BI" />}
+            </StyledListItem>
+
+            <StyledListItem button onClick={() => handleComponentClick('sales')} sx={{ backgroundColor: selectedComponent === 'sales' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <PointOfSale />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Venda" />}
+            </StyledListItem>
+
+            <StyledListItem button onClick={() => handleComponentClick('purchases')} sx={{ backgroundColor: selectedComponent === 'purchases' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <ShoppingCart />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Compra" />}
+            </StyledListItem>
+
+            <StyledListItem button onClick={() => handleComponentClick('collects')} sx={{ backgroundColor: selectedComponent === 'collects' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <LocalShipping />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Solicitações" />}
+            </StyledListItem>
+
+            <StyledListItem button onClick={() => handleComponentClick('lists')} sx={{ backgroundColor: selectedComponent === 'lists' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <FormatListBulleted />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Listas" />}
+            </StyledListItem>
+
+            <StyledListItem button onClick={() => handleComponentClick('register')} sx={{ backgroundColor: selectedComponent === 'register' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <AddCircle />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Cadastros" />}
+            </StyledListItem>
+
+            <StyledListItem button onClick={() => handleComponentClick('profile')} sx={{ backgroundColor: selectedComponent === 'profile' ? '#0b7b38' : '' }}>
+              <StyledListItemIcon>
+                <AccountBoxIcon />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Perfil" />}
+            </StyledListItem>
+
+
+
+          </StyledList>
+          <StyledDivider />
+          <StyledList>
+            <StyledListItem button onClick={logout}>
+              <StyledListItemIcon >
+                <ExitToAppIcon />
+              </StyledListItemIcon>
+              {expanded === true && <StyledListItemText primary="Sair" />}
+            </StyledListItem>
+          </StyledList>
+        </StyledNav>
+        <ContentContainer>
+          <ContainerRenderItem theme={theme}>
+            {renderComponent()}
+          </ContainerRenderItem>
+        </ContentContainer>
+      </StyledContainer>
+      <Footer />
+    </Box>
+
   );
 }
 

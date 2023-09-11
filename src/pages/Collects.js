@@ -1,65 +1,89 @@
-import { Grid, Tabs, Tab, Typography, Box } from '@mui/material';
-import { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { Grid, Card, CardContent, Typography } from '@mui/material';
 import PendingRequestsList from '../components/lists/PendingRequestsList';
 import WaitingApprovalList from '../components/lists/WaitingApprovalList';
 import DisapprovedList from '../components/lists/DisapprovedList';
 import CompletedList from '../components/lists/CompletedList';
-import ThemeContext from '../components/style/ThemeContext';
 
 const Lists = () => {
-    const [value, setValue] = useState(0);
-    const { theme } = useContext(ThemeContext);
+    const [selectedList, setSelectedList] = useState('waitingApproval');
 
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleCardClick = (listType) => {
+        setSelectedList(listType);
     };
 
-
     return (
-        <Grid container p={2} spacing={2} justifyContent="center"> {/* Centraliza os Grids horizontalmente */}
-            <Grid item xs={12} p={3}>
-                <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''} variant="h5" component="h2">
-                    Solicitações
-                </Typography>
+        <Grid container spacing={2}>
+            
+            <Grid item xs={6} sm={3} mt={2}>
+                <Card
+                    
+                    onClick={() => handleCardClick('waitingApproval')}
+                    sx={{
+                        cursor: 'pointer',
+                        backgroundColor: selectedList === 'waitingApproval' ? '#84f9c2':'#27AB6E',
+                        marginLeft: 2,
+                        marginRight: 2
+                    }}
+                >
+                    <CardContent>
+                        <Typography variant="h6" textAlign="center" color={selectedList === 'waitingApproval' ? 'black' : 'white'}>Aguardando Aprovação</Typography>
+                    </CardContent>
+                </Card>
             </Grid>
-            <Tabs value={value} onChange={handleChange} TabIndicatorProps={{
-                style: { backgroundColor: 'green'}
-            }}>
-
-                <Tab label="Aguardando Aprovação" sx={{
-                    '&.Mui-selected': {
-                        color:  'blue'
-                    }, color: theme?.palette?.type === 'dark' ? 'green' : ''
-                }} />
-                <Tab label="Aprovadas" sx={{
-                    '&.Mui-selected': {
-                        color: 'DarkTurquoise'
-                    }, color: theme?.palette?.type === 'dark' ? 'green' : ''
-                }} />
-                <Tab label="Recusadas" sx={{
-                    '&.Mui-selected': {
-                        color: 'red'
-                    }, color: theme?.palette?.type === 'dark' ? 'green' : ''
-                }} />
-                <Tab label="Realizadas" sx={{
-                    '&.Mui-selected': {
-                        color: 'green'
-                    }, color: theme?.palette?.type === 'dark' ? 'green' : ''
-                }} />
-
-
-            </Tabs>
-            <Box sx={{ width: '80vw' }}>
-                <Box sx={{ p: 3,color: theme?.palette?.type === 'dark' ? 'green' : ''}}>
-                    {value === 0 && <WaitingApprovalList />}
-                    {value === 1 && <PendingRequestsList />}
-                    {value === 2 && <DisapprovedList />}
-                    {value === 3 && <CompletedList />}
-                </Box>
-            </Box>
-        </Grid >
-    )
-}
+            <Grid item xs={6} sm={3} mt={2}>
+                <Card
+                    onClick={() => handleCardClick('pendingRequests')}
+                    sx={{
+                        cursor: 'pointer',
+                        backgroundColor: selectedList === 'pendingRequests' ? '#84f9c2' : '#27AB6E' ,
+                        marginLeft: 2,
+                        marginRight: 2
+                    }}
+                >
+                    <CardContent>
+                        <Typography variant="h6" textAlign="center"  color={selectedList === 'pendingRequests' ? 'black' : 'white'}>Aprovadas</Typography>
+                    </CardContent>
+                </Card>
+            </Grid>
+            <Grid item xs={6} sm={3} mt={2}>
+                <Card
+                    onClick={() => handleCardClick('disapproved')}
+                    sx={{
+                        cursor: 'pointer',
+                        backgroundColor: selectedList === 'disapproved' ? '#84f9c2' :'#27AB6E',
+                        marginLeft: 2,
+                        marginRight: 2
+                    }}
+                >
+                    <CardContent>
+                        <Typography variant="h6" textAlign="center"  color={selectedList === 'disapproved' ? 'black' : 'white'}>Recusadas</Typography>
+                    </CardContent>
+                </Card>
+            </Grid>
+            <Grid item xs={6} sm={3} mt={2}>
+                <Card
+                    onClick={() => handleCardClick('completed')}
+                    sx={{
+                        cursor: 'pointer',
+                        backgroundColor: selectedList === 'completed' ? '#84f9c2' : '#27AB6E' ,
+                        marginLeft: 2,
+                        marginRight: 2
+                    }}
+                >
+                    <CardContent>
+                        <Typography variant="h6" textAlign="center"  color={selectedList === 'completed' ? 'black' : 'white'}>Realizadas</Typography>
+                    </CardContent>
+                </Card>
+            </Grid>
+            <Grid item xs={12} p={3} m={2} >
+                {selectedList === 'waitingApproval' && <WaitingApprovalList />}
+                {selectedList === 'pendingRequests' && <PendingRequestsList />}
+                {selectedList === 'disapproved' && <DisapprovedList />}
+                {selectedList === 'completed' && <CompletedList />}
+            </Grid>
+        </Grid>
+    );
+};
 
 export default Lists;

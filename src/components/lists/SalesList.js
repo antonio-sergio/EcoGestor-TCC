@@ -60,7 +60,7 @@ const SalesList = () => {
         },
         {
             field: 'seller_id',
-            headerName: 'Vendedor',
+            headerName: 'Fornecedor',
             width: 200,
             editable: true,
             valueGetter: (params) => params.row.seller?.name
@@ -178,13 +178,13 @@ const SalesList = () => {
         const printableData = selectedRows.map((sale) => ({
             ID: sale.id_sale,
             Cliente: sale.customer?.name,
-            Vendedor: sale.seller?.name,
+            Fornecedor: sale.seller?.name,
             Total: sale.total,
             Data: formatDate(sale.createdAt)
         }));
 
         const content = printableData
-            .map((row) => `<tr><td>${row.ID}</td><td>${row.Cliente}</td><td>${row.Vendedor}</td><td>${row.Total}</td><td>${row.Data}</td></tr>`)
+            .map((row) => `<tr><td>${row.ID}</td><td>${row.Cliente}</td><td>${row.Fornecedor}</td><td>${row.Total}</td><td>${row.Data}</td></tr>`)
             .join('');
 
         const printWindow = window.open('', '_blank');
@@ -230,7 +230,7 @@ const SalesList = () => {
                 <tr>
                   <th>ID</th>
                   <th>Cliente</th>
-                  <th>Vendedor</th>
+                  <th>Fornecedor</th>
                   <th>Total</th>
                   <th>Data</th>
                 </tr>

@@ -14,7 +14,6 @@ const Background = () => {
     >
       <Box height="50%" width="100%" display="flex" justifyContent="center" alignItems="center">
         <Typography fontSize={100} color="#27AB6E" fontFamily="Belanosima" className="tracking-out-expand-fwd">
-          EcoGestor
         </Typography>
       </Box>
       

@@ -140,12 +140,11 @@ const Sales = () => {
         }
     }
 
-    console.log('tema', theme)
     return (
-        <Grid container  display="flex" justifyContent="center" alignItems="center"  height="100%"  overflow='auto'>
+        <Grid container  display="flex" justifyContent="center"   height="100%"  overflow='auto'>
             <ToastContainer />
             <Grid item xs={12}>
-                <Box component={Paper} display="flex" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} elevation={4} p={3}>
+                <Box component={Paper} display="flex" alignItems="center" pl={2} sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} height="100px" elevation={4} >
                     <Typography variant="subtitle1">Operação: <strong>VENDA</strong></Typography>
                     <Typography sx={{marginLeft: 5}} variant="subtitle1">Data: <strong>{currentDate}</strong></Typography>
                 </Box>
@@ -244,7 +243,7 @@ const Sales = () => {
                         <Box border={1} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "100px", backgroundColor: "", padding: "10px", borderRadius: "5px" }}>
                             <Typography>Contato: <strong>{selectedCustomer?.phone}</strong></Typography>
                             <Typography>E-mail: <strong>{selectedCustomer?.email}</strong></Typography>
-                            <Typography>CPF: <strong>{selectedCustomer?.cpf}</strong></Typography>
+                            <Typography>CPF: <strong>{selectedCustomer?.document}</strong></Typography>
                         </Box>
 
 
