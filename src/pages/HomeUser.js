@@ -100,7 +100,7 @@ const HomeUser = () => {
                     </Grid>
                 </Grid>
             </Container>
-            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "65vh" }}>
+            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "90vh" }}>
 
                 {renderComponent()}
             </Container>

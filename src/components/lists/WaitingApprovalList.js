@@ -164,22 +164,15 @@ const WaitingApprovalList = () => {
     ];
 
     const FormatAddress = ({ address }) => {
-        let array = String(address).split('; ');
         return (
-            <Box >
-                <Typography>Logradouro: <strong>{array[0]}</strong></Typography>
-                <Typography>Nº: <strong>{array[1]}</strong></Typography>
-                <Typography>Bairro: <strong>{array[2]}</strong></Typography>
-                <Typography>Cidade: <strong>{array[3]}</strong></Typography>
-                <Typography>Estado: <strong>{array[4]}</strong></Typography>
-                <Typography>Complemento: <strong>{array[5]}</strong></Typography>
-                <Typography>CEP: <strong>{array[6]}</strong></Typography>
+            <Box>
+                <Typography>{address}</Typography>
             </Box>
         )
     }
 
     return (
-        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
             <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Aguardando Aprovação
@@ -217,7 +210,7 @@ const WaitingApprovalList = () => {
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Aprovar Coleta
                 </DialogTitle>
-                <DialogContent sx={{ marginTop: 31 }}>
+                <DialogContent sx={{ marginTop: 4 }}>
                     <Typography>Você deseja aprovar a solicitação de {selectedCollect?.user?.name}?</Typography>
                 </DialogContent>
 

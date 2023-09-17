@@ -28,11 +28,31 @@ h2 {
         color: green;
         font-weight: bold;
         display: block;
-        width: 240px !important;
+        /* width: 240px !important; */
         border: 1px solid #fff;
         box-shadow: 0 0 2px #fff;
 }
 
+.react-datepicker__input-container>input {
+        background: white;
+        color: green;
+        font-weight: bold;
+        display: block;
+        width: 245px !important;
+        border: 2px solid green;
+        height: 50px;
+        box-shadow: 0 0 2px #fff;
+        border-radius: 5px;
+        font-size: 18px;
+}
+
+.Mui-active.MuiStepLabel-alternativeLabel.css-vnkopk-MuiStepLabel-iconContainer > svg{
+        color: green !important;
+}
+
+.Mui-completed.MuiStepLabel-alternativeLabel.css-vnkopk-MuiStepLabel-iconContainer > svg{
+        color: green;
+}
 /* logo  */
 #root>div>div.MuiBox-root.css-1w0tvg3>div.MuiBox-root.css-1o4r47z>ul:nth-child(1) {
         padding-top: 0;

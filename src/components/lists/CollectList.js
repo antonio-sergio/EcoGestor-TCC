@@ -142,8 +142,9 @@ const CollectList = () => {
             <td>${row.Solicitante}</td>
             <td>${row.Telefone}</td>
             <td>${row.Data}</td>
+            <td>${row.Hora}</td>
             <td>${row.Status}</td>
-            <td>${row.DataColeta}</td>
+            <td>${row.DataColeta !== 'Invalid date' ? row.DataColeta : ""}</td>
             <td>${row.Endereco}</td>
             </tr>`)
             .join('');
@@ -192,6 +193,7 @@ const CollectList = () => {
                   <th>Solicitante</th>
                   <th>Telefone</th>
                   <th>Data</th>
+                  <th>Hora</th>
                   <th>Status</th>
                   <th>Data Coleta</th>
                   <th>Endereço</th>
@@ -233,10 +235,9 @@ const CollectList = () => {
 
     const SpeedDialShared = () => {
         return (
-            <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
+            <Box sx={{ width: '100px', transform: 'translateZ(0px)', display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
                 <SpeedDial
                     ariaLabel="SpeedDial"
-                    sx={{ position: 'absolute', bottom: 38, right: 16, }}
                     icon={<SpeedDialIcon />}
                     FabProps={{
                         sx: {
@@ -266,7 +267,7 @@ const CollectList = () => {
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Solicitações de Coleta
             </Typography>
-            <Box id="collects-table" height="60vh">
+            <Box id="collects-table" height="60vh" display="flex">
 
                 <DataGrid
                     ref={dataGridRef}

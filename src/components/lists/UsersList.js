@@ -283,7 +283,7 @@ const UsersList = () => {
               </Select>
             </FormControl>
 
-            <FormControl fullWidth margin="normal">
+            {/* <FormControl fullWidth margin="normal">
               <InputLabel id="type-label">Função</InputLabel>
               <Select
                 label="Função"
@@ -294,7 +294,7 @@ const UsersList = () => {
                 <MenuItem value="seller">Fornecedor</MenuItem>
                 <MenuItem value="customer">Comprador</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
 
           </>
 

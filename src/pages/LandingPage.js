@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Container, Box, Grid, Button, Paper, CardM
 import banner from "../assets/images/reciclagem.png";
 import { Link } from "react-router-dom";
 import background from "../assets/videos/background.mp4";
-
+import { Login, PhoneInTalk, Diversity3, Home } from "@mui/icons-material";
 
 const LandingPage = () => {
 
@@ -37,14 +37,14 @@ const LandingPage = () => {
                     </Box>
                     <Box>
 
-                        <Button color="inherit" onClick={() => handleScrollToSection("home")}>
-                            Home
+                        <Button sx={{ borderLeft: "solid green 2px", borderRadius: 0, width: 130 }} color="inherit" onClick={() => handleScrollToSection("home")}>
+                            <Home /><Typography ml={1}>Home</Typography>
                         </Button>
-                        <Button color="inherit" onClick={() => handleScrollToSection("whoisare")}>
-                            Quem Somos
+                        <Button sx={{ borderLeft: "solid green 2px", borderRadius: 0, width: 180 }} color="inherit" onClick={() => handleScrollToSection("whoisare")}>
+                            <Diversity3 /><Typography ml={1} >Quem Somos</Typography>
                         </Button>
-                        <Button color="inherit" onClick={() => handleScrollToSection("contact")} >Contato</Button>
-                        <Button color="inherit"><Link to="/Login" style={{ color: "white" }}>Login</Link></Button>
+                        <Button sx={{ borderLeft: "solid green 2px", borderRadius: 0, width: 130 }} color="inherit" onClick={() => handleScrollToSection("contact")} ><PhoneInTalk /> <Typography>Contato</Typography></Button>
+                        <Button sx={{ borderLeft: "solid green 2px", borderRadius: 0, width: 130 }} color="inherit"><Link to="/Login" style={{ color: "white", display: "flex", flexDirection: "row" }}><Login /> <Typography ml={1} >Login</Typography> </Link></Button>
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -85,10 +85,10 @@ const LandingPage = () => {
                             A EcoGestor é uma empresa dedicada à gestão de materiais recicláveis. Compramos e vendemos produtos como papel,
                             alumínio e plástico, contribuindo para a preservação do meio ambiente. Ao escolher nossa empresa, você fará parte de um movimento para um mundo mais sustentável, onde cada ação conta. Junte-se a nós e faça a diferença!
                         </Typography>
-                        <Button variant="contained" color="success" onClick={() => handleScrollToSection("knowmore")} sx={{ mr: 2, px: 4 }}>
+                        <Button variant="contained" color="success" onClick={() => handleScrollToSection("knowmore")} sx={{ mr: 2, p: 1, fontWeight: 600, fontSize: 18 }}>
                             Saiba Mais
                         </Button>
-                        <Button variant="outlined" color="success" sx={{ px: 4 }}>
+                        <Button variant="outlined" color="success" sx={{ p: 1, fontWeight: 600, fontSize: 18 }}>
                             <Link style={{ color: '#2e7d32' }} to="/Signup">
                                 Cadastre-se
                             </Link>

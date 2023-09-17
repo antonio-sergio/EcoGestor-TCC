@@ -245,10 +245,9 @@ const PurchasesList = () => {
 
     const SpeedDialShared = () => {
         return (
-            <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
+            <Box sx={{ width: '100px', transform: 'translateZ(0px)', display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
                 <SpeedDial
                     ariaLabel="SpeedDial"
-                    sx={{ position: 'absolute', bottom: 38, right: 16, }}
                     icon={<SpeedDialIcon />}
                     FabProps={{
                         sx: {
@@ -284,7 +283,7 @@ const PurchasesList = () => {
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Compras
             </Typography>
-            <Box id="purchases-table" height="60vh">
+            <Box id="purchases-table" height="60vh" display="flex">
 
                 <DataGrid
                     ref={dataGridRef}

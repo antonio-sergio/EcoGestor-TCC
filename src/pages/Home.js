@@ -129,7 +129,7 @@ const Home = () => {
         <Typography className="tracking-out-expand" fontSize={22} fontFamily="monospace" color='white'>
           Juntos, podemos fazer a diferença!
         </Typography>
-        <Box mr={1} >
+        <Box mr={1} display="flex">
           <a href="/Landing" target="_blank" rel="noopener noreferrer" style={{ color: "white", marginRight: 6 }}>
             Site
           </a>

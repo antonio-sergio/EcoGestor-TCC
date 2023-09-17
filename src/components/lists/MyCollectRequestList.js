@@ -135,16 +135,10 @@ const MyCollectRequestList = () => {
     ];
 
     const FormatAddress = ({ address }) => {
-        let array = String(address).split('; ');
         return (
             <Box>
-                <Typography>Logradouro: <strong>{array[0]}</strong></Typography>
-                <Typography>Nº: <strong>{array[1]}</strong></Typography>
-                <Typography>Bairro: <strong>{array[2]}</strong></Typography>
-                <Typography>Cidade: <strong>{array[3]}</strong></Typography>
-                <Typography>Estado: <strong>{array[4]}</strong></Typography>
-                <Typography>Complemento: <strong>{array[5]}</strong></Typography>
-                <Typography>CEP: <strong>{array[6]}</strong></Typography>
+                <Typography>{address}</Typography>
+                
             </Box>
         )
     }

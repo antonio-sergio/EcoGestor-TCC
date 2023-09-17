@@ -277,10 +277,9 @@ const SalesList = () => {
 
     const SpeedDialShared = () => {
         return (
-            <Box sx={{ height: 100, transform: 'translateZ(0px)', flexGrow: 1 }}>
+            <Box sx={{ width: '100px', transform: 'translateZ(0px)', display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
                 <SpeedDial
                     ariaLabel="SpeedDial"
-                    sx={{ position: 'absolute', bottom: 38, right: 16, }}
                     icon={<SpeedDialIcon />}
                     FabProps={{
                         sx: {
@@ -310,10 +309,10 @@ const SalesList = () => {
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Vendas
             </Typography>
-            <Box id="sales-table" height="60vh">
+            <Box id="sales-table" height="60vh" display="flex">
                 <DataGrid
                     ref={dataGridRef}
-                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '', width: "100%" }}
                     localeText={localizedTextsMap}
                     rows={sales}
                     columns={columns}
