@@ -144,9 +144,9 @@ const MyCollectRequestList = () => {
     }
 
     return (
-        <Box style={{ height: '100%', width: '100%' }}>
+        <Box style={{ height: '450px', width: '100%' }}>
             <ToastContainer />
-            <Typography mt={2} mb={2}>
+            <Typography mb={2}>
                 Minhas Solicitações de Coleta
             </Typography>
             <DataGrid

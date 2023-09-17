@@ -78,7 +78,7 @@ const Profile = ({color}) => {
   };
 
   return (
-    <Grid container xs={12} width="100%" >
+    <Grid container xs={12} width="100%"  >
       <ToastContainer />
       <Box width="100%" >
         <StyledPaper  elevation={3} theme={theme}>

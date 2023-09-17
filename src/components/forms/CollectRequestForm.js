@@ -173,9 +173,9 @@ const CollectForm = () => {
     return (
         <>
             <ToastContainer />
-            <Box width={600} height="500px">
+            <Box width={600} height="500px" >
 
-                <Stepper variant='outlined' activeStep={activeStep} alternativeLabel>
+                <Stepper variant='outlined' sx={{mt: 8}} activeStep={activeStep} alternativeLabel>
                     {steps.map((label) => (
                         <Step key={label}>
                             <StepLabel sx={{ color: 'green' }}>{label}</StepLabel>
@@ -328,12 +328,12 @@ const CollectForm = () => {
                 )}
 
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "center", width: "500px", height: "500px", ml: 10 }}>
+            <Box sx={{ display: "flex", justifyContent: "center", width: "400px", height: "400px", ml: 10, mt: 8}}>
                 <Card>
                     <CardMedia
                         component="img"
                         alt="Logomarca da EcoGestor"
-                        height="500"
+                        height="400"
                         image={imageCalendar}
                     />
                 </Card>
