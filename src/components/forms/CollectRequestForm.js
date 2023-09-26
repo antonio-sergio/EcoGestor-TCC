@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import collectService from '../../services/collect/collect-service';
 import addressService from '../../services/address/address-service';
 import { toast, ToastContainer } from 'react-toastify';
-import { TextField, Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, CardMedia, Card, Stepper, Step, StepLabel } from '@mui/material';
+import { TextField, Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, CardMedia, Card, Stepper, Step, StepLabel, Paper } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from "react-datepicker";
 import { format, startOfDay, addDays } from 'date-fns';
@@ -25,7 +25,7 @@ const CollectForm = () => {
     const [created, setCreated] = useState(false);
     const [block, setBlock] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
-    const [formattedDateEmail, setFormattedDateEmail] = useState(null);
+    const [added, setAdded] = useState(false);
 
     useEffect(() => {
         const formattedDate = format(startOfDay(selectedDate), 'yyyy-MM-dd');
@@ -119,6 +119,10 @@ const CollectForm = () => {
         return Number(numeros[0]);
     }
 
+    const newRequest = () => {
+        setAdded(false)
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formattedDate = format(startOfDay(selectedDate), 'yyyy-MM-dd');
@@ -151,6 +155,7 @@ const CollectForm = () => {
                 } else {
                     setCreated(true)
                 }
+                setAdded(true)
                 setSelectedTime("");
                 setActiveStep(0);
             }
@@ -168,14 +173,21 @@ const CollectForm = () => {
         setActiveStep((prevStep) => prevStep - 1);
     };
 
-    const steps = ["Selecione data e horário", "Confirme ou selecione outro endereço", "Confirme o agendamento"];
+    const steps = [<Typography variant='h5' fontSize={15} className={activeStep === 0 ? "heartbeat" : ""}>Selecione data e horário</Typography>, <Typography variant='h5' fontSize={15}  className={activeStep === 1 ? "heartbeat" : ""}>Confirme ou selecione outro endereço</Typography>, <Typography variant='h5' fontSize={15}  className={activeStep === 2 ? "heartbeat" : ""}>Confirme o agendamento</Typography>];
 
     return (
         <>
             <ToastContainer />
-            <Box width={600} height="500px" >
+            {added === true ? <Box width={550} height="500px" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                <Box>
+                    <Typography>Agendamento realizado com sucesso</Typography>
+                </Box>
+                <Box mt={2}>
+                    <Button variant='contained' color='success' onClick={newRequest}>Novo agendamento</Button>
+                </Box>
+            </Box> : <Box width={600} height="500px" >
 
-                <Stepper variant='outlined' sx={{mt: 8}} activeStep={activeStep} alternativeLabel>
+                <Stepper variant='outlined' sx={{ mt: 3 }} activeStep={activeStep} alternativeLabel>
                     {steps.map((label) => (
                         <Step key={label}>
                             <StepLabel sx={{ color: 'green' }}>{label}</StepLabel>
@@ -185,7 +197,7 @@ const CollectForm = () => {
                 {activeStep === 0 && (
                     <>
                         {/* Etapa 1: Selecione uma data */}
-                        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                        <Box display="flex" flexDirection="column" justifyContent="center" mt={8} borderRadius={2} height={200} width={550} alignItems="center" border="2px solid #119d75">
                             <Box display="flex" mt={4}>
 
                                 <Box width={250} pb={2}>
@@ -251,13 +263,16 @@ const CollectForm = () => {
                             <Box mt={1}>
                                 <Typography mb={4} variant='h6' display="flex" alignItems="center" justifyContent="flex-start">Coleta para o endereço <CallReceived /></Typography>
 
-                                <Typography variant="body1"><strong>Logradouro:</strong> {address?.street}</Typography>
-                                <Typography variant="body1"><strong>Número:</strong> {address?.number}</Typography>
-                                <Typography variant="body1"><strong>Bairro:</strong> {address?.neighborhood}</Typography>
-                                <Typography variant="body1"><strong>Cidade:</strong> {address?.city}</Typography>
-                                <Typography variant="body1"><strong>Estado:</strong> {address?.state}</Typography>
-                                <Typography variant="body1"><strong>CEP:</strong> {address?.zip_code}</Typography>
-                                {address?.complement && <Typography variant="body1"><strong>Complemento:</strong> {address?.complement}</Typography>}
+                                <Box component={Paper} p={2} mt={5} sx={{ backgroundColor: "#119c74" }} display="flex" width={550} justifyContent="space-between">
+                                    <Box>
+                                        <Typography variant="body1" color="white"> {address?.street}, {address?.number}</Typography>
+                                        <Typography variant="body1" color="white">{address?.neighborhood}</Typography>
+                                        <Typography variant="body1" color="white">{address?.city}, {address?.state}</Typography>
+                                        <Typography variant="body1" color="white">{address?.zip_code}</Typography>
+                                        {address?.complement && <Typography variant="body1" color="white">{address?.complement}</Typography>}
+                                    </Box>
+                                </Box>
+
                             </Box>
                             <Button
                                 sx={{ height: 40, marginTop: 2, width: 250 }}
@@ -283,7 +298,7 @@ const CollectForm = () => {
                                 onClick={handleNextStep}
                                 sx={{ ml: 2 }}
                             >
-                                Próximo
+                                Confirmar Endereço
                             </Button>
                         </Box>
 
@@ -293,13 +308,14 @@ const CollectForm = () => {
                     <>
                         {/* Etapa 3: Confirme o agendamento */}
                         <Box>
-                            <Box mt={1}>
-                                <Typography variant="body1"><strong>{address?.street} {address?.number},  {address?.neighborhood}</strong> </Typography>
-                                <Typography variant="body1"><strong>{address?.city}, {address?.state} </strong> </Typography>
-                                <Typography variant="body1"><strong>{address?.zip_code}  {address?.complement}</strong></Typography>
+                            <Box component={Paper} p={2} mt={11} sx={{ backgroundColor: "#119c74" }} width={550} >
+
+                                <Typography variant="body1" color="white"><strong>{address?.street} {address?.number},  {address?.neighborhood}</strong> </Typography>
+                                <Typography variant="body1" color="white"><strong>{address?.city}, {address?.state} </strong> </Typography>
+                                <Typography variant="body1" color="white"><strong>{address?.zip_code}  {address?.complement}</strong></Typography>
                                 <Box display="flex" mt={1}>
-                                    <Typography variant="body1"><strong>{format(startOfDay(selectedDate), 'dd-MM-yyyy')}</strong></Typography>
-                                    <Typography variant="body1" ml={2}><strong>{selectedTime}</strong></Typography>
+                                    <Typography variant="body1" color="white"><strong>{format(startOfDay(selectedDate), 'dd-MM-yyyy')}</strong></Typography>
+                                    <Typography variant="body1" color="white" ml={2}><strong>{selectedTime}</strong></Typography>
                                 </Box>
 
                             </Box>
@@ -320,20 +336,20 @@ const CollectForm = () => {
                                 disabled={block}
                                 sx={{ ml: 2 }}
                             >
-                                Agendar Coleta
+                                Confirmar Agendamento
                             </Button>
                         </Box>
 
                     </>
                 )}
 
-            </Box>
-            <Box sx={{ display: "flex", justifyContent: "center", width: "400px", height: "400px", ml: 10, mt: 8}}>
+            </Box>}
+            <Box sx={{ display: "flex", justifyContent: "center", width: "350px", height: "350px", ml: 10, mt: 1 }}>
                 <Card>
                     <CardMedia
                         component="img"
                         alt="Logomarca da EcoGestor"
-                        height="400"
+                        height="350px"
                         image={imageCalendar}
                     />
                 </Card>

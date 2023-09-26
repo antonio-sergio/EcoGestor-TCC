@@ -77,7 +77,7 @@ const LandingPage = () => {
                 }}
             >
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: 20, marginRight: 20, marginTop: 55 }}>
-                    <Box sx={{ width: "55%" }}>
+                    <Box sx={{ width: "45%" }}>
                         <Typography variant="h2" sx={{ color: '#27AB6E', mb: 2 }}>
                             Bem-vindo!
                         </Typography>

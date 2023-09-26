@@ -38,7 +38,7 @@ const HomeUser = () => {
 
     return (
         <Box sx={{ backgroundColor: "#fff", height: "90vh", marginTop: "-25px" }}>
-            <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", display: "flex", justifyContent: "center" }}>
+            <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", minHeight: "90px", display: "flex", justifyContent: "center" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box >
                         <Typography style={{ fontFamily: 'Belanosima, sans-serif' }} variant="h5" component="h2" align="center" color="white" fontSize="50px">
@@ -100,7 +100,7 @@ const HomeUser = () => {
                     </Grid>
                 </Grid>
             </Container>
-            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "90vh" }}>
+            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
 
                 {renderComponent()}
             </Container>

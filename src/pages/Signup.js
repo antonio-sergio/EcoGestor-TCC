@@ -234,9 +234,9 @@ const Signup = () => {
                     </Typography></DialogTitle>
                     {added === false ? <DialogContent >
                         <form onSubmit={handleSubmit}>
-                            <Grid container paddingTop={10} sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
+                            <Grid container  sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
 
-                                <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
+                                <Grid height={14} item m={2} xs={12} sm={6} md={4} lg={3}>
                                     <TextField
                                         label="Nome"
                                         name="name"
@@ -244,6 +244,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -255,6 +257,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                         InputProps={{
                                             inputComponent: MaskedInput,
                                             inputProps: {
@@ -274,6 +278,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                         error={user.email && !isEmailValid(user.email)}
                                         helperText={user.email && !isEmailValid(user.email) ? 'Email inválido' : ''}
                                     />
@@ -287,6 +293,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                         InputProps={{
                                             inputComponent: MaskedInput,
                                             inputProps: {
@@ -305,6 +313,8 @@ const Signup = () => {
                                         defaultValue={user.zip_code}
                                         onChange={handleZipCodeChange}
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                         required
                                         InputProps={{
                                             inputComponent: MaskedInput,
@@ -326,6 +336,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -337,6 +349,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -349,6 +363,8 @@ const Signup = () => {
                                         required
                                         value={user.city}
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -360,6 +376,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                         inputProps={{ maxLength: 2 }}
                                     />
                                 </Grid>
@@ -373,6 +391,8 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -383,6 +403,8 @@ const Signup = () => {
                                         value={user.complement}
                                         onChange={handleChange}
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -393,6 +415,8 @@ const Signup = () => {
                                         type='file'
                                         onChange={(e) => setSelectedImage(e.target.files[0])}
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
@@ -405,12 +429,14 @@ const Signup = () => {
                                         onChange={handleChange}
                                         required
                                         fullWidth
+                                        color='success'
+                                        size='small'
                                     />
                                 </Grid>
 
 
                             </Grid>
-                            <Grid container paddingTop={10} sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
+                            <Grid container paddingTop={1} sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
 
                                 <Grid item m={2} xs={6} sm={5} md={4} lg={3}>
                                     <Button sx={{ height: 53 }} type="submit" variant="contained" color="success" fullWidth>
@@ -418,13 +444,13 @@ const Signup = () => {
                                     </Button>
                                 </Grid>
                                 <Grid item m={2} xs={6} sm={5} md={4} lg={3}>
-                                    <Button type="button" sx={{ height: 53 }} variant="contained" color="info" fullWidth >
-                                        <Link to="/Login" style={{ color: "white", height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Ir p/ Login</Link>
+                                    <Button type="button" sx={{ height: 53 }} variant="outlined" color="success" fullWidth >
+                                        <Link to="/Login" style={{ color: "green", height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Ir p/ Login</Link>
                                     </Button>
                                 </Grid>
                                 <Grid item m={2} xs={6} sm={5} md={4} lg={3}>
-                                    <Button type="button" sx={{ height: 53 }} variant="contained" color="info" fullWidth >
-                                        <Link to="/Landing" style={{ color: "white", height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Home </Link>
+                                    <Button type="button" sx={{ height: 53 }} variant="outlined" color="success" fullWidth >
+                                        <Link to="/Landing" style={{ color: "green", height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Home </Link>
                                     </Button>
                                 </Grid>
                             </Grid>

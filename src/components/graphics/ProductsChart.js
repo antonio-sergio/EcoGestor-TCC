@@ -32,11 +32,14 @@ const ProductsChart = () => {
                     label: 'Vendas (kg)',
                     backgroundColor: '#00C853',
                     data: [],
+                    barPercentage: 0.1,
+
                 },
                 {
                     label: 'Compras (kg)',
                     backgroundColor: '#2196F3',
                     data: [],
+                    barPercentage: 0.1,
                 },
             ],
         };

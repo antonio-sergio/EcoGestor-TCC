@@ -153,7 +153,7 @@ const Purchases = () => {
                     <Box width="60%">
                         <Typography variant="h6">Lista de items</Typography>
 
-                        <Box sx={{ maxHeight: "90%", overflowY: "auto" }}>
+                        <Box sx={{ maxHeight: "95%", overflowY: "auto" }}>
                             <TableContainer>
                                 <Table >
                                     <TableHead>
@@ -199,7 +199,7 @@ const Purchases = () => {
                         </Box>
 
                     </Box>
-                    <Box width="35%" height="100%" border={2} borderColor="green" display="flex" justifyContent="center" alignItems="center" overflow='auto' >
+                    <Box width="35%" height="450px" border={2} borderColor="green" display="flex" justifyContent="center" alignItems="center" overflow='auto' >
 
                         <Grid item xs={12} sm={9} display="flex" justifyContent="center" alignItems="center" flexDirection="column" >
                             <Box width="100%"  >
@@ -208,7 +208,7 @@ const Purchases = () => {
                                     <Select
                                         labelId="customer-label"
                                         color='success'
-                                        label="Cliente"
+                                        label="Fornecedor"
                                         size='medium'
                                         value={selectedSeller}
                                         onChange={(e) => setSelectedSeller(e.target.value)}
@@ -222,16 +222,16 @@ const Purchases = () => {
                                     </Select>
                                 </FormControl>
                             </Box>
-                            <Box width="100%" sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "180px", minHeight: "100px", backgroundColor: "" }}>
+                            <Box width="100%" sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100px", minHeight: "100px", backgroundColor: "" }}>
 
                                 <List>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green" }}>
+                                    <ListItem  sx={{ borderBottom: 1, borderColor: "green", height: 30 }}>
                                         <ListItemText primary={`${selectedSeller?.phone || ""}`} />
                                     </ListItem>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green" }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 30 }}>
                                         <ListItemText primary={`${selectedSeller?.email || ""}`} />
                                     </ListItem>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green" }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 30 }}>
                                         <ListItemText primary={`${selectedSeller?.document || ""}`} />
                                     </ListItem>
                                 </List>

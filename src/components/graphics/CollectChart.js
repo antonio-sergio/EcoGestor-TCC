@@ -58,6 +58,7 @@ const CollectChart = () => {
                         backgroundColor: '#3D9532',
                         borderColor: '#000',
                         borderWidth: 1,
+                        barPercentage: 0.1,
                     },
                 ],
             },
