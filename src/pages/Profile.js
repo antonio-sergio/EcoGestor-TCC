@@ -21,10 +21,8 @@ const Profile = ({color}) => {
  
   useEffect(() => {
     userService.getUserById(user.id).then(response => {
-      console.log('responseeeee', response)
       if (response.status === 200) {
         setDataUser(response.data);
-        console.log('response data user', response.data)
       }
     });
   }, [user, openModal, openModalPassword]);

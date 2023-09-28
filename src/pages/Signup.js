@@ -105,7 +105,6 @@ const Signup = () => {
             complement: '',
             neighborhood: '',
             image: '',
-            address_id: ''
         });
         setAdded(true);
     };
@@ -129,40 +128,19 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const address = {
-            street: user.street,
-            number: user.number,
-            city: user.city,
-            state: user.state,
-            zip_code: String(extrairNumeros(user.zip_code)),
-            complement: user.complement,
-            neighborhood: user.neighborhood
-        }
-
-        if (String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca') {
-            addressService.create(address).then(response => {
+        if (String(user.state).toLowerCase() === 'sp' && String(user.city).toLowerCase() === 'franca') {
+            user.image = selectedImage;
+            userService.create(user).then(response => {
                 if (response.status === 201) {
-                    user.address_id = Number(response?.data?.id_address);
-                    user.image = selectedImage;
-                    userService.create(user).then(response => {
-                        if (response.status === 201) {
-                            toast.success('Usuário adicionado com sucesso!');
-                            resetForm();
-                        }
-                    }).catch(error => {
-                        toast.error(`${error.response.data.message}`);
-                        addressService.delete(user.address_id).then(response => {
-                        })
-                    })
-
+                    toast.success('Usuário adicionado com sucesso!');
+                    resetForm();
                 }
-            }).catch(
-                error => {
-                    console.log(error);
-                    toast.error(`${error.response.data.message}`);
+            }).catch(error => {
+                toast.error(`${error.response.data.message}`);
+                addressService.delete(user.address_id).then(response => {
+                })
+            })
 
-                }
-            )
         } else {
             toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
         }
@@ -234,7 +212,7 @@ const Signup = () => {
                     </Typography></DialogTitle>
                     {added === false ? <DialogContent >
                         <form onSubmit={handleSubmit}>
-                            <Grid container  sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
+                            <Grid container sx={{ justifyContent: 'center', overflow: 'auto' }} spacing={2}>
 
                                 <Grid height={14} item m={2} xs={12} sm={6} md={4} lg={3}>
                                     <TextField

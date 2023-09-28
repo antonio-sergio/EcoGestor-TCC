@@ -4,7 +4,6 @@ import { cpf as validateCPF, cnpj as validateCNPJ } from 'cpf-cnpj-validator';
 import MaskedInput from 'react-text-mask';
 import zipCodeService from '../../services/external/zip-code-service';
 import userService from '../../services/user/user-service';
-import addressService from '../../services/address/address-service';
 import { ToastContainer, toast } from 'react-toastify';
 
 const UserForm = () => {
@@ -26,7 +25,6 @@ const UserForm = () => {
         complement: '',
         neighborhood: zipCodeData?.bairro || '',
         image: '',
-        address_id: '',
         type: userType
     });
     const [added, setAdded] = useState(false);
@@ -94,24 +92,12 @@ const UserForm = () => {
             complement: '',
             neighborhood: '',
             image: '',
-            address_id: '',
             type: userType
         });
         setAdded(true);
     };
 
-    function extrairNumeros(string) {
-        var regex = /\d+[\+\.,]?\d*|-\d+[\+\.,]?\d*/g;
-        var numeros = string.match(regex);
-        if (numeros) {
-            numeros = numeros.map(function (num) {
-                return num.replace(/[-]/g, '');
-            });
-        } else {
-            numeros = [];
-        }
-        return numeros[1] ? numeros[0] + numeros[1] : numeros[0]
-    }
+
 
     const toggleUserType = (type) => {
         setUserType(type);
@@ -121,7 +107,7 @@ const UserForm = () => {
             type: type // Set the 'type' field to the selected user type
         }));
     };
-    
+
 
     const handleModalClose = () => {
         setModalOpen(false);
@@ -129,39 +115,20 @@ const UserForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const address = {
-            street: registrationUser.street,
-            number: registrationUser.number,
-            city: registrationUser.city,
-            state: registrationUser.state,
-            zip_code: extrairNumeros(registrationUser.zip_code),
-            complement: registrationUser.complement,
-            neighborhood: registrationUser.neighborhood
-        }
-
-        if (String(address.state).toLowerCase() === 'sp' && String(address.city).toLowerCase() === 'franca') {
-            addressService.create(address).then(response => {
-                if (response.status === 201) {
-                    registrationUser.address_id = Number(response?.data?.id_address);
-                    registrationUser.image = selectedImage;
-                    userService.create(registrationUser).then(response => {
-                        if (response.status === 201) {
-                            toast.success('Usuário adicionado com sucesso!');
-                            resetForm();
-                        }
-                    }).catch(error => {
-                        toast.error(`${error.response.data.message}`);
-                        addressService.delete(registrationUser.address_id).then(response => {
-                        })
-                    })
+        if (String(registrationUser.state).toLowerCase() === 'sp' && String(registrationUser.city).toLowerCase() === 'franca') {
+            registrationUser.image = selectedImage;
+            userService.create(registrationUser).then(response => {
+                if(response.status === 201){
+                    toast.success('Usuário adicionado com sucesso!');
+                    resetForm();
                 }
-            }).catch(
-                error => {
-                    toast.error(`${error.response.data.message}`);
-                }
-            )
+            }).catch(error => {
+                console.log(error)
+                return toast.error(`${error.response.data.message}`);
+            })
+            
         } else {
-            toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
+            return toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
         }
     };
 
