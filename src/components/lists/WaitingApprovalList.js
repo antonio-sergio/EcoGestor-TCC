@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box, CardMedia } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
@@ -20,6 +20,7 @@ const WaitingApprovalList = () => {
     const [openModalRefuse, setOpenModalRefuse] = useState(false);
     const [address, setAddress] = useState(false);
     const [processed, setProcessed] = useState(false);
+    const [ urlImage, setUrlImage ] = useState(null);
     const reason = useRef(null);
 
     useEffect(() => {
@@ -41,6 +42,8 @@ const WaitingApprovalList = () => {
 
     const handleApproval = (collect) => {
         setSelectedCollect(collect);
+        console.log('handelaproca', collect)
+        handleImage(collect.id);
         setOpenModalApproval(true);
     }
 
@@ -49,6 +52,13 @@ const WaitingApprovalList = () => {
         setOpenModalRefuse(true);
     }
 
+    const handleImage = (collect_id) => {
+        collectService.getCollectImage(collect_id).then(response => {
+            if(response.status === 200){
+                setUrlImage(response.data.imageUrl)
+            }
+        }).catch(error => console.log(error))
+    }
   
 
     const handleProcessed = () => {
@@ -140,7 +150,7 @@ const WaitingApprovalList = () => {
             )
         },
         {
-            field: 'to_approve', headerName: 'Aprovar', width: 100, editable: true, renderCell: (params) => (
+            field: 'to_approve', headerName: 'Analisar', width: 100, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -208,15 +218,19 @@ const WaitingApprovalList = () => {
 
             <Dialog open={openModalApproval} onClose={() => setOpenModalApproval(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Aprovar Coleta
+                    Analisar Solicitação Coleta
                 </DialogTitle>
                 <DialogContent sx={{ marginTop: 4 }}>
-                    <Typography>Você deseja aprovar a solicitação de {selectedCollect?.user?.name}?</Typography>
+                    <Box>
+                        <CardMedia component="img" alt='imagem do material a ser coletado' height={200} image={urlImage} />
+                    </Box>
+                    <Typography mt={5}>Você deseja aprovar a solicitação de {selectedCollect?.user?.name}?</Typography>
                 </DialogContent>
 
                 <DialogActions>
                     <>
-                        <Button onClick={() => handleApprovalCollect()} >Confirmar Aprovação</Button>
+                        <Button onClick={() => handleApprovalCollect()} >Aprovar</Button>
+                        <Button onClick={() => handleApprovalCollect()} >Recusar</Button>
                         <Button onClick={() => setOpenModalApproval(false)}>Fechar</Button>
                     </>
                 </DialogActions>

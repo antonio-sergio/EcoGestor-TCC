@@ -52,6 +52,10 @@ class CollectService {
         return axios.get(`${process.env.REACT_APP_API_URL}/collect/date/${startDate}/${endDate}`)
 
     }
+    getCollectImage(id_collect) {
+        console.log('id colect service get cole', id_collect)
+        return axios.get(`${process.env.REACT_APP_API_URL}/collect/image/${id_collect}`)
+    }
 }
 
 const collectService = new CollectService();

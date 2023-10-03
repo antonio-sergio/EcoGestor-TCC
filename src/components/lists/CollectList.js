@@ -296,6 +296,9 @@ const CollectList = () => {
                 <DialogContent sx={{ marginTop: 3 }}>
                     <>
                         {details?.details || "Nenhuma observação foi adicionada"}
+                        <Box>
+                            imagem aqui
+                        </Box>
                     </>
                 </DialogContent>
                 <DialogActions>

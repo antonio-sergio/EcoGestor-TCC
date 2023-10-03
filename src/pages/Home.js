@@ -4,7 +4,7 @@ import userService from "../services/user/user-service";
 import UserImage from "../components/render/UserImage";
 import ThemeContext from "../components/style/ThemeContext";
 import { styled } from '@mui/material/styles';
-import { Container, Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia, Typography } from '@mui/material';
+import { Button, Box, List, ListItem, ListItemIcon, ListItemText, Divider, Grid, Card, CardMedia, Typography } from '@mui/material';
 import { LocalShipping, AddCircle, FormatListBulleted, AccountBox as AccountBoxIcon, ExitToApp as ExitToAppIcon, KeyboardArrowRight, KeyboardArrowLeft, PointOfSale, Equalizer, ShoppingCart } from '@mui/icons-material';
 import logo from "../assets/images/mark/logo2.png";
 import Profile from "./Profile";
@@ -16,7 +16,6 @@ import BI from "./BI";
 import Lists from "./Lists";
 import Register from "./Register";
 import Collects from "./Collects";
-import { Link } from "react-router-dom";
 
 const StyledContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
