@@ -49,7 +49,7 @@ const CompletedList = () => {
         },
         { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
         {
-            field: 'details_address', headerName: 'Endereço', width: 200, editable: true, renderCell: (params) => (
+            field: 'details_address', headerName: 'Endereço', width: 300, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"

@@ -17,6 +17,9 @@ class PurchaseService {
     getTotalPurchase(period){
         return axios.get(`${process.env.REACT_APP_API_URL}/purchase/total?startDate=${period.startDate}&endDate=${period.endDate}`)
     }
+    getSaleByCustomer(id_seller){
+        return axios.get(`${process.env.REACT_APP_API_URL}/purchase/customer/${id_seller}`)
+    }
     delele(id){
         return axios.delete(`${process.env.REACT_APP_API_URL}/purchase/${id}`);
     }

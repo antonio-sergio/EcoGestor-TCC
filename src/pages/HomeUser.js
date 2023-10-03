@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import AuthContext from "../services/auth/AuthContext";
 import MyCollectRequestList from "../components/lists/MyCollectRequestList";
 import Profile from "./Profile";
+import MySales from "../components/lists/MySales";
 import UserImage from "../components/render/UserImage";
 import userService from "../services/user/user-service";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -33,6 +34,8 @@ const HomeUser = () => {
             return <MyCollectRequestList />
         } else if (selectedComponent === 'profile') {
             return <Profile color={"#fff"} />
+        } else if (selectedComponent === 'mysales') {
+            return <MySales />
         }
     };
 
@@ -63,7 +66,7 @@ const HomeUser = () => {
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={3}>
                         <Button
                             variant={selectedComponent === 'collectForm' ? 'contained' : 'outlined'}
                             color="success"
@@ -75,7 +78,7 @@ const HomeUser = () => {
                         </Button>
                     </Grid>
 
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={3}>
                         <Button
                             variant={selectedComponent === 'myRequests' ? 'contained' : 'outlined'}
                             color="success"
@@ -87,7 +90,7 @@ const HomeUser = () => {
                         </Button>
                     </Grid>
 
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={3}>
                         <Button
                             variant={selectedComponent === 'profile' ? 'contained' : 'outlined'}
                             color="success"
@@ -96,6 +99,17 @@ const HomeUser = () => {
                             onClick={() => handleComponentClick("profile")}
                         >
                             Meu Perfil
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} md={3}>
+                        <Button
+                            variant={selectedComponent === 'mysales' ? 'contained' : 'outlined'}
+                            color="success"
+                            size="large"
+                            fullWidth
+                            onClick={() => handleComponentClick("mysales")}
+                        >
+                            Minhas Vendas
                         </Button>
                     </Grid>
                 </Grid>

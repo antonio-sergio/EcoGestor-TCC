@@ -86,7 +86,6 @@ const BIComponent = ({ handleComponentClick }) => {
 
     return (
         <Container sx={{ marginTop: 2, justifyContent: "center", alignItems: "center", width: "80vw", flexDirection: "row" }}>
-            <Typography >Informação Diária</Typography>
             <Grid container height={140} width="100%" display="flex" justifyContent="space-around" alignItems="center" spacing={2} marginRight={1}>
 
                 <Grid item xs={9} sm={4} md={3} onClick={() => handleComponentClick('sales')}>
@@ -98,7 +97,7 @@ const BIComponent = ({ handleComponentClick }) => {
                                 </Grid>
                                 <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
                                     <Typography color="white">{totalSale?.saleCount || 0} Vendas </Typography>
-                                    <Typography fontSize={30} color="white">R$: {totalSale?.totalSum || 0}</Typography>
+                                    <Typography fontSize={14} color="white">R$: {totalSale?.totalSum || 0}</Typography>
                                 </Grid>
                             </Grid>
                         </CardContent>
@@ -114,7 +113,7 @@ const BIComponent = ({ handleComponentClick }) => {
                                 </Grid>
                                 <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
                                     <Typography color="white">{totalPurchase?.purchaseCount || 0} Compras</Typography>
-                                    <Typography fontSize={30} color="white">R$: {totalPurchase?.totalSum || 0}</Typography>
+                                    <Typography fontSize={14} color="white">R$: {totalPurchase?.totalSum || 0}</Typography>
                                 </Grid>
                             </Grid>
                         </CardContent>
@@ -131,7 +130,7 @@ const BIComponent = ({ handleComponentClick }) => {
                                 <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
                                     {/* para hoje */}
                                     <Typography color="white">Coletas</Typography> 
-                                    <Typography fontSize={30} color="white">{collectsToday.length}</Typography>
+                                    <Typography fontSize={14} color="white">{collectsToday.length}</Typography>
                                 </Grid>
                             </Grid>
                         </CardContent>
@@ -146,7 +145,7 @@ const BIComponent = ({ handleComponentClick }) => {
                                 </Grid>
                                 <Grid item xs={12} md={8} height={130} textAlign="center" display="flex" justifyContent="center" flexDirection={'column'} alignItems="flex-start">
                                     <Typography color="white">Aguardando Apr.</Typography>
-                                    <Typography fontSize={30} color="white">{collectsWaiting.length}</Typography>
+                                    <Typography fontSize={14} color="white">{collectsWaiting.length}</Typography>
                                 </Grid>
                             </Grid>
                         </CardContent>

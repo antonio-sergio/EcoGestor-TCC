@@ -1,135 +1,81 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import {
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Box,
-    SpeedDial
-} from '@mui/material';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
+import purchaseService from '../../services/purchase/purchase-service';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PrintIcon from '@mui/icons-material/Print';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ShareIcon from '@mui/icons-material/Share';
-import DeleteIcon from '@mui/icons-material/Delete';
-import saleService from '../../services/sale/sale-service';
-import moment from 'moment';
 import ExcelJS from 'exceljs';
-import { toast, ToastContainer } from "react-toastify";
 import ThemeContext from '../style/ThemeContext';
 
 
-const SalesList = () => {
+import moment from 'moment';
+import AuthContext from '../../services/auth/AuthContext';
+
+const PurchasesList = () => {
     const { theme } = useContext(ThemeContext);
-    const [sales, setSales] = useState([]);
-    const [openModalSale, setOpenModalSale] = useState(false);
-    const [openModalDelete, setOpenModalDelete] = useState(false);
-    const [selectedSale, setSelectedSale] = useState(null);
+    const { user } = useContext(AuthContext);
+    const [purchases, setPurchases] = useState([]);
+    const [openModalPurchase, setOpenModalPurchase] = useState(false);
+    const [selectedPurchase, setSelectedPurchase] = useState(null);
     const [items, setItems] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const dataGridRef = useRef(null);
 
     useEffect(() => {
-        saleService.getAllSale().then(response => {
+        purchaseService.getSaleByCustomer(user.id).then(response => {
             if (response.status === 200) {
-                setSales(response.data.sales);
+                setPurchases(response.data);
             }
-        })
-    }, [openModalSale, openModalDelete]);
+        }).catch(error => console.log('erro aqyu',error))
+    }, [openModalPurchase, user.id]);
+
 
     const columns = [
-        { field: 'id_sale', headerName: 'ID', width: 50 },
-        {
-            field: 'customer_id',
-            headerName: 'Cliente',
-            width: 200,
-            editable: true,
-            valueGetter: (params) => params.row.customer?.name
-        },
-        {
-            field: 'seller_id',
-            headerName: 'Vendedor',
-            width: 200,
-            editable: true,
-            valueGetter: (params) => params.row.seller?.name
-        },
+        { field: 'id_purchase', headerName: 'ID', width: 50 },
+        { field: 'customer_id', headerName: 'Comprador', width: 200, editable: true, valueGetter: (params) => params.row.customer.name },
+        { field: 'seller_id', headerName: 'Vendedor', width: 200, editable: true, valueGetter: (params) => params.row.seller.name },
         { field: 'total', headerName: 'Total', width: 150, editable: true },
-        {
-            field: 'createdAT',
-            headerName: 'Data',
-            width: 100,
-            editable: true,
-            valueGetter: (params) => formatDate(params.row.createdAt)
-        },
+        { field: 'createdAT', headerName: 'Data', width: 100, editable: true, valueGetter: (params) => formatDate(params.row.createdAt) },
         {
             field: 'edit',
             headerName: 'Detalhar',
             width: 70,
             align: 'center',
             renderCell: (params) => (
-                <Button variant="outlined" size="small" onClick={() => handleShowSale(params.row)}>
+                <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleShowPurchase(params.row)}
+                >
                     <ContentPasteSearchIcon sx={{ color: 'green' }} />
                 </Button>
             )
-        },
-        {
-            field: 'delete',
-            headerName: 'Deletar',
-            width: 70,
-            align: 'center',
-            renderCell: (params) => (
-                <Button variant="outlined" size="small" onClick={() => handleDelete(params.row)}>
-                    <DeleteIcon sx={{ color: 'red' }} />
-                </Button>
-            )
         }
+        
+
     ];
 
-    const handleShowSale = async (sale) => {
-        setSelectedSale(sale);
-        await saleService.getSaleItems(sale.id_sale).then((response) => {
+    const handleShowPurchase = async (purchase) => {
+        setSelectedPurchase(purchase);
+        await purchaseService.getPurchaseItems(purchase.id_purchase).then(response => {
             if (response.status === 200) {
-                setItems(response.data);
+                setItems(response.data)
             }
-        });
-        setOpenModalSale(!openModalSale);
+        })
+        setOpenModalPurchase(!openModalPurchase);
     };
 
-    const handleDelete = async (sale) => {
-        setSelectedSale(sale);
-        setOpenModalDelete(true);
-    }
-
-    const deleteSale = async () => {
-        await saleService.delele(selectedSale.id_sale).then(response => {
-            if (response.status === 200) {
-                toast.success('Venda deletada com sucesso!');
-                setOpenModalDelete(false);
-            }
-        }).catch(error => {
-            toast.error("Não foi possível deletar a venda!");
-            console.log(error);
-        })
-    }
 
     const handleExportToExcel = () => {
-        const selectedSaleIds = selectedRows.map((rowIndex) => rowIndex.id_sale);
-        const selectedSales = sales.filter((sale) => selectedSaleIds.includes(sale.id_sale));
+        const selectedPurchasesIds = selectedRows.map((rowIndex) => rowIndex.id_purchase);
+        const selectedPurchase = purchases.filter((purchase) => selectedPurchasesIds.includes(purchase.id_purchase));
 
         const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Vendas');
+        const worksheet = workbook.addWorksheet('Compras');
 
         columns.forEach((column, index) => {
             if (column.headerName !== 'Detalhar') {
@@ -139,24 +85,24 @@ const SalesList = () => {
             }
         });
 
-        selectedSales.forEach((sale) => {
+        selectedPurchase.forEach((purchase) => {
             const rowData = {};
             columns.forEach((column) => {
                 if (column.field === 'customer_id' || column.field === 'seller_id') {
-                    rowData[column.field] = column.valueGetter ? column.valueGetter({ row: sale }) : sale[column.field];
+                    rowData[column.field] = column.valueGetter ? column.valueGetter({ row: purchase }) : purchase[column.field];
                 } else if (column.field === 'total') {
-                    rowData[column.field] = parseFloat(sale[column.field]).toFixed(2);
+                    rowData[column.field] = parseFloat(purchase[column.field]).toFixed(2);
                 } else if (column.field === 'createdAT') {
-                    rowData[column.field] = formatDate(sale.createdAt);
-                } else if (column.field === 'id_sale') {
-                    rowData[column.field] = sale.id_sale;
+                    rowData[column.field] = formatDate(purchase.createdAt);
+                } else if (column.field === 'id_purchase') {
+                    rowData[column.field] = purchase.id_purchase;
                 }
             });
             worksheet.addRow(rowData);
         });
 
         const saveOptions = {
-            filename: 'vendas.xlsx',
+            filename: 'compras.xlsx',
             useStyles: true,
             useSharedStrings: true
         };
@@ -175,16 +121,16 @@ const SalesList = () => {
     };
 
     const handlePrint = () => {
-        const printableData = selectedRows.map((sale) => ({
-            ID: sale.id_sale,
-            Cliente: sale.customer?.name,
-            Fornecedor: sale.seller?.name,
-            Total: sale.total,
-            Data: formatDate(sale.createdAt)
+        const printableData = selectedRows.map((purchase) => ({
+            ID: purchase.id_purchase,
+            Comprador: purchase.customer?.name,
+            Vendedor: purchase.seller?.name,
+            Total: purchase.total,
+            Data: formatDate(purchase.createdAt)
         }));
 
         const content = printableData
-            .map((row) => `<tr><td>${row.ID}</td><td>${row.Cliente}</td><td>${row.Fornecedor}</td><td>${row.Total}</td><td>${row.Data}</td></tr>`)
+            .map((row) => `<tr><td>${row.ID}</td><td>${row.Comprador}</td><td>${row.Vendedor}</td><td>${row.Total}</td><td>${row.Data}</td></tr>`)
             .join('');
 
         const printWindow = window.open('', '_blank');
@@ -224,13 +170,13 @@ const SalesList = () => {
             </style>
           </head>
           <body>
-            <h2 class="header">Lista de Vendas</h2>
+            <h2 class="header">Lista de Compras</h2>
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Cliente</th>
-                  <th>Fornecedor</th>
+                  <th>Comprador</th>
+                  <th>Vendedor</th>
                   <th>Total</th>
                   <th>Data</th>
                 </tr>
@@ -247,15 +193,9 @@ const SalesList = () => {
     };
 
     const onRowsSelectionHandler = (ids) => {
-        const selectedRowsData = ids.map((id) => sales.find((row) => row.id_sale === id));
+        const selectedRowsData = ids.map((id) => purchases.find((row) => row.id_purchase === id));
         setSelectedRows(selectedRowsData);
     };
-
-    const formatDate = (dateString) => {
-        return moment(dateString).format('DD/MM/YYYY');
-    };
-
-
 
     const actions = [
         { icon: <ShareIcon />, name: 'Exportar Excel' },
@@ -303,41 +243,44 @@ const SalesList = () => {
         )
     }
 
+    const formatDate = (dateString) => {
+        return moment(dateString).format('DD/MM/YYYY');
+    };
+
+
     return (
         <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
-            <ToastContainer />
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
-                Vendas
+                Compras
             </Typography>
-            <Box id="sales-table" height="60vh" display="flex">
+            <Box id="purchases-table" height="60vh" display="flex">
+
                 <DataGrid
                     ref={dataGridRef}
-                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '', width: "100%" }}
+                    sx={{  color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                     localeText={localizedTextsMap}
-                    rows={sales}
+                    rows={purchases}
                     columns={columns}
-                    pageSize={1}
+                    pageSize={5}
                     componentsProps={{
                         pagination: {
-                            labelRowsPerPage: 'Linhas por página'
+                            labelRowsPerPage: "Linhas por página",
                         }
                     }}
-                    getRowId={(row) => row.id_sale}
+                    getRowId={(row) => row.id_purchase}
                     checkboxSelection
                     onRowSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
                 />
                 <SpeedDialShared />
             </Box>
-
-
-            <Dialog open={openModalSale} onClose={() => setOpenModalSale(false)}>
+            <Dialog open={openModalPurchase} onClose={() => setOpenModalPurchase(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Detalhes da Venda
+                    Detalhes da Compra
                 </DialogTitle>
                 <DialogContent sx={{ marginTop: 3 }}>
                     <>
-                        <TableContainer component={Paper} sx={{ marginBottom: '15px' }}>
-                            <Table aria-label="Sale Items Table">
+                        <TableContainer component={Paper} sx={{ marginBottom: "15px" }}>
+                            <Table aria-label="Purchase Items Table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>ID</TableCell>
@@ -349,8 +292,8 @@ const SalesList = () => {
                                 </TableHead>
                                 <TableBody>
                                     {items.map((item) => (
-                                        <TableRow key={item.id_sale_item}>
-                                            <TableCell>{item.id_sale_item}</TableCell>
+                                        <TableRow key={item.id_purchase_item}>
+                                            <TableCell>{item.id_purchase_item}</TableCell>
                                             <TableCell>{item.product_name}</TableCell>
                                             <TableCell>{item.item_price}</TableCell>
                                             <TableCell>{item.amount}</TableCell>
@@ -358,38 +301,32 @@ const SalesList = () => {
                                         </TableRow>
                                     ))}
                                 </TableBody>
+
+
                             </Table>
                         </TableContainer>
-                        <Typography>Data: {formatDate(selectedSale?.createdAt)}</Typography>
-                        <Typography>Total: R$ {selectedSale?.total}</Typography>
-                        <Typography>Comprador: {selectedSale?.customer?.name}</Typography>
+                        <Typography>
+                            Data: {formatDate(selectedPurchase?.createdAt)}
+                        </Typography>
+                        <Typography>
+                            Total: R$ {selectedPurchase?.total}
+                        </Typography>
+                        <Typography>
+                            Comprador: {selectedPurchase?.customer?.name}
+                        </Typography>
                     </>
-                </DialogContent>
-                <DialogActions>
-                    <>
-                        <Button onClick={() => setOpenModalSale(false)}>Fechar</Button>
-                    </>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={openModalDelete} onClose={() => setOpenModalDelete(false)}>
-                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Deletar Venda
-                </DialogTitle>
-                <DialogContent>
-                    <Typography>
 
-                        {selectedSale && `Deseja deletar a venda do cliente ${selectedSale?.customer?.name}`}
-                    </Typography>
                 </DialogContent>
                 <DialogActions>
+
                     <>
-                        <Button onClick={() => deleteSale()}>Confirmar</Button>
-                        <Button onClick={() => setOpenModalDelete(false)}>Cancelar</Button>
+                        <Button onClick={() => setOpenModalPurchase(false)}>Fechar</Button>
                     </>
                 </DialogActions>
             </Dialog>
+            
         </div>
     );
 };
 
-export default SalesList;
+export default PurchasesList;

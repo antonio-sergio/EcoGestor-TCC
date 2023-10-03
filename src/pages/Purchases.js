@@ -77,7 +77,7 @@ const Purchases = () => {
                 setItems([...items, newItem]);
             }
 
-            setSelectedProduct(0);
+            setSelectedProduct(null);
             setAmount(0);
         }
     };
@@ -184,7 +184,7 @@ const Purchases = () => {
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Typography sx={{ color: 'green' }}><strong>R$ {item.subtotal}</strong></Typography>
+                                                    <Typography sx={{ color: 'green' }}><strong>R$ {String(item.subtotal).substring(0,6)}</strong></Typography>
                                                 </TableCell>
                                                 <TableCell>
                                                     <Button onClick={() => handleRemoveItem(index)}>

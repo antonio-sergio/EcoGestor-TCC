@@ -109,23 +109,7 @@ const Signup = () => {
         setAdded(true);
     };
 
-    function extrairNumeros(string) {
-        // eslint-disable-next-line
-        var regex = /\d+[\+\.,]?\d*|-\d+[\+\.,]?\d*/g;
-        var numeros = string.match(regex);
-        if (numeros) {
-            numeros = numeros.map(function (num) {
-                return num.replace(/[-]/g, '');
-            });
-        } else {
-            numeros = [];
-        }
-        if (numeros[1]) {
-            return numeros[0] + numeros[1];
-        }
-        return numeros[0]
-    }
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         if (String(user.state).toLowerCase() === 'sp' && String(user.city).toLowerCase() === 'franca') {

@@ -49,7 +49,7 @@ const DisapprovedList = () => {
         },
         { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
         {
-            field: 'details_address', headerName: 'Endereço', width: 200, editable: true, renderCell: (params) => (
+            field: 'details_address', headerName: 'Endereço', width: 300, editable: true, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
@@ -70,12 +70,13 @@ const DisapprovedList = () => {
     }
 
     return (
-        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '100vh',width: "100%", display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <Typography>
                 Coletas Recusadas
             </Typography>
             <DataGrid
-                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                
+                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '', width: "100%" }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}

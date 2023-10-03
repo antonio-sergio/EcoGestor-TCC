@@ -7,7 +7,7 @@ import userService from '../../services/user/user-service';
 import { ToastContainer, toast } from 'react-toastify';
 
 const UserForm = () => {
-    const [userType, setUserType] = useState('customer');
+    const [userType, setUserType] = useState('seller');
     const [zipCodeMask, setZipCodeMask] = useState([/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]);
     const [zipCodeError, setZipCodeError] = useState('');
     const [zipCodeData, setZipCodeData] = useState(null);
@@ -247,7 +247,7 @@ const UserForm = () => {
                         </Grid>
                         <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                             <TextField
-                                label={userType === 'customer' ? 'CPF' : 'CNPJ'}
+                                label={userType === 'customer' ?  'CNPJ' : 'CPF'}
                                 name="document"
                                 value={registrationUser.document}
                                 onChange={handleChange}
@@ -256,18 +256,18 @@ const UserForm = () => {
                                 InputProps={{
                                     inputComponent: MaskedInput,
                                     inputProps: {
-                                        mask: userType === 'customer' ? cpfMask : cnpjMask,
+                                        mask: userType === 'seller' ? cpfMask : cnpjMask,
                                     },
                                 }}
                                 error={
                                     registrationUser.document &&
-                                    (userType === 'customer'
+                                    (userType === 'seller'
                                         ? !isCPFValid(registrationUser.document)
                                         : !isCNPJValid(registrationUser.document))
                                 }
                                 helperText={
                                     registrationUser.document &&
-                                    (userType === 'customer'
+                                    (userType === 'seller'
                                         ? !isCPFValid(registrationUser.document)
                                             ? 'CPF inválido'
                                             : ''
