@@ -251,7 +251,7 @@ const PurchasesList = () => {
     return (
         <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
-                Compras
+                Minhas Vendas
             </Typography>
             <Box id="purchases-table" height="60vh" display="flex">
 

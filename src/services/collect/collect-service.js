@@ -3,7 +3,13 @@ import moment from 'moment';
 
 class CollectService {
     create(collect) {
-        return axios.post(`${process.env.REACT_APP_API_URL}/collect`, collect)
+        const formData = new FormData();
+
+        for (const campo in collect) {
+            formData.append(campo, collect[campo]); // adiciona os campos do objeto user ao FormData
+        }
+       
+        return axios.post(`${process.env.REACT_APP_API_URL}/collect`, formData)
     }
 
     getAllCollects() {

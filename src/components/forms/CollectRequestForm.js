@@ -15,7 +15,6 @@ registerLocale('pt', pt);
 
 const CollectForm = () => {
     const { user } = useContext(AuthContext);
-
     const [collects, setCollects] = useState([]);
     const [address, setAddress] = useState([]);
     const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 3));
@@ -26,6 +25,7 @@ const CollectForm = () => {
     const [block, setBlock] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
     const [added, setAdded] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         const formattedDate = format(startOfDay(selectedDate), 'yyyy-MM-dd');
@@ -132,7 +132,8 @@ const CollectForm = () => {
             collect_time: selectedTime,
             collect_date: formattedDate,
             address_id: user.address_id,
-            details_address: address?.street + ' ' + address.number + ', ' + address.neighborhood + ', ' + address.city + ' ' + address.state + '. ' + address?.complement + ' ' + address.zip_code + '.'
+            details_address: address?.street + ' ' + address.number + ', ' + address.neighborhood + ', ' + address.city + ' ' + address.state + '. ' + address?.complement + ' ' + address.zip_code + '.',
+            image: selectedImage
         }
         collectService.create(payload).then(response => {
             if (response.status === 201) {
@@ -151,7 +152,8 @@ const CollectForm = () => {
                 }
                 toast.success('Coleta agendada com sucesso!');
                 if (created === true) {
-                    setCreated(false)
+                    setCreated(false);
+                    setSelectedImage(null);
                 } else {
                     setCreated(true)
                 }
@@ -173,7 +175,20 @@ const CollectForm = () => {
         setActiveStep((prevStep) => prevStep - 1);
     };
 
-    const steps = [<Typography variant='h5' fontSize={15} className={activeStep === 0 ? "heartbeat" : ""}>Selecione data e horário</Typography>, <Typography variant='h5' fontSize={15}  className={activeStep === 1 ? "heartbeat" : ""}>Confirme ou selecione outro endereço</Typography>, <Typography variant='h5' fontSize={15}  className={activeStep === 2 ? "heartbeat" : ""}>Confirme o agendamento</Typography>];
+    const getImage = () => {
+        if(selectedImage === null){
+            toast.warning("É necessário o envio de uma imagem do material a ser coletado.")
+        }else{
+            handleNextStep()
+        }
+    }
+
+    const steps = [
+        <Typography variant='h5' fontSize={15} className={activeStep === 0 ? "heartbeat" : ""}>Selecione data e horário</Typography>,
+        <Typography variant='h5' fontSize={15} className={activeStep === 1 ? "heartbeat" : ""}>Confirme ou selecione outro endereço</Typography>,
+        <Typography variant='h5' fontSize={15} className={activeStep === 2 ? "heartbeat" : ""}>Envie uma imagem do material</Typography>,
+        <Typography variant='h5' fontSize={15} className={activeStep === 3 ? "heartbeat" : ""}>Confirme o agendamento</Typography>
+    ];
 
     return (
         <>
@@ -305,6 +320,42 @@ const CollectForm = () => {
                     </>
                 )}
                 {activeStep === 2 && (
+                    <>
+                        {/* Etapa 2: Confirme ou selecione outro endereço */}
+                        {/* Mostrar detalhes do endereço aqui... */}
+                        <Box mt={2} display="flex" alignItems="flex-start" justifyContent="center" flexDirection="column">
+                            <Box>
+                                <TextField
+                                    label="Imagem"
+                                    name="image"
+                                    type="file"
+                                    onChange={(e) => setSelectedImage(e.target.files[0])}
+                                    fullWidth
+                                    required
+                                />
+                            </Box>
+                        </Box>
+                        <Box mt={4}>
+                            <Button
+                                variant="outlined"
+                                color="success"
+                                onClick={handlePrevStep}
+                            >
+                                Anterior
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={getImage}
+                                sx={{ ml: 2 }}
+                            >
+                                Próximo
+                            </Button>
+                        </Box>
+
+                    </>
+                )}
+                {activeStep === 3 && (
                     <>
                         {/* Etapa 3: Confirme o agendamento */}
                         <Box>

@@ -10,6 +10,8 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import emailService from '../../services/email/email-service';
 import ThemeContext from '../style/ThemeContext';
+import CloseIcon from '@mui/icons-material/Close';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 
 const WaitingApprovalList = () => {
     const { theme } = useContext(ThemeContext);
@@ -20,7 +22,7 @@ const WaitingApprovalList = () => {
     const [openModalRefuse, setOpenModalRefuse] = useState(false);
     const [address, setAddress] = useState(false);
     const [processed, setProcessed] = useState(false);
-    const [ urlImage, setUrlImage ] = useState(null);
+    const [urlImage, setUrlImage] = useState(null);
     const reason = useRef(null);
 
     useEffect(() => {
@@ -29,7 +31,7 @@ const WaitingApprovalList = () => {
                 setCollects(response.data);
             }
         })
-    }, [selectedCollect, processed, ]);
+    }, [selectedCollect, processed,]);
 
     const formatDate = (dateString) => {
         return moment(dateString).format('DD/MM/YYYY');
@@ -42,9 +44,9 @@ const WaitingApprovalList = () => {
 
     const handleApproval = (collect) => {
         setSelectedCollect(collect);
-        console.log('handelaproca', collect)
         handleImage(collect.id);
         setOpenModalApproval(true);
+        setAddress(collect)
     }
 
     const handleRefuse = (collect) => {
@@ -54,12 +56,12 @@ const WaitingApprovalList = () => {
 
     const handleImage = (collect_id) => {
         collectService.getCollectImage(collect_id).then(response => {
-            if(response.status === 200){
+            if (response.status === 200) {
                 setUrlImage(response.data.imageUrl)
             }
         }).catch(error => console.log(error))
     }
-  
+
 
     const handleProcessed = () => {
         if (processed === false) {
@@ -76,7 +78,7 @@ const WaitingApprovalList = () => {
                     "recipient": selectedCollect?.user?.email,
                     "user": selectedCollect?.user?.name,
                     "textMsg": "Boas notícias! Sua solicitação foi aprovada e no dia e horário agendado realizaremos a coleta. Obrigado por escolher a EcoGestor!",
-                    "date" : formatDate(selectedCollect.collect_date),
+                    "date": formatDate(selectedCollect.collect_date),
                     "schedule": selectedCollect.collect_time,
                     "address": selectedCollect.details_address
                 }
@@ -101,15 +103,15 @@ const WaitingApprovalList = () => {
                         "recipient": selectedCollect?.user?.email,
                         "user": selectedCollect?.user?.name,
                         "textMsg": `:( Sua solicitação não pôde ser atendida, lamentamos por isso. Motivo: ${reason?.current?.value}. Para mais informações, entre em contato conosco. Obrigado por escolher a EcoGestor!`,
-                        "date" : formatDate(selectedCollect.collect_date),
+                        "date": formatDate(selectedCollect.collect_date),
                         "schedule": selectedCollect.collect_time,
                         "address": selectedCollect.details_address
                     }
                     emailService.sendEmail(obj);
                     toast.success('Solicitação de coleta recusada com sucesso!');
-                    setOpenModalRefuse(false);
+                    setOpenModalApproval(false)
                     handleProcessed();
-
+                    setOpenModalRefuse(false)
                 }
             }).catch(error => {
                 console.log(error);
@@ -137,7 +139,7 @@ const WaitingApprovalList = () => {
                 }
             }
         },
-        { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
+        { field: 'details', headerName: 'Detalhes', width: 150, editable: true,  renderCell: (params) => params.row.details || "Não se aplica" },
         {
             field: 'details_address', headerName: 'Endereço', width: 100, editable: true, renderCell: (params) => (
                 <Button
@@ -152,25 +154,16 @@ const WaitingApprovalList = () => {
         {
             field: 'to_approve', headerName: 'Analisar', width: 100, editable: true, renderCell: (params) => (
                 <Button
+                    color='success'
                     variant="outlined"
                     size="small"
                     onClick={() => handleApproval(params.row)}
                 >
-                    <CheckCircleIcon sx={{ color: 'green', backgrounds: 'green' }} />
+                    <ImageSearchIcon color='success' sx={{ color: 'green', backgrounds: 'green' }} />
                 </Button>
             )
         },
-        {
-            field: 'refuse', headerName: 'Recusar', width: 100, editable: true, renderCell: (params) => (
-                <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleRefuse(params.row)}
-                >
-                    <ThumbDownIcon sx={{ color: 'red' }} />
-                </Button>
-            )
-        },
+
     ];
 
     const FormatAddress = ({ address }) => {
@@ -184,7 +177,7 @@ const WaitingApprovalList = () => {
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
-            <Typography color={  theme?.palette?.type === 'dark' ? 'green' : ''}>
+            <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Aguardando Aprovação
             </Typography>
             <DataGrid
@@ -204,34 +197,57 @@ const WaitingApprovalList = () => {
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? 'black' : 'green', color: 'white' }}>
                     Endereço
                 </DialogTitle>
-                <DialogContent sx={{ marginTop: 3 , backgroundColor: theme?.palette?.type === 'dark' ? 'black' : '', color: theme?.palette?.type === 'dark' ? 'white' : ''}}>
+                <DialogContent sx={{ marginTop: 3, backgroundColor: theme?.palette?.type === 'dark' ? 'black' : '', color: theme?.palette?.type === 'dark' ? 'white' : '' }}>
                     <>
                         <FormatAddress address={address.details_address} />
                     </>
                 </DialogContent>
-                <DialogActions sx={{backgroundColor: theme?.palette?.type === 'dark' ? 'black' : '' }}>
+                <DialogActions sx={{ backgroundColor: theme?.palette?.type === 'dark' ? 'black' : '' }}>
                     <>
-                        <Button onClick={() => setOpenModal(false)}>Fechar</Button>
+                        <Button onClick={() => setOpenModal(false)}><CloseIcon />Fechar</Button>
                     </>
                 </DialogActions>
             </Dialog>
 
-            <Dialog open={openModalApproval} onClose={() => setOpenModalApproval(false)}>
+            <Dialog open={openModalApproval} onClose={() => setOpenModalApproval(false)} fullWidth maxWidth="md" >
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Analisar Solicitação Coleta
                 </DialogTitle>
-                <DialogContent sx={{ marginTop: 4 }}>
+                <DialogContent sx={{ marginTop: 4 }} >
                     <Box>
-                        <CardMedia component="img" alt='imagem do material a ser coletado' height={200} image={urlImage} />
+                        <Typography ><strong>Solicitante:</strong> {selectedCollect?.user?.name} </Typography>
                     </Box>
+                    <Box>
+                        <Typography ><strong>Contato:</strong> {selectedCollect?.user?.phone} </Typography>
+                    </Box>
+                    <Box>
+                        <Typography fontWeight={600}>Endereço: </Typography>
+                        <FormatAddress address={address.details_address} />
+                    </Box>
+                    <Box display="flex" width="100%" mt={2}>
+                        <Box>
+                            <Typography><strong>Data:</strong> {formatDate(selectedCollect.collect_date)}</Typography>
+                            
+                        </Box>
+                        <Box ml={10}>
+                            <Typography><strong>Hora:</strong> {selectedCollect.collect_time}</Typography>
+                            
+                        </Box>
+                    </Box>
+
+                    <Box mt={2}>
+                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage} />
+                    </Box>
+
                     <Typography mt={5}>Você deseja aprovar a solicitação de {selectedCollect?.user?.name}?</Typography>
                 </DialogContent>
 
                 <DialogActions>
                     <>
-                        <Button onClick={() => handleApprovalCollect()} >Aprovar</Button>
-                        <Button onClick={() => handleApprovalCollect()} >Recusar</Button>
-                        <Button onClick={() => setOpenModalApproval(false)}>Fechar</Button>
+
+                        <Button variant='contained' color='success' onClick={() => handleApprovalCollect()} ><CheckCircleIcon sx={{ color: 'white' }} /><Typography ml={1}>Aprovar</Typography> </Button>
+                        <Button variant='outlined' color='error' onClick={() => handleRefuse(selectedCollect)}><ThumbDownIcon sx={{ color: 'red' }} /><Typography ml={1}>Recusar</Typography> </Button>
+                        <Button variant='outlined' onClick={() => setOpenModalApproval(false)}><CloseIcon />Fechar</Button>
                     </>
                 </DialogActions>
             </Dialog>
@@ -258,7 +274,7 @@ const WaitingApprovalList = () => {
                 </DialogActions>
             </Dialog>
 
-            
+
         </div>
 
     );
