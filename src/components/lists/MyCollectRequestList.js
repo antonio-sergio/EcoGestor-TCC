@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box, CardMedia } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
@@ -19,6 +19,7 @@ const MyCollectRequestList = () => {
     const [openModalCancel, setOpenModalCancel] = useState(false);
     const [selectedCollect, setSelectedCollect] = useState([]);
     const [processed, setProcessed] = useState(false);
+    const [urlImage, setUrlImage] = useState(null);
     const reasonCancel = useRef(null);
 
 
@@ -34,8 +35,10 @@ const MyCollectRequestList = () => {
         return moment(dateString).format('DD/MM/YYYY');
     };
 
-    const handleAddress = (address) => {
-        setAddress(address);
+    const handleDetails = (collect) => {
+        setAddress(collect);
+        handleImage(collect.id);
+        setSelectedCollect(collect)
         setOpenModal(true);
     }
 
@@ -47,7 +50,14 @@ const MyCollectRequestList = () => {
         }
     }
 
-   
+    const handleImage = (collect_id) => {
+        collectService.getCollectImage(collect_id).then(response => {
+            if (response.status === 200) {
+                setUrlImage(response.data.imageUrl)
+            }
+        }).catch(error => console.log(error))
+    }
+
 
     const handleCancel = (collect) => {
         setSelectedCollect(collect);
@@ -100,20 +110,20 @@ const MyCollectRequestList = () => {
                 }
             }
         },
-        { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
+        { field: 'details', headerName: 'Observação', width: 150, editable: true, renderCell: (params) => params.row.details || "Não se aplica" },
         {
-            field: 'details_address', headerName: 'Endereço', width: 200, align: "center", editable: false, renderCell: (params) => (
+            field: 'details_collect', headerName: 'Detalhes', width: 80, align: "center", editable: false, renderCell: (params) => (
                 <Button
                     variant="outlined"
                     size="small"
-                    onClick={() => handleAddress(params.row)}
+                    onClick={() => handleDetails(params.row)}
                 >
                     <ContentPasteSearchIcon />
                 </Button>
             )
         },
         {
-            field: 'cancel', headerName: 'Cancelar', width: 100,  editable: false, align: "center", renderCell: (params) => {
+            field: 'cancel', headerName: 'Cancelar', width: 80, editable: false, align: "center", renderCell: (params) => {
                 if (params.row.status === 'aguardando' || params.row.status === 'pendente') {
                     return <Button
                         variant="outlined"
@@ -138,7 +148,7 @@ const MyCollectRequestList = () => {
         return (
             <Box>
                 <Typography>{address}</Typography>
-                
+
             </Box>
         )
     }
@@ -163,13 +173,33 @@ const MyCollectRequestList = () => {
             />
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Endereço
+                    Detalhes Solicitação de Coleta
                 </DialogTitle>
                 <DialogContent sx={{ marginTop: 3 }}>
                     <>
-                        <FormatAddress address={address.details_address} />
+                        <Box>
+                            <Typography fontWeight={600}>Endereço: </Typography>
+                            <FormatAddress address={address.details_address} />
+                        </Box>
+                        <Box display="flex" width="100%" mt={2}>
+                            <Box>
+                                <Typography><strong>Data:</strong> {formatDate(selectedCollect.collect_date)}</Typography>
+
+                            </Box>
+                            <Box ml={10}>
+                                {console.log(selectedCollect)}
+                                <Typography><strong>Hora:</strong> {selectedCollect.collect_time}</Typography>
+
+                            </Box>
+                        </Box>
+
+                        <Box mt={2}>
+                            <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage} />
+                        </Box>
+
                     </>
                 </DialogContent>
+
                 <DialogActions>
                     <>
                         <Button onClick={() => setOpenModal(false)}>Fechar</Button>

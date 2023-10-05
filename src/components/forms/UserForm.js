@@ -30,6 +30,7 @@ const UserForm = () => {
     const [added, setAdded] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [modalOpen, setModalOpen] = useState(true);
+  
 
     const handleChange = (e) => {
         setRegistrationUser((prevUser) => ({
@@ -115,10 +116,29 @@ const UserForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (userType === 'seller') {
+            if (!isCPFValid(registrationUser.document)) {
+                return toast.warning('Por favor, informe um CPF válido.');
+            }
+        } else {
+            if (!isCNPJValid((registrationUser.document))) {
+                return toast.warning('Por favor, informe um CNPJ válido.');
+            }
+        }
+        if(!isEmailValid(registrationUser.email)){
+            return toast.warning('Por favor, informe um e-mail válido.');
+        }
+        if(!isPhoneValid(registrationUser.phone)){
+            return toast.warning('Por favor, informe um contato válido.');
+        }
+        if(zipCodeError){
+            return toast.warning('Por favor, informe um CEP válido.');
+        }
+
         if (String(registrationUser.state).toLowerCase() === 'sp' && String(registrationUser.city).toLowerCase() === 'franca') {
             registrationUser.image = selectedImage;
             userService.create(registrationUser).then(response => {
-                if(response.status === 201){
+                if (response.status === 201) {
                     toast.success('Usuário adicionado com sucesso!');
                     resetForm();
                 }
@@ -126,7 +146,7 @@ const UserForm = () => {
                 console.log(error)
                 return toast.error(`${error.response.data.message}`);
             })
-            
+
         } else {
             return toast.warning('Desculpe-nos! Por enquanto só é possível efetuar cadastro para a cidade de Franca-SP');
         }
@@ -191,6 +211,7 @@ const UserForm = () => {
     const isCPFValid = (cpf) => {
         return validateCPF.isValid(cpf);
     };
+
     const isCNPJValid = (cnpj) => {
         return validateCNPJ.isValid(cnpj);
     };
@@ -247,7 +268,7 @@ const UserForm = () => {
                         </Grid>
                         <Grid item m={2} xs={12} sm={6} md={4} lg={3}>
                             <TextField
-                                label={userType === 'customer' ?  'CNPJ' : 'CPF'}
+                                label={userType === 'customer' ? 'CNPJ' : 'CPF'}
                                 name="document"
                                 value={registrationUser.document}
                                 onChange={handleChange}
@@ -261,9 +282,7 @@ const UserForm = () => {
                                 }}
                                 error={
                                     registrationUser.document &&
-                                    (userType === 'seller'
-                                        ? !isCPFValid(registrationUser.document)
-                                        : !isCNPJValid(registrationUser.document))
+                                    (userType === 'seller' ? !isCPFValid(registrationUser.document) : !isCNPJValid(registrationUser.document))
                                 }
                                 helperText={
                                     registrationUser.document &&

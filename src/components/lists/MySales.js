@@ -250,10 +250,8 @@ const PurchasesList = () => {
 
     return (
         <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
-            <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
-                Minhas Vendas
-            </Typography>
-            <Box id="purchases-table" height="60vh" display="flex">
+           
+            <Box id="purchases-table" height="60vh" display="flex" mt={2}>
 
                 <DataGrid
                     ref={dataGridRef}

@@ -112,6 +112,18 @@ const Signup = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!isCPFValid(user.document)) {
+            return toast.warning('Por favor, informe um CPF válido.');
+        }
+        if(!isEmailValid(user.email)){
+            return toast.warning('Por favor, informe um e-mail válido.');
+        }
+        if(!isPhoneValid(user.phone)){
+            return toast.warning('Por favor, informe um contato válido.');
+        }
+        if(zipCodeError){
+            return toast.warning('Por favor, informe um CEP válido.');
+        }
         if (String(user.state).toLowerCase() === 'sp' && String(user.city).toLowerCase() === 'franca') {
             user.image = selectedImage;
             userService.create(user).then(response => {
