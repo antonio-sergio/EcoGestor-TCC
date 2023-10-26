@@ -256,13 +256,13 @@ const UsersList = () => {
               fullWidth
               margin="normal"
             />
-            <TextField
+            {/* <TextField
               label="Email"
               value={selectedUser?.email || ''}
               onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
               fullWidth
               margin="normal"
-            />
+            /> */}
             <TextField
               label="Contato"
               value={selectedUser?.phone || ''}

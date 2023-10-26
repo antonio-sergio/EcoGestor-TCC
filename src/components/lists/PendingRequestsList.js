@@ -1,25 +1,29 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Box, CardMedia } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThemeContext from '../style/ThemeContext';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 
 const PendingRequestsList = () => {
     const { theme } = useContext(ThemeContext);
     const [collects, setCollects] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
     const [address, setAddress] = useState(false);
     const [openModalFinalize, setOpenModalFinalize] = useState(false);
     const [openModalCancel, setOpenModalCancel] = useState(false);
     const [selectedCollect, setSelectedCollect] = useState([]);
     const [processed, setProcessed] = useState(false);
+    const [urlImage, setUrlImage] = useState(null);
+    const [openModalShow, setOpenModalShow] = useState(false);
+
     const reasonCancel = useRef(null);
 
 
@@ -35,10 +39,7 @@ const PendingRequestsList = () => {
         return moment(dateString).format('DD/MM/YYYY');
     };
 
-    const handleAddress = (address) => {
-        setAddress(address);
-        setOpenModal(true);
-    }
+   
 
     const handleProcessed = () => {
         if (processed === false) {
@@ -48,6 +49,20 @@ const PendingRequestsList = () => {
         }
     }
 
+    const handleImage = (collect_id) => {
+        collectService.getCollectImage(collect_id).then(response => {
+            if (response.status === 200) {
+                setUrlImage(response.data.imageUrl)
+            }
+        }).catch(error => console.log(error))
+    }
+
+    const handleShow = (collect) => {
+        setSelectedCollect(collect);
+        handleImage(collect.id);
+        setOpenModalShow(true);
+        setAddress(collect)
+    }
     const handlefinalizeCollect = (collect) => {
         setSelectedCollect(collect);
         setOpenModalFinalize(true);
@@ -106,16 +121,16 @@ const PendingRequestsList = () => {
                 }
             }
         },
-        { field: 'details', headerName: 'Detalhes', width: 150, editable: true },
+        { field: 'details', headerName: 'Detalhes', width: 150, editable: true, renderCell: (params) => params.row.details || "Não se aplica" },
         {
-            field: 'details_address', headerName: 'Endereço', width: 100, editable: true, renderCell: (params) => (
+            field: 'show', headerName: 'Infos', width: 100, editable: true, renderCell: (params) => (
                 <Button
+                    color='success'
                     variant="outlined"
                     size="small"
-                    onClick={() => handleAddress(params.row)}
-
+                    onClick={() => handleShow(params.row)}
                 >
-                    <ContentPasteSearchIcon />
+                    <ImageSearchIcon color='success' sx={{ color: 'green', backgrounds: 'green' }} />
                 </Button>
             )
         },
@@ -170,21 +185,7 @@ const PendingRequestsList = () => {
                 }}
                 getRowId={(row) => row.id}
             />
-            <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
-                    Endereço
-                </DialogTitle>
-                <DialogContent sx={{ marginTop: 3 }}>
-                    <>
-                        <FormatAddress address={address.details_address} />
-                    </>
-                </DialogContent>
-                <DialogActions>
-                    <>
-                        <Button onClick={() => setOpenModal(false)}>Fechar</Button>
-                    </>
-                </DialogActions>
-            </Dialog>
+            
             <Dialog open={openModalFinalize} onClose={() => setOpenModalFinalize(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Concluir Coleta
@@ -197,6 +198,7 @@ const PendingRequestsList = () => {
                     </>
                 </DialogActions>
             </Dialog>
+            
             <Dialog open={openModalCancel} onClose={() => setOpenModalCancel(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Cancelar Coleta
@@ -215,6 +217,46 @@ const PendingRequestsList = () => {
                     <>
                         <Button onClick={() => handleCancelCollect()} >Confirmar Cancelamento</Button>
                         <Button onClick={() => setOpenModalCancel(false)}>Fechar</Button>
+                    </>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={openModalShow} onClose={() => setOpenModalShow(false)} fullWidth maxWidth="md" >
+                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+                    Dados Solicitação Coleta
+                </DialogTitle>
+                <DialogContent sx={{ marginTop: 4 }} >
+                    <Box>
+                        <Typography ><strong>Solicitante:</strong> {selectedCollect?.user?.name} </Typography>
+                    </Box>
+                    <Box>
+                        <Typography ><strong>Contato:</strong> {selectedCollect?.user?.phone} </Typography>
+                    </Box>
+                    <Box>
+                        <Typography fontWeight={600}>Endereço: </Typography>
+                        <FormatAddress address={address.details_address} />
+                    </Box>
+                    <Box display="flex" width="100%" mt={2}>
+                        <Box>
+                            <Typography><strong>Data:</strong> {formatDate(selectedCollect.collect_date)}</Typography>
+                            
+                        </Box>
+                        <Box ml={10}>
+                            <Typography><strong>Hora:</strong> {selectedCollect.collect_time}</Typography>
+                            
+                        </Box>
+                    </Box>
+
+                    <Box mt={2}>
+                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage} sx={{objectFit: 'cover'}} />
+                    </Box>
+
+                </DialogContent>
+
+                <DialogActions>
+                    <>
+
+                        <Button variant='outlined' onClick={() => setOpenModalShow(false)}><CloseIcon />Fechar</Button>
                     </>
                 </DialogActions>
             </Dialog>

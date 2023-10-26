@@ -236,7 +236,7 @@ const WaitingApprovalList = () => {
                     </Box>
 
                     <Box mt={2}>
-                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage} />
+                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage} sx={{objectFit: 'cover'}} />
                     </Box>
 
                     <Typography mt={5}>Você deseja aprovar a solicitação de {selectedCollect?.user?.name}?</Typography>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box } from '@mui/material';
+import { Button, SpeedDial, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box, CardMedia } from '@mui/material';
 import { localizedTextsMap } from '../../utils/localizedTextsMap';
 import collectService from '../../services/collect/collect-service';
 import moment from 'moment';
@@ -11,6 +11,8 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ShareIcon from '@mui/icons-material/Share';
 import ExcelJS from 'exceljs';
 import ThemeContext from '../style/ThemeContext';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const CollectList = () => {
@@ -19,6 +21,12 @@ const CollectList = () => {
     const [openModal, setOpenModal] = useState(false);
     const [details, setDetails] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
+    const [openModalShow, setOpenModalShow] = useState(false);
+    const [selectedCollect, setSelectedCollect] = useState([]);
+    const [urlImage, setUrlImage] = useState(null);
+    const [address, setAddress] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const dataGridRef = useRef(null);
 
     useEffect(() => {
@@ -38,6 +46,28 @@ const CollectList = () => {
         setOpenModal(true);
     }
 
+    const handleImage = async (collect_id) => {
+        setLoading(true);
+        collectService.getCollectImage(collect_id).then(response => {
+            if (response.status === 200) {
+                setUrlImage(response.data.imageUrl);
+                setLoading(false)
+            }
+        }).catch(error => console.log(error))
+    }
+
+    const handleShow = async (collect) => {
+        setSelectedCollect(collect);
+        await handleImage(collect.id);
+        setOpenModalShow(true);
+        setAddress(collect)
+    }
+
+
+    const handleClose = () => {
+        setOpenModalShow(false);
+        setUrlImage(null)
+    }
     const columns = [
         { field: 'id', headerName: 'ID', width: 50 },
         { field: 'name', headerName: 'Solicitante', width: 150, editable: true, valueGetter: (params) => params.row.user.name },
@@ -45,6 +75,18 @@ const CollectList = () => {
         { field: 'collect_date', headerName: 'Data', width: 100, editable: true, valueGetter: (params) => formatDate(params.row.collect_date) },
         { field: 'collect_time', headerName: 'Hora', width: 100, editable: true },
         { field: 'status', headerName: 'Status', width: 100, editable: true },
+        {
+            field: 'show', headerName: 'Infos', width: 100, editable: true, renderCell: (params) => (
+                <Button
+                    color='success'
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleShow(params.row)}
+                >
+                    <ImageSearchIcon color='success' sx={{ color: 'green', backgrounds: 'green' }} />
+                </Button>
+            )
+        },
         {
             field: 'final_date', headerName: 'Data de Coleta', width: 200, editable: true, valueGetter: (params) => {
                 if (params.row.final_date !== null) {
@@ -261,6 +303,14 @@ const CollectList = () => {
         )
     }
 
+    const FormatAddress = ({ address }) => {
+        return (
+            <Box>
+                <Typography>{address}</Typography>
+            </Box>
+        )
+    }
+
     return (
         <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
 
@@ -296,14 +346,51 @@ const CollectList = () => {
                 <DialogContent sx={{ marginTop: 3 }}>
                     <>
                         {details?.details || "Nenhuma observação foi adicionada"}
-                        <Box>
-                            imagem aqui
-                        </Box>
                     </>
                 </DialogContent>
                 <DialogActions>
                     <>
                         <Button onClick={() => setOpenModal(false)}>Fechar</Button>
+                    </>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={openModalShow} onClose={() => handleClose()} fullWidth maxWidth="md" >
+                <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
+                    Dados Solicitação Coleta
+                </DialogTitle>
+                <DialogContent sx={{ marginTop: 4 }} >
+                    <Box>
+                        <Typography ><strong>Solicitante:</strong> {selectedCollect?.user?.name} </Typography>
+                    </Box>
+                    <Box>
+                        <Typography ><strong>Contato:</strong> {selectedCollect?.user?.phone} </Typography>
+                    </Box>
+                    <Box>
+                        <Typography fontWeight={600}>Endereço: </Typography>
+                        <FormatAddress address={address.details_address} />
+                    </Box>
+                    <Box display="flex" width="100%" mt={2}>
+                        <Box>
+                            <Typography><strong>Data:</strong> {formatDate(selectedCollect.collect_date)}</Typography>
+                            
+                        </Box>
+                        <Box ml={10}>
+                            <Typography><strong>Hora:</strong> {selectedCollect.collect_time}</Typography>
+                            
+                        </Box>
+                    </Box>
+
+                    {loading === false ? <Box mt={2}>
+                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage || null} sx={{objectFit: 'cover'}} />
+                    </Box> : "Carregando imagem"}
+
+                </DialogContent>
+
+                <DialogActions>
+                    <>
+
+                        <Button variant='outlined' onClick={() => setOpenModalShow(false)}><CloseIcon />Fechar</Button>
                     </>
                 </DialogActions>
             </Dialog>
