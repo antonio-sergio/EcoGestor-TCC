@@ -59,7 +59,6 @@ class CollectService {
 
     }
     getCollectImage(id_collect) {
-        console.log('id colect service get cole', id_collect)
         return axios.get(`${process.env.REACT_APP_API_URL}/collect/image/${id_collect}`)
     }
 }

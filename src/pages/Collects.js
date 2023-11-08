@@ -18,9 +18,8 @@ const Lists = () => {
         <Box width="100%" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
             <Grid width="80%" spacing={10} mt={2} display="flex" justifyContent="space-between" >
 
-                <Grid item xs={5} sm={2} >
+                <Grid item xs={5} lg={2} sm={2} >
                     <Button
-                        fullWidth
                         variant={selectedList === 'waitingApproval' ? 'contained' : 'outlined'}
                         color='success'
                         onClick={() => handleCardClick('waitingApproval')}
@@ -35,9 +34,8 @@ const Lists = () => {
                         </CardContent>
                     </Button>
                 </Grid>
-                <Grid item xs={5} sm={2} >
+                <Grid item xs={5} lg={2} sm={2} >
                     <Button
-                        fullWidth
                         variant={selectedList === 'pendingRequests' ? 'contained' : 'outlined'}
                         color='success'
                         onClick={() => handleCardClick('pendingRequests')}
@@ -53,9 +51,8 @@ const Lists = () => {
                         </CardContent>
                     </Button>
                 </Grid>
-                <Grid item xs={5} sm={2} >
+                <Grid item xs={5} lg={2} sm={2} >
                     <Button
-                        fullWidth
                         variant={selectedList === 'disapproved' ? 'contained' : 'outlined'}
                         onClick={() => handleCardClick('disapproved')}
                         color='success'
@@ -71,9 +68,8 @@ const Lists = () => {
                         </CardContent>
                     </Button>
                 </Grid>
-                <Grid item xs={5} sm={2} >
+                <Grid item xs={5} lg={2} sm={2} >
                     <Button
-                        fullWidth
                         variant={selectedList === 'completed' ? 'contained' : 'outlined'}
                         onClick={() => handleCardClick('completed')}
                         color='success'

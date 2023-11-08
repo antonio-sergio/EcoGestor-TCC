@@ -40,7 +40,7 @@ const HomeUser = () => {
     };
 
     return (
-        <Box sx={{ backgroundColor: "#fff", height: "90vh", marginTop: "-25px" }}>
+        <Box sx={{ backgroundColor: "#fff", height: "100%"}}>
             <AppBar position="fixed" sx={{ backgroundColor: "#27AB6E", height: "10vh", minHeight: "90px", display: "flex", justifyContent: "center" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box >
@@ -55,7 +55,7 @@ const HomeUser = () => {
                 </Toolbar>
             </AppBar>
             <Container>
-                <Grid container spacing={2} mt={15}>
+                <Grid container spacing={2} mt={5}>
                     <Grid item xs={12}>
                         <Typography variant="h4" gutterBottom sx={{ color: "#27AB6E", fontWeight: 700 }}>
                             Sistema de Coleta
@@ -114,7 +114,7 @@ const HomeUser = () => {
                     </Grid>
                 </Grid>
             </Container>
-            <Container sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
+            <Container sx={{ display: "flex", height: "100%", justifyContent: "flex-start", alignItems: "center" }}>
 
                 {renderComponent()}
             </Container>

@@ -249,7 +249,7 @@ const PurchasesList = () => {
 
 
     return (
-        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '570px', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
            
             <Box id="purchases-table" height="60vh" display="flex" mt={2}>
 

@@ -26,7 +26,6 @@ const Profile = ({color}) => {
       }
     });
   }, [user, openModal, openModalPassword]);
-  console.log('aux', dataUser)
 
   const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: 10,
@@ -76,7 +75,7 @@ const Profile = ({color}) => {
   };
 
   return (
-    <Grid container xs={12} width="100%"  >
+    <Grid container xs={12} width="100%" height="570px"  >
       <ToastContainer />
       <Box width="100%" >
         <StyledPaper  elevation={3} theme={theme}>

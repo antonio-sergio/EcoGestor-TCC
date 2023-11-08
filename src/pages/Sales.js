@@ -153,7 +153,7 @@ const Sales = () => {
                 </Box>
             </Grid>
             <Grid item xs={12} width="100%" display="flex" alignItems="center" justifyContent="center" >
-                <Box component={Paper} elevation={2} width="95%" height="90%" p={3} display="flex" justifyContent="space-evenly" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black', border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
+                <Box component={Paper} elevation={2} width="95%" height="80%" p={3} display="flex" justifyContent="space-evenly" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black', border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
                     <Box width="60%">
                         <Typography variant="h6">Lista de items</Typography>
 
@@ -203,7 +203,7 @@ const Sales = () => {
                         </Box>
 
                     </Box>
-                    <Box width="35%" height="450px" border={2}  borderColor="green" display="flex" justifyContent="center" alignItems="center" overflow='auto' >
+                    <Box width="35%" py={3} border={2}  borderColor="green" display="flex" justifyContent="center" alignItems="center"  >
 
                         <Grid item xs={12} sm={9} display="flex" justifyContent="center" alignItems="center" flexDirection="column" >
                             <Box width="100%"  >
@@ -213,10 +213,10 @@ const Sales = () => {
                                         labelId="customer-label"
                                         color='success'
                                         label="Cliente"
-                                        size='medium'
+                                        size='small'
                                         value={selectedCustomer}
                                         onChange={(e) => setSelectedCustomer(e.target.value)}
-                                        sx={{ width: '100%' }}
+                                        sx={{ width: '100%', height: 50 }}
                                     >
                                         {customers.map((value) => (
                                             <MenuItem key={value.id_user} value={value}>
@@ -229,13 +229,13 @@ const Sales = () => {
                             <Box width="100%" sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100px", minHeight: "100px", backgroundColor: "" }}>
 
                                 <List>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 30  }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25  }}>
                                         <ListItemText primary={`${selectedCustomer?.phone || ""}`} />
                                     </ListItem>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 30  }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25  }}>
                                         <ListItemText primary={`${selectedCustomer?.email || ""}`} />
                                     </ListItem>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 30  }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25  }}>
                                         <ListItemText primary={`${selectedCustomer?.document || ""}`} />
                                     </ListItem>
                                 </List>
@@ -288,6 +288,7 @@ const Sales = () => {
                                             InputProps={{
                                                 min: 1
                                             }}
+                                            size='small'
                                             label="Quantidade"
                                             value={amount}
                                             onChange={(e) => setAmount(e.target.value)}
@@ -299,7 +300,7 @@ const Sales = () => {
                                         variant="outlined"
                                         color="success"
                                         onClick={handleAddItem}
-                                        sx={{height: 55, mt: 1}}
+                                        sx={{height: 40, mt: 1}}
                                     >
                                         Adicionar Item
                                     </Button>
@@ -310,7 +311,7 @@ const Sales = () => {
                     </Box>
                 </Box>
             </Grid>
-            <Box display="flex" alignItems="center" height={90}>
+            <Box display="flex" alignItems="center" height={40} mb={2}>
                 {total > 0 && <Typography fontSize={28} sx={{ display: "flex", justifyContent: "center", alignItems: "center", mr: 8 }}>Total Venda R$: <strong style={{ paddingLeft: "10px" }}>{total}</strong></Typography>}
                 <Button
                     sx={{ height: 60, width: 200, fontSize: 16, fontWeight: 700 }}

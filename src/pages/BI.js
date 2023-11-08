@@ -49,7 +49,6 @@ const BIComponent = ({ handleComponentClick }) => {
 
     useEffect(() => {
         collectService.getCollectsByDate(today).then(response => {
-            console.log('response col today', response)
             if (response.status === 200) {
                 const filteredData = response.data.filter(item => item.status === 'pendente');
                 setCollectsToday(filteredData);

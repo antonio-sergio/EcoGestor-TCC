@@ -167,13 +167,14 @@ const PendingRequestsList = () => {
     }
 
     return (
-        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '100vh', width: "100%", maxWidth: "75vw", display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <ToastContainer />
             <Typography>
                 Aprovadas, aguardando coleta
             </Typography>
-            <DataGrid
-                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+            <Box height='60vh' >
+                <DataGrid
+                sx={{  color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}
@@ -185,6 +186,8 @@ const PendingRequestsList = () => {
                 }}
                 getRowId={(row) => row.id}
             />
+            </Box>
+            
             
             <Dialog open={openModalFinalize} onClose={() => setOpenModalFinalize(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>

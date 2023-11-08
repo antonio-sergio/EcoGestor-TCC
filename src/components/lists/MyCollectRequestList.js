@@ -154,16 +154,16 @@ const MyCollectRequestList = () => {
     }
 
     return (
-        <Box style={{ height: '450px', width: '100%' }}>
+        <Box style={{ width: '100%' }}>
             <ToastContainer />
             <Typography mb={2}>
                 Minhas Solicitações de Coleta
             </Typography>
-            <DataGrid
+            <Box height="530px">
+                <DataGrid
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}
-                pageSize={5}
                 componentsProps={{
                     pagination: {
                         labelRowsPerPage: "Linhas por página",
@@ -171,6 +171,8 @@ const MyCollectRequestList = () => {
                 }}
                 getRowId={(row) => row.id}
             />
+            </Box>
+            
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Detalhes Solicitação de Coleta
@@ -187,7 +189,6 @@ const MyCollectRequestList = () => {
 
                             </Box>
                             <Box ml={10}>
-                                {console.log(selectedCollect)}
                                 <Typography><strong>Hora:</strong> {selectedCollect.collect_time}</Typography>
 
                             </Box>

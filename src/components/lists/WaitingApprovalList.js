@@ -175,13 +175,14 @@ const WaitingApprovalList = () => {
     }
 
     return (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '100vh', width: "100%", maxWidth: "75vw", display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <ToastContainer />
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Aguardando Aprovação
             </Typography>
-            <DataGrid
-                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+            <Box height='60vh'>
+              <DataGrid
+                sx={{color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
                 localeText={localizedTextsMap}
                 rows={collects}
                 columns={columns}
@@ -192,7 +193,9 @@ const WaitingApprovalList = () => {
                     }
                 }}
                 getRowId={(row) => row.id}
-            />
+            />  
+            </Box>
+            
             <Dialog open={openModal} onClose={() => setOpenModal(false)} >
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? 'black' : 'green', color: 'white' }}>
                     Endereço
@@ -273,8 +276,6 @@ const WaitingApprovalList = () => {
                     </>
                 </DialogActions>
             </Dialog>
-
-
         </div>
 
     );

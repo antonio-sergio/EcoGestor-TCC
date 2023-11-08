@@ -70,23 +70,26 @@ const CompletedList = () => {
     }
 
     return (
-        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '100vh', width: "100%", maxWidth: "75vw", display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <Typography>
                 Coletas Realizadas
             </Typography>
-            <DataGrid
-                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
-                localeText={localizedTextsMap}
-                rows={collects}
-                columns={columns}
-                pageSize={5}
-                componentsProps={{
-                    pagination: {
-                        labelRowsPerPage: "Linhas por página",
-                    }
-                }}
-                getRowId={(row) => row.id}
-            />
+            <Box height='60vh'>
+                <DataGrid
+                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '' }}
+                    localeText={localizedTextsMap}
+                    rows={collects}
+                    columns={columns}
+                    pageSize={5}
+                    componentsProps={{
+                        pagination: {
+                            labelRowsPerPage: "Linhas por página",
+                        }
+                    }}
+                    getRowId={(row) => row.id}
+                />
+            </Box>
+
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>
                 <DialogTitle fontWeight={800} textAlign="center" sx={{ backgroundColor: 'green', color: 'white' }}>
                     Endereço

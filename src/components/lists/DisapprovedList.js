@@ -70,24 +70,26 @@ const DisapprovedList = () => {
     }
 
     return (
-        <div style={{ height: '100vh',width: "100%", display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
+        <div style={{ height: '100vh', width: "100%", maxWidth: "75vw", display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
             <Typography>
                 Coletas Recusadas
             </Typography>
-            <DataGrid
-                
-                sx={{ marginBottom: '15vh', paddingBottom: '15vh', color: theme?.palette?.type === 'dark' ? '#fff' : '', width: "100%" }}
-                localeText={localizedTextsMap}
-                rows={collects}
-                columns={columns}
-                pageSize={10}
-                componentsProps={{
-                    pagination: {
-                        labelRowsPerPage: "Linhas por página",
-                    }
-                }}
-                getRowId={(row) => row.id}
-            />
+            <Box height='60vh'>
+                <DataGrid
+                    sx={{ color: theme?.palette?.type === 'dark' ? '#fff' : '', width: "100%" }}
+                    localeText={localizedTextsMap}
+                    rows={collects}
+                    columns={columns}
+                    pageSize={10}
+                    componentsProps={{
+                        pagination: {
+                            labelRowsPerPage: "Linhas por página",
+                        }
+                    }}
+                    getRowId={(row) => row.id}
+                />
+            </Box>
+
 
 
             <Dialog open={openModal} onClose={() => setOpenModal(false)}>

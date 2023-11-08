@@ -200,7 +200,7 @@ const CollectForm = () => {
                 <Box mt={2}>
                     <Button variant='contained' color='success' onClick={newRequest}>Novo agendamento</Button>
                 </Box>
-            </Box> : <Box width={600} height="500px" >
+            </Box> : <Box width={600} height="570px" >
 
                 <Stepper variant='outlined' sx={{ mt: 3 }} activeStep={activeStep} alternativeLabel>
                     {steps.map((label) => (
