@@ -146,14 +146,14 @@ const Sales = () => {
     return (
         <Grid container display="flex" justifyContent="center" height="100%" overflow='auto'>
             <ToastContainer />
-            <Grid item xs={12}>
-                <Box component={Paper} display="flex" alignItems="center" pl={2} sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} height="100px" elevation={4} >
+            <Grid item xs={12}  mb={1}>
+                <Box component={Paper} display="flex" alignItems="center" pl={2} sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} height="50px" elevation={4} >
                     <Typography variant="subtitle1">Operação: <strong>VENDA</strong></Typography>
                     <Typography sx={{ marginLeft: 5 }} variant="subtitle1">Data: <strong>{currentDate}</strong></Typography>
                 </Box>
             </Grid>
             <Grid item xs={12} width="100%" display="flex" alignItems="center" justifyContent="center" >
-                <Box component={Paper} elevation={2} width="95%" height="80%" p={3} display="flex" justifyContent="space-evenly" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black', border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
+                <Box component={Paper} elevation={2} width="95%" height="90%" p={3} display="flex" justifyContent="space-evenly" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black', border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
                     <Box width="60%">
                         <Typography variant="h6">Lista de items</Typography>
 
@@ -311,10 +311,10 @@ const Sales = () => {
                     </Box>
                 </Box>
             </Grid>
-            <Box display="flex" alignItems="center" height={40} mb={2}>
+            <Box display="flex" alignItems="center" height={40} mb={2} mt={3}>
                 {total > 0 && <Typography fontSize={28} sx={{ display: "flex", justifyContent: "center", alignItems: "center", mr: 8 }}>Total Venda R$: <strong style={{ paddingLeft: "10px" }}>{total}</strong></Typography>}
                 <Button
-                    sx={{ height: 60, width: 200, fontSize: 16, fontWeight: 700 }}
+                    sx={{ height: 50, width: 200, fontSize: 16, fontWeight: 700 }}
                     variant="contained"
                     color="success"
                     disabled={items.length === 0}
@@ -323,7 +323,7 @@ const Sales = () => {
                     Finalizar Venda
                 </Button>
                 <Button
-                    sx={{ height: 60, width: 200, marginLeft: 3, fontSize: 16, fontWeight: 700 }}
+                    sx={{ height: 50, width: 200, marginLeft: 3, fontSize: 16, fontWeight: 700 }}
                     variant="outlined"
                     color="error"
                     disabled={items.length === 0}

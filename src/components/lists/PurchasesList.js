@@ -99,126 +99,136 @@ const PurchasesList = () => {
     }
 
     const handleExportToExcel = () => {
-        const selectedPurchasesIds = selectedRows.map((rowIndex) => rowIndex.id_purchase);
-        const selectedPurchase = purchases.filter((purchase) => selectedPurchasesIds.includes(purchase.id_purchase));
-
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Compras');
-
-        columns.forEach((column, index) => {
-            if (column.headerName !== 'Detalhar') {
-                worksheet.getColumn(index + 1).header = column.headerName;
-                worksheet.getColumn(index + 1).key = column.field;
-                worksheet.getColumn(index + 1).width = 10;
-            }
-        });
-
-        selectedPurchase.forEach((purchase) => {
-            const rowData = {};
-            columns.forEach((column) => {
-                if (column.field === 'customer_id' || column.field === 'seller_id') {
-                    rowData[column.field] = column.valueGetter ? column.valueGetter({ row: purchase }) : purchase[column.field];
-                } else if (column.field === 'total') {
-                    rowData[column.field] = parseFloat(purchase[column.field]).toFixed(2);
-                } else if (column.field === 'createdAT') {
-                    rowData[column.field] = formatDate(purchase.createdAt);
-                } else if (column.field === 'id_purchase') {
-                    rowData[column.field] = purchase.id_purchase;
+        if(selectedRows.length > 0){
+            const selectedPurchasesIds = selectedRows.map((rowIndex) => rowIndex.id_purchase);
+            const selectedPurchase = purchases.filter((purchase) => selectedPurchasesIds.includes(purchase.id_purchase));
+    
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Compras');
+    
+            columns.forEach((column, index) => {
+                if (column.headerName !== 'Detalhar' && column.headerName !== 'Deletar') {
+                    worksheet.getColumn(index + 1).header = column.headerName;
+                    worksheet.getColumn(index + 1).key = column.field;
+                    worksheet.getColumn(index + 1).width = 10;
                 }
             });
-            worksheet.addRow(rowData);
-        });
-
-        const saveOptions = {
-            filename: 'compras.xlsx',
-            useStyles: true,
-            useSharedStrings: true
-        };
-
-        workbook.xlsx.writeBuffer().then((buffer) => {
-            const data = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const url = window.URL.createObjectURL(data);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = saveOptions.filename;
-            link.click();
-            setTimeout(() => {
-                window.URL.revokeObjectURL(url);
-            }, 100);
-        });
+    
+            selectedPurchase.forEach((purchase) => {
+                const rowData = {};
+                columns.forEach((column) => {
+                    if (column.field === 'customer_id' || column.field === 'seller_id') {
+                        rowData[column.field] = column.valueGetter ? column.valueGetter({ row: purchase }) : purchase[column.field];
+                    } else if (column.field === 'total') {
+                        rowData[column.field] = parseFloat(purchase[column.field]).toFixed(2);
+                    } else if (column.field === 'createdAT') {
+                        rowData[column.field] = formatDate(purchase.createdAt);
+                    } else if (column.field === 'id_purchase') {
+                        rowData[column.field] = purchase.id_purchase;
+                    }
+                });
+                worksheet.addRow(rowData);
+            });
+    
+            const saveOptions = {
+                filename: 'compras.xlsx',
+                useStyles: true,
+                useSharedStrings: true
+            };
+    
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                const data = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const url = window.URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = saveOptions.filename;
+                link.click();
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+            });
+        }else{
+            toast.warning('Por favor selecione os registros')
+        }
+     
     };
 
     const handlePrint = () => {
-        const printableData = selectedRows.map((purchase) => ({
-            ID: purchase.id_purchase,
-            Cliente: purchase.customer?.name,
-            Fornecedor: purchase.seller?.name,
-            Total: purchase.total,
-            Data: formatDate(purchase.createdAt)
-        }));
-
-        const content = printableData
-            .map((row) => `<tr><td>${row.ID}</td><td>${row.Cliente}</td><td>${row.Fornecedor}</td><td>${row.Total}</td><td>${row.Data}</td></tr>`)
-            .join('');
-
-        const printWindow = window.open('', '_blank');
-        printWindow.document.open();
-        printWindow.document.write(`
-        <html>
-          <head>
-            <style>
-              /* Estilos personalizados para a página de impressão */
-              @media print {
-                body {
-                  font-family: Arial, sans-serif;
-                  font-size: 12px;
-                  margin: 20px;
-                }
-                table {
-                  width: 100%;
-                  border-collapse: collapse;
-                }
-                th, td {
-                  border: 1px solid #ccc;
-                  padding: 8px;
-                  text-align: left;
-                }
-                thead {
-                  display: table-header-group;
-                }
-                tr {
-                  page-break-inside: avoid;
-                }
-              }
-              .header {
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 10px;
-              }
-            </style>
-          </head>
-          <body>
-            <h2 class="header">Lista de Compras</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Cliente</th>
-                  <th>Fornecedor</th>
-                  <th>Total</th>
-                  <th>Data</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${content}
-              </tbody>
-            </table>
-          </body>
-        </html>
-      `);
-        printWindow.document.close();
-        printWindow.print();
+        if (selectedRows.length > 0) {
+            const printableData = selectedRows.map((purchase) => ({
+                ID: purchase.id_purchase,
+                Cliente: purchase.customer?.name,
+                Fornecedor: purchase.seller?.name,
+                Total: purchase.total,
+                Data: formatDate(purchase.createdAt)
+            }));
+    
+            const content = printableData
+                .map((row, index) => {
+                    const evenRowColor = index % 2 === 0 ? 'background-color: #f0fdf4' : '';
+                    return `<tr style="${evenRowColor}"><td>${row.ID}</td><td>${row.Cliente}</td><td>${row.Fornecedor}</td><td>${row.Total}</td><td>${row.Data}</td></tr>`;
+                })
+                .join('');
+    
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write(`
+            <html>
+              <head>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    margin: 20px;
+                  }
+                  table {
+                    width: 100%;
+                    border-collapse: collapse;
+                  }
+                  th, td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: left;
+                  }
+                  .even-row {
+                    background-color: #f2f2f2;
+                  }
+                  .odd-row {
+                    background-color: #ffffff;
+                  }
+                  .header {
+                    font-weight: bold;
+                    text-align: center;
+                    margin-bottom: 10px;
+                  }
+                </style>
+              </head>
+              <body>
+                <h2 class="header">Lista de Compras</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Cliente</th>
+                      <th>Fornecedor</th>
+                      <th>Total</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${content}
+                  </tbody>
+                </table>
+              </body>
+            </html>
+          `);
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            toast.warning('Por favor selecione os registros');
+        }
     };
+    
 
     const onRowsSelectionHandler = (ids) => {
         const selectedRowsData = ids.map((id) => purchases.find((row) => row.id_purchase === id));

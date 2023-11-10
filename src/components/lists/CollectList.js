@@ -13,6 +13,7 @@ import ExcelJS from 'exceljs';
 import ThemeContext from '../style/ThemeContext';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import CloseIcon from '@mui/icons-material/Close';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const CollectList = () => {
@@ -111,147 +112,159 @@ const CollectList = () => {
     ];
 
     const handleExportToExcel = () => {
-        const selectedCollectIds = selectedRows.map((rowIndex) => rowIndex.id);
-        const selectedCollects = collects.filter((collect) => selectedCollectIds.includes(collect.id));
+        if (selectedRows.length > 0) {
+            const selectedCollectIds = selectedRows.map((rowIndex) => rowIndex.id);
+            const selectedCollects = collects.filter((collect) => selectedCollectIds.includes(collect.id));
 
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Coletas');
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Coletas');
 
-        columns.forEach((column, index) => {
-            if (column.headerName !== 'Observação') {
-                worksheet.getColumn(index + 1).header = column.headerName;
-                worksheet.getColumn(index + 1).key = column.field;
-                worksheet.getColumn(index + 1).width = 10;
-            }
-        });
-
-        selectedCollects.forEach((collect) => {
-            const rowData = {};
-            columns.forEach((column) => {
-                if (column.field === 'id') {
-                    rowData[column.field] = collect.id;
-                } else if (column.field === 'user_id' || column.field === 'phone') {
-                    rowData[column.field] = column.valueGetter ? column.valueGetter({ row: collect }) : collect[column.field];
-                } else if (column.field === 'collect_date') {
-                    rowData[column.field] = formatDate(collect.createdAt);
-                } else if (column.field === 'collect_time') {
-                    rowData[column.field] = collect.collect_time;
-                } else if (column.field === 'status') {
-                    rowData[column.field] = collect.status;
-                } else if (column.field === 'details_address') {
-                    rowData[column.field] = collect.details_address;
-                } else if (column.field === 'final_date') {
-                    rowData[column.field] = formatDate(collect.final_date);
+            columns.forEach((column, index) => {
+                if (column.headerName !== 'Observação' && column.headerName !== 'Infos') {
+                    worksheet.getColumn(index + 1).header = column.headerName;
+                    worksheet.getColumn(index + 1).key = column.field;
+                    worksheet.getColumn(index + 1).width = 10;
                 }
             });
-            worksheet.addRow(rowData);
-        });
 
-        const saveOptions = {
-            filename: 'coletas.xlsx',
-            useStyles: true,
-            useSharedStrings: true
-        };
+            selectedCollects.forEach((collect) => {
+                const rowData = {};
+                columns.forEach((column) => {
+                    if (column.field === 'id') {
+                        rowData[column.field] = collect.id;
+                    }else if (column.field === 'name') {
+                        rowData[column.field] = collect.user.name;
+                    }  else if (column.field === 'user_id' || column.field === 'phone') {
+                        rowData[column.field] = column.valueGetter ? column.valueGetter({ row: collect }) : collect[column.field];
+                    } else if (column.field === 'collect_date') {
+                        rowData[column.field] = formatDate(collect.createdAt);
+                    } else if (column.field === 'collect_time') {
+                        rowData[column.field] = collect.collect_time;
+                    } else if (column.field === 'status') {
+                        rowData[column.field] = collect.status;
+                    } else if (column.field === 'details_address') {
+                        rowData[column.field] = collect.details_address;
+                    } else if (column.field === 'final_date') {
+                        rowData[column.field] = formatDate(collect.final_date);
+                    }
+                });
+                worksheet.addRow(rowData);
+            });
 
-        workbook.xlsx.writeBuffer().then((buffer) => {
-            const data = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const url = window.URL.createObjectURL(data);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = saveOptions.filename;
-            link.click();
-            setTimeout(() => {
-                window.URL.revokeObjectURL(url);
-            }, 100);
-        });
+            const saveOptions = {
+                filename: 'coletas.xlsx',
+                useStyles: true,
+                useSharedStrings: true
+            };
+
+            workbook.xlsx.writeBuffer().then((buffer) => {
+                const data = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const url = window.URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = saveOptions.filename;
+                link.click();
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+            });
+        } else {
+            toast.warning('Por favor selecione os registros')
+        }
+
     };
 
     const handlePrint = () => {
-        const printableData = selectedRows.map((collect) => ({
-            ID: collect.id,
-            Solicitante: collect.user?.name,
-            Telefone: collect.user?.phone,
-            Data: formatDate(collect.collect_date),
-            Hora: collect.collect_time,
-            Status: collect.status,
-            DataColeta: formatDate(collect.final_date),
-            Endereco: collect.details_address
-        }));
-
-        const content = printableData
-            .map((row) => `<tr>
-            <td>${row.ID}</td>
-            <td>${row.Solicitante}</td>
-            <td>${row.Telefone}</td>
-            <td>${row.Data}</td>
-            <td>${row.Hora}</td>
-            <td>${row.Status}</td>
-            <td>${row.DataColeta !== 'Invalid date' ? row.DataColeta : ""}</td>
-            <td>${row.Endereco}</td>
-            </tr>`)
-            .join('');
-
-        const printWindow = window.open('', '_blank');
-        printWindow.document.open();
-        printWindow.document.write(`
-        <html>
-          <head>
-            <style>
-              @media print {
-                body {
-                  font-family: Arial, sans-serif;
-                  font-size: 12px;
-                  margin: 20px;
-                }
-                table {
-                  width: 100%;
-                  border-collapse: collapse;
-                }
-                th, td {
-                  border: 1px solid #ccc;
-                  padding: 8px;
-                  text-align: left;
-                }
-                thead {
-                  display: table-header-group;
-                }
-                tr {
-                  page-break-inside: avoid;
-                }
-              }
-              .header {
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 10px;
-              }
-            </style>
-          </head>
-          <body>
-            <h2 class="header">Lista de Coletas</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Solicitante</th>
-                  <th>Telefone</th>
-                  <th>Data</th>
-                  <th>Hora</th>
-                  <th>Status</th>
-                  <th>Data Coleta</th>
-                  <th>Endereço</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${content}
-              </tbody>
-            </table>
-          </body>
-        </html>
-      `);
-        printWindow.document.close();
-        printWindow.print();
+        if (selectedRows.length > 0) {
+            const printableData = selectedRows.map((collect) => ({
+                ID: collect.id,
+                Solicitante: collect.user?.name,
+                Telefone: collect.user?.phone,
+                Data: formatDate(collect.collect_date),
+                Hora: collect.collect_time,
+                Status: collect.status,
+                DataColeta: formatDate(collect.final_date),
+                Endereco: collect.details_address
+            }));
+    
+            const content = printableData
+                .map((row, index) => {
+                    const evenRowColor = index % 2 === 0 ? 'background-color: #f0fdf4' : '';
+                    return `<tr style="${evenRowColor}">
+                        <td>${row.ID}</td>
+                        <td>${row.Solicitante}</td>
+                        <td>${row.Telefone}</td>
+                        <td>${row.Data}</td>
+                        <td>${row.Hora}</td>
+                        <td>${row.Status}</td>
+                        <td>${row.DataColeta !== 'Invalid date' ? row.DataColeta : ''}</td>
+                        <td>${row.Endereco}</td>
+                    </tr>`;
+                })
+                .join('');
+    
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write(`
+                <html>
+                  <head>
+                    <style>
+                      body {
+                        font-family: Arial, sans-serif;
+                        font-size: 12px;
+                        margin: 20px;
+                      }
+                      table {
+                        width: 100%;
+                        border-collapse: collapse;
+                      }
+                      th, td {
+                        border: 1px solid #ccc;
+                        padding: 8px;
+                        text-align: left;
+                      }
+                      .even-row {
+                        background-color: #f2f2f2;
+                      }
+                      .odd-row {
+                        background-color: #ffffff;
+                      }
+                      .header {
+                        font-weight: bold;
+                        text-align: center;
+                        margin-bottom: 10px;
+                      }
+                    </style>
+                  </head>
+                  <body>
+                    <h2 class="header">Lista de Coletas</h2>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Solicitante</th>
+                          <th>Telefone</th>
+                          <th>Data</th>
+                          <th>Hora</th>
+                          <th>Status</th>
+                          <th>Data Coleta</th>
+                          <th>Endereço</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${content}
+                      </tbody>
+                    </table>
+                  </body>
+                </html>
+              `);
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            toast.warning('Por favor selecione os registros');
+        }
     };
-
+    
     const onRowsSelectionHandler = (ids) => {
         const selectedRowsData = ids.map((id) => collects.find((row) => row.id === id));
         setSelectedRows(selectedRowsData);
@@ -313,7 +326,7 @@ const CollectList = () => {
 
     return (
         <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>
-
+            <ToastContainer />
             <Typography color={theme?.palette?.type === 'dark' ? 'green' : ''}>
                 Solicitações de Coleta
             </Typography>
@@ -373,16 +386,16 @@ const CollectList = () => {
                     <Box display="flex" width="100%" mt={2}>
                         <Box>
                             <Typography><strong>Data:</strong> {formatDate(selectedCollect.collect_date)}</Typography>
-                            
+
                         </Box>
                         <Box ml={10}>
                             <Typography><strong>Hora:</strong> {selectedCollect.collect_time}</Typography>
-                            
+
                         </Box>
                     </Box>
 
                     {loading === false ? <Box mt={2}>
-                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage || null} sx={{objectFit: 'cover'}} />
+                        <CardMedia component="img" alt='imagem do material a ser coletado' height={400} image={urlImage || null} sx={{ objectFit: 'cover' }} />
                     </Box> : "Carregando imagem"}
 
                 </DialogContent>

@@ -23,6 +23,11 @@ h2 {
         font-weight: 600;
 }
 
+.even-row td{
+        font-size: 300;
+        background-color: red !important;
+}
+
 .react-datepicker__input-container>input {
         background: white;
         color: green;
