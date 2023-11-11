@@ -152,11 +152,10 @@ const BIComponent = ({ handleComponentClick }) => {
                 </Grid>
             </Grid>
 
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 5, marginRight: 3, borderRadius: "5px", maxWidth: "90vw" }} >
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 3, marginRight: 3, borderRadius: "5px", maxWidth: "90vw" }} >
                 {renderComponent()}
                 <Box id="modules" sx={{ position: 'fixed', bottom: 50, right: 45 }}>
                     <BottomNavigation
-
                         sx={{ backgroundColor: theme.palette?.primary?.main, width: 250 }}
                         showLabels
                         value={selectedComponent}

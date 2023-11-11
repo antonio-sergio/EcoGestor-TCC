@@ -28,6 +28,11 @@ h2 {
         background-color: red !important;
 }
 
+.calendar {
+        max-width: 180px;
+}
+
+
 .react-datepicker__input-container>input {
         background: white;
         color: green;

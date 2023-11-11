@@ -48,14 +48,14 @@ const CollectChart = () => {
 
         const ctx = chartRef.current.getContext('2d');
         chartInstance.current = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: labels,
                 datasets: [
                     {
                         label: 'Quantidade',
                         data: data,
-                        backgroundColor: '#3D9532',
+                        backgroundColor: ['#3D9532', 'blue', 'red', 'yellow'],
                         borderColor: '#000',
                         borderWidth: 1,
                         barPercentage: 0.1,
@@ -76,46 +76,48 @@ const CollectChart = () => {
     }, [collects]);
 
     return (
-        <Box style={{ width: "100%", height: "40vh", display: "flex",  }}>
+        <Box style={{ width: "100%", height: "40vh", display: "flex", }}>
             <Box width="100%">
-                
-                <Box  padding= {2}>
-                    <Box sx={{height: "300px" }}>
+
+                <Box >
+                    <Box sx={{ height: "250px" }}>
                         <canvas ref={chartRef}></canvas>
                     </Box>
                 </Box>
-            <Box sx={{ display: "flex", flexDirection: "collumn", alignItems: "center", height: "100px", padding: 2 }}>
-                    <Typography fontSize={20} >Período de coleta: </Typography>
-                    <DatePicker
-                        dateFormat="dd/MM/yyyy"
-                        locale="pt"
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                        selectsStart
-                        startDate={startDate}
-                        endDate={endDate}
-                        /> <Typography mx={1}>a</Typography>
-                    <DatePicker
-                        dateFormat="dd/MM/yyyy"
-                        locale="pt"
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate}
+                <Box width={400} sx={{ display: "flex", flexDirection: "collumn", alignItems: "center", height: "100px", pt: 1 }}>
+                    <Box width={100}>
+                        <DatePicker
+                            className='calendar'
+                            dateFormat="dd/MM/yyyy"
+                            locale="pt"
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            selectsStart
+                            startDate={startDate}
+                            endDate={endDate}
+
                         />
+                    </Box>
+
+                    <Typography mx={1} ml={10}>a</Typography>
+                    <Box maxWidth={50} ml={2}>
+                        <DatePicker
+                            className='calendar'
+                            dateFormat="dd/MM/yyyy"
+                            locale="pt"
+                            selected={endDate}
+                            onChange={(date) => setEndDate(date)}
+                            selectsEnd
+                            startDate={startDate}
+                            endDate={endDate}
+                            minDate={startDate}
+
+                        />
+                    </Box>
+
                 </Box>
-                </Box>
-            {/* <Box width="50%" display="flex" alignItems="flex-end" >
-                <CardMedia
-                    component="img"
-                    height="400"
-                    image={truck}
-                    alt="Caminhão de reciclagem"
-                    sx={{objectFit: 'contain'}}
-                />
-            </Box> */}
+            </Box>
+
 
         </Box>
     );

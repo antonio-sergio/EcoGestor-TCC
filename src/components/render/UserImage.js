@@ -48,8 +48,8 @@ const UserImage = ({ imageUrl, dimension, color }) => {
       <Avatar src={imageUrl ? imageUrl : userProfile} alt="User" sx={{ width: dimension || 56, height: dimension || 56}} />
       <UserInfos >
         <Infos>{formatName()}</Infos>
-        <Infos>{user.role}</Infos>
-      </UserInfos>
+        {user.role === 'admin' && <Infos>{user.role}</Infos>}
+      </UserInfos> 
     </StyledGrid>
   );
 };

@@ -308,7 +308,7 @@ const Purchases = () => {
                 </Box>
             </Grid>
             <Box display="flex" alignItems="center" height={40} mb={2} mt={3}>
-                {total > 0 && <Typography fontSize={28} sx={{ display: "flex", justifyContent: "center", alignItems: "center", mr: 8 }}>Total Compra R$: <strong style={{ paddingLeft: "10px" }}>{total}</strong></Typography>}
+                {total > 0 && <Typography fontSize={28} sx={{ display: "flex", justifyContent: "center", alignItems: "center", mr: 8 }}>Total Compra R$: <strong style={{ paddingLeft: "10px" }}>{total.toFixed(2)}</strong></Typography>}
                 <Button
                     sx={{ height: 50, width: 200, fontSize: 16, fontWeight: 700 }}
                     variant="contained"
