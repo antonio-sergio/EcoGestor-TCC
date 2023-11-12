@@ -146,16 +146,9 @@ const Sales = () => {
     return (
         <Grid container display="flex" justifyContent="center" height="100%" overflow='auto'>
             <ToastContainer />
-            <Grid item xs={12}  mb={1}>
-                <Box component={Paper} display="flex" alignItems="center" pl={2} sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black' }} height="50px" elevation={4} >
-                    <Typography variant="subtitle1">Operação: <strong>VENDA</strong></Typography>
-                    <Typography sx={{ marginLeft: 5 }} variant="subtitle1">Data: <strong>{currentDate}</strong></Typography>
-                </Box>
-            </Grid>
-            <Grid item xs={12} width="100%" display="flex" alignItems="center" justifyContent="center" >
-                <Box component={Paper} elevation={2} width="95%" height="90%" p={3} display="flex" justifyContent="space-evenly" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black', border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
+            <Grid item xs={12} width="100%" display="flex" alignItems="center" justifyContent="center"  >
+                <Box component={Paper} elevation={2} width="100%" height="95%" p={1} display="flex" justifyContent="space-evenly" sx={{ backgroundColor: theme?.palette?.type === 'dark' ? theme.palette?.primary?.main : "", color: theme?.palette?.type === 'dark' ? 'green' : 'black', border: theme?.palette?.type === 'dark' ? 'green 1px solid' : "" }}>
                     <Box width="60%">
-                        <Typography variant="h6">Lista de items</Typography>
 
                         <Box sx={{ maxHeight: "95%", overflowY: "auto" }}>
                             <TableContainer>
@@ -188,7 +181,7 @@ const Sales = () => {
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Typography sx={{ color: 'green' }}><strong>R$ {String(item.subtotal).substring(0,5)}</strong></Typography>
+                                                    <Typography sx={{ color: 'green' }}><strong>R$ {String(item.subtotal).substring(0, 5)}</strong></Typography>
                                                 </TableCell>
                                                 <TableCell>
                                                     <Button onClick={() => handleRemoveItem(index)}>
@@ -203,7 +196,7 @@ const Sales = () => {
                         </Box>
 
                     </Box>
-                    <Box width="35%" py={3} border={2}  borderColor="green" display="flex" justifyContent="center" alignItems="center"  >
+                    <Box width="35%" py={3} border={2} borderColor="green" display="flex" justifyContent="center" alignItems="center"  >
 
                         <Grid item xs={12} sm={9} display="flex" justifyContent="center" alignItems="center" flexDirection="column" >
                             <Box width="100%"  >
@@ -229,13 +222,13 @@ const Sales = () => {
                             <Box width="100%" sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100px", minHeight: "100px", backgroundColor: "" }}>
 
                                 <List>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25  }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25 }}>
                                         <ListItemText primary={`${selectedCustomer?.phone || ""}`} />
                                     </ListItem>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25  }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25 }}>
                                         <ListItemText primary={`${selectedCustomer?.email || ""}`} />
                                     </ListItem>
-                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25  }}>
+                                    <ListItem sx={{ borderBottom: 1, borderColor: "green", height: 25 }}>
                                         <ListItemText primary={`${selectedCustomer?.document || ""}`} />
                                     </ListItem>
                                 </List>
@@ -276,7 +269,7 @@ const Sales = () => {
 
                                 </Box>
                             </Box>
-                            <Box display="flex" width="100%" height={60} mt={1}  alignItems="center" justifyContent="space-around" >
+                            <Box display="flex" width="100%" height={50} alignItems="center" justifyContent="space-around" >
                                 <Box >
                                     <FormControl fullWidth color='success' margin="normal">
 
@@ -300,7 +293,7 @@ const Sales = () => {
                                         variant="outlined"
                                         color="success"
                                         onClick={handleAddItem}
-                                        sx={{height: 40, mt: 1}}
+                                        sx={{ height: 40, mt: 1 }}
                                     >
                                         Adicionar Item
                                     </Button>
@@ -311,26 +304,33 @@ const Sales = () => {
                     </Box>
                 </Box>
             </Grid>
-            <Box display="flex" alignItems="center" height={40} mb={2} mt={3}>
-                {total > 0 && <Typography fontSize={28} sx={{ display: "flex", justifyContent: "center", alignItems: "center", mr: 8 }}>Total Venda R$: <strong style={{ paddingLeft: "10px" }}>{total.toFixed(2)}</strong></Typography>}
-                <Button
-                    sx={{ height: 50, width: 200, fontSize: 16, fontWeight: 700 }}
-                    variant="contained"
-                    color="success"
-                    disabled={items.length === 0}
-                    onClick={createSale}
-                >
-                    Finalizar Venda
-                </Button>
-                <Button
-                    sx={{ height: 50, width: 200, marginLeft: 3, fontSize: 16, fontWeight: 700 }}
-                    variant="outlined"
-                    color="error"
-                    disabled={items.length === 0}
-                    onClick={clearSale}
-                >
-                    Cancelar
-                </Button>
+            <Box display="flex" alignItems="center" width="100%" justifyContent="space-between" height={40} mb={2} mt={1}>
+                <Box ml={1}>
+                    <Typography fontSize={20} variant="subtitle1"><strong>{currentDate}</strong></Typography>
+                </Box>
+                <Box width={400}>
+                    {total > 0 && <Typography ml={2} fontSize={28} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>Total Venda R$: <strong style={{ paddingLeft: "10px" }}>{total.toFixed(2)}</strong></Typography>}
+                </Box>
+                <Box minWidth={500} width="35%" display="flex" justifyContent="center">
+                    <Button
+                        sx={{ height: 50, width: 200, fontSize: 16, fontWeight: 700 }}
+                        variant="contained"
+                        color="success"
+                        disabled={items.length === 0}
+                        onClick={createSale}
+                    >
+                        Finalizar Venda
+                    </Button>
+                    <Button
+                        sx={{ height: 50, width: 200, marginLeft: 3, fontSize: 16, fontWeight: 700 }}
+                        variant="outlined"
+                        color="error"
+                        disabled={items.length === 0}
+                        onClick={clearSale}
+                    >
+                        Cancelar
+                    </Button>
+                </Box>
             </Box>
         </Grid>
     );
