@@ -26,7 +26,6 @@ const ProductsChart = () => {
 
 
 
-    // Prepare data for the chart
     const prepareChartData = () => {
         const chartData = {
             labels: [],
@@ -48,45 +47,34 @@ const ProductsChart = () => {
         };
 
         const products = {};
+        const allItems = [...saleItems, ...purchaseItems];
 
-        // Calculate total sales for each product
-        saleItems.forEach(saleItem => {
-            const { product_id, product_name, item_total, amount } = saleItem;
+        const uniqueProductNames = new Set(allItems.map(item => item.product_name));
 
-            if (!products[product_id]) {
-                console.log('ififififif')
-                products[product_id] = {
-                    product_name,
-                    sales: amount,
-                    purchases: 0,
-                };
-                chartData.labels.push(product_name);
-            } else {
-                console.log('else elese else')
-
-                products[product_id].sales += amount;
-            }
-        });
-
-        // Calculate total purchases for each product
-        purchaseItems.forEach(purchaseItem => {
-            const { product_id, product_name, amount } = purchaseItem;
+        chartData.labels = Array.from(uniqueProductNames);
+        allItems.forEach(item => {
+            const { product_id, product_name, amount } = item;
 
             if (!products[product_id]) {
                 products[product_id] = {
                     product_name,
                     sales: 0,
-                    purchases:  amount,
+                    purchases: 0,
                 };
-                chartData.labels.push(product_name);
-            } else {
-                products[product_id].purchases += amount;
             }
+            if (saleItems.some(saleItem => saleItem.product_id === product_id && item.id_sale_item)) {
+                products[product_id].sales += amount;
+            } else if (purchaseItems.some(purchaseItem => purchaseItem.product_id === product_id && item.id_purchase_item )) {
+                products[product_id].purchases += amount;
+            } 
+
+
         });
 
-        Object.values(products).forEach(({ sales, purchases }) => {
-            chartData.datasets[0].data.push(sales);
-            chartData.datasets[1].data.push(purchases);
+        chartData.labels.forEach(label => {
+            const product = Object.values(products).find(p => p.product_name === label);
+            chartData.datasets[0].data.push(product.sales);
+            chartData.datasets[1].data.push(product.purchases);
         });
 
         return chartData;
