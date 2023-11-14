@@ -102,7 +102,7 @@ const PurchasesList = () => {
         });
 
         const saveOptions = {
-            filename: 'compras.xlsx',
+            filename: 'vendas.xlsx',
             useStyles: true,
             useSharedStrings: true
         };

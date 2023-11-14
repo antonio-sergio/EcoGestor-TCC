@@ -23,6 +23,9 @@ const ProductsChart = () => {
         });
     }, []);
 
+
+
+
     // Prepare data for the chart
     const prepareChartData = () => {
         const chartData = {
@@ -32,14 +35,14 @@ const ProductsChart = () => {
                     label: 'Vendas (kg)',
                     backgroundColor: '#00C853',
                     data: [],
-                    barPercentage: 0.1,
+                    barPercentage: 1,
 
                 },
                 {
                     label: 'Compras (kg)',
                     backgroundColor: '#2196F3',
                     data: [],
-                    barPercentage: 0.1,
+                    barPercentage: 1,
                 },
             ],
         };
@@ -48,33 +51,36 @@ const ProductsChart = () => {
 
         // Calculate total sales for each product
         saleItems.forEach(saleItem => {
-            const { product_id, product_name, item_total } = saleItem;
+            const { product_id, product_name, item_total, amount } = saleItem;
 
             if (!products[product_id]) {
+                console.log('ififififif')
                 products[product_id] = {
                     product_name,
-                    sales: parseFloat(item_total),
+                    sales: amount,
                     purchases: 0,
                 };
                 chartData.labels.push(product_name);
             } else {
-                products[product_id].sales += parseFloat(item_total);
+                console.log('else elese else')
+
+                products[product_id].sales += amount;
             }
         });
 
         // Calculate total purchases for each product
         purchaseItems.forEach(purchaseItem => {
-            const { product_id, product_name, item_total } = purchaseItem;
+            const { product_id, product_name, amount } = purchaseItem;
 
             if (!products[product_id]) {
                 products[product_id] = {
                     product_name,
                     sales: 0,
-                    purchases: parseFloat(item_total),
+                    purchases:  amount,
                 };
                 chartData.labels.push(product_name);
             } else {
-                products[product_id].purchases += parseFloat(item_total);
+                products[product_id].purchases += amount;
             }
         });
 
@@ -89,8 +95,8 @@ const ProductsChart = () => {
     const chartData = prepareChartData();
 
     return (
-        <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
-            <div style={{ width: "100%", height: "40vh" }}>
+        <div style={{ display: "flex", width: "900px", justifyContent: "space-between" }}>
+            <div style={{ width: "900px", height: "400px" }}>
                 <Bar
                     data={chartData}
                     options={{

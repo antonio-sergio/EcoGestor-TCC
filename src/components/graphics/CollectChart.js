@@ -17,6 +17,7 @@ const CollectChart = () => {
         const fetchData = async () => {
             const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
             const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
+            setCollects([]);
 
             try {
                 const response = await collectService.findBeteweenDate(formattedStartDate, formattedEndDate);
